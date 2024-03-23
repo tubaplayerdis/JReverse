@@ -45,7 +45,7 @@ public class startupController {
             Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
         }
         */
-
+        JReverseBridge.SetupPipe();
         JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
         App.thestage.setResizable(false);
@@ -54,7 +54,7 @@ public class startupController {
         App.thestage.show();
         boolean test = JReverseBridge.testMethod();
         App.thestage.setResizable(test);
-
+        System.out.println(JReverseBridge.GetStringPipe());
     }
 
     @FXML
