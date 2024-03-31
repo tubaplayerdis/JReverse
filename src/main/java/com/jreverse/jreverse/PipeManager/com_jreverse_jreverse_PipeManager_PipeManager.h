@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     com_jreverse_jreverse_PipeManager_PipeManager
+ * Method:    InitAPI
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_InitAPI
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_jreverse_jreverse_PipeManager_PipeManager
  * Method:    GetLoadedPipes
  * Signature: ()[Ljava/lang/String;
  */

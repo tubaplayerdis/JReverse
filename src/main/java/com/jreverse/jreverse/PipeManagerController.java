@@ -16,8 +16,14 @@ public class PipeManagerController {
     @FXML
     private Button refreshButton;
 
+    private Boolean isInit = false;
+
     @FXML
     private void refreshPipes(){
+        if(!isInit){
+            PipeManager.InitAPI();
+            isInit = true;
+        }
         ObservableList<String> pipeStringList = FXCollections.observableArrayList();
         for(String i : PipeManager.GetLoadedPipes()){
             pipeStringList.add(i);
