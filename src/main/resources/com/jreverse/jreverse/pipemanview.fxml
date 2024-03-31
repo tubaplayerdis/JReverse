@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.PipeManagerController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Pipe Manager">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="44.0" text="Loaded Pipes">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="190.0" layoutY="31.0" text="Manually Manage Pipes">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="addPipeButton" layoutX="190.0" layoutY="266.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Add Pipe" />
+      <Label layoutX="190.0" layoutY="69.0" text="Add Pipe">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="358.0" layoutY="69.0" text="Remove Pipe(WARN)">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nameAddField" layoutX="188.0" layoutY="118.0" />
+      <Label layoutX="188.0" layoutY="99.0" text="Name">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="188.0" layoutY="150.0" text="Mode">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="188.0" layoutY="210.0" text="Size">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="sizeAddField" layoutX="188.0" layoutY="229.0" />
+      <CheckBox fx:id="readwriteCheckB" layoutX="190.0" layoutY="169.0" mnemonicParsing="false" text="read_write" />
+      <CheckBox fx:id="readonlyCheckB" layoutX="190.0" layoutY="192.0" mnemonicParsing="false" text="read_only" />
+      <Label layoutX="358.0" layoutY="99.0" text="Name">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nameRemField" layoutX="358.0" layoutY="118.0" />
+      <Button fx:id="removePipeButton" layoutX="358.0" layoutY="157.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Remove Pipe" />
+      <ListView fx:id="loadedPipeView" layoutX="14.0" layoutY="70.0" prefHeight="289.0" prefWidth="149.0" />
+      <TextField fx:id="getinfoField" layoutX="358.0" layoutY="254.0" prefHeight="25.0" prefWidth="149.0" />
+      <Button fx:id="getInfoButton" layoutX="358.0" layoutY="291.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Get Info" />
+      <Label layoutX="358.0" layoutY="209.0" text="Get Pipe Info">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="358.0" layoutY="232.0" text="Name">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="refreshButton" layoutX="14.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#refreshPipes" prefHeight="25.0" prefWidth="149.0" text="Refresh" />
+   </children>
+</AnchorPane>
