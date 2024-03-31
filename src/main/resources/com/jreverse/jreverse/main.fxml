@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.MainController">
     <children>
         <TreeView layoutX="14.0" layoutY="59.0" prefHeight="537.0" prefWidth="439.0" />
         <Label layoutX="14.0" layoutY="14.0" prefHeight="45.0" prefWidth="214.0" text="Loaded Classes:">
@@ -100,5 +100,6 @@
                 <Font size="16.0" />
             </font>
         </Button>
+      <Button layoutX="242.0" layoutY="24.0" mnemonicParsing="false" onMouseClicked="#openPipMan" prefHeight="25.0" prefWidth="208.0" text="Open Pipe Manager" />
     </children>
 </Pane>
