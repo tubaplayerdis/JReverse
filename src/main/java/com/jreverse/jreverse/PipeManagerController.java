@@ -25,9 +25,14 @@ public class PipeManagerController {
             isInit = true;
         }
         ObservableList<String> pipeStringList = FXCollections.observableArrayList();
-        for(String i : PipeManager.GetLoadedPipes()){
-            pipeStringList.add(i);
+        try{
+            for(String i : PipeManager.GetLoadedPipes()){
+                pipeStringList.add(i);
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
         }
+
         loadedPipeView.setItems(pipeStringList);
     }
 }
