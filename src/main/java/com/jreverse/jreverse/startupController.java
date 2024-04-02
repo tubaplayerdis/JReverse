@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.util.Optional;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import com.jreverse.jreverse.PipeManager.PipeManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,6 +46,8 @@ public class startupController {
             Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
         }
         */
+        JReverseBridge.testMethod();
+        PipeManager.InitAPI();
         JReverseBridge.SetupPipe();
         JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);

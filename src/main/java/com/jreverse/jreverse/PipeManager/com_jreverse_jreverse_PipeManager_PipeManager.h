@@ -23,6 +23,22 @@ JNIEXPORT void JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_InitAP
 JNIEXPORT jobjectArray JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_GetLoadedPipes
   (JNIEnv *, jclass);
 
+/*
+ * Class:     com_jreverse_jreverse_PipeManager_PipeManager
+ * Method:    AddPipe
+ * Signature: (Ljava/lang/String;ILjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_AddPipe
+  (JNIEnv *, jclass, jstring, jint, jstring);
+
+/*
+ * Class:     com_jreverse_jreverse_PipeManager_PipeManager
+ * Method:    RemovePipe
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_RemovePipe
+  (JNIEnv *, jclass, jstring);
+
 #ifdef __cplusplus
 }
 #endif
