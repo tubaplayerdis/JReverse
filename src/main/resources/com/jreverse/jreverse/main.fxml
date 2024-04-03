@@ -12,7 +12,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.MainController">
     <children>
-        <TreeView layoutX="14.0" layoutY="59.0" prefHeight="537.0" prefWidth="439.0" />
+        <TreeView fx:id="loadedClasTree" layoutX="14.0" layoutY="59.0" prefHeight="537.0" prefWidth="439.0" />
         <Label layoutX="14.0" layoutY="14.0" prefHeight="45.0" prefWidth="214.0" text="Loaded Classes:">
             <font>
                 <Font size="30.0" />
@@ -23,7 +23,7 @@
                 <Font size="16.0" />
             </font>
         </CheckBox>
-        <Button layoutX="323.0" layoutY="607.0" mnemonicParsing="false" text="Refresh Classes">
+        <Button layoutX="323.0" layoutY="607.0" mnemonicParsing="false" onMousePressed="#refreshClasses" text="Refresh Classes">
             <font>
                 <Font size="16.0" />
             </font>

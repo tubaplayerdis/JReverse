@@ -17,6 +17,14 @@ JNIEXPORT jboolean JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_test
 
 /*
  * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
+ * Method:    InitBridge
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_InitBridge
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
  * Method:    InjectDLL
  * Signature: (ILjava/lang/String;)I
  */
@@ -58,10 +66,10 @@ JNIEXPORT void JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_WriteStr
 /*
  * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
  * Method:    CallCoreFunction
- * Signature: (Ljava/lang/String;)[Ljava/lang/String;
+ * Signature: (Ljava/lang/String;[Ljava/lang/String;)[Ljava/lang/String;
  */
 JNIEXPORT jobjectArray JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_CallCoreFunction
-  (JNIEnv *, jclass, jstring);
+  (JNIEnv *, jclass, jstring, jobjectArray);
 
 #ifdef __cplusplus
 }

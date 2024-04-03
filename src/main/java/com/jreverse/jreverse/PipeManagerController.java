@@ -69,7 +69,7 @@ public class PipeManagerController {
 
     @FXML
     private void testfunp(){
-        String[] what = JReverseBridge.CallCoreFunction("TESTFUNC");
+        String[] what = JReverseBridge.CallCoreFunction("TESTFUNC", JReverseBridge.NoneArg);
         System.out.println(what[0] + " " + what[1]);
     }
 }

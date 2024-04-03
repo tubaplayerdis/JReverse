@@ -1,5 +1,6 @@
 package com.jreverse.jreverse;
 
+import com.jreverse.jreverse.Bridge.JReverseBridge;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,6 +27,7 @@ public class App extends Application {
         stage.setScene(thescene);
         stage.show();
         thestage = stage;
+        JReverseBridge.InitBridge();
     }
 
     public static void main(String[] args) {

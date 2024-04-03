@@ -1,7 +1,10 @@
 package com.jreverse.jreverse.Bridge;
 
 public class JReverseBridge {
+    public static final String[] NoneArg = {"NONE"};
     public static native boolean testMethod();
+
+    public static native void InitBridge();
 
     public static native int InjectDLL(int PID, String path);
 
@@ -12,7 +15,7 @@ public class JReverseBridge {
     public static native String GetStringPipe();
     public static native void WriteStringPipe(String message);
 
-    public static native String[] CallCoreFunction(String name);
+    public static native String[] CallCoreFunction(String name, String[] args);
 
     // Load the native library
     static {

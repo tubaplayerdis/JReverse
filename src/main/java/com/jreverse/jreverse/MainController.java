@@ -1,13 +1,21 @@
 package com.jreverse.jreverse;
 
+import com.jreverse.jreverse.Bridge.JReverseBridge;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class MainController {
+    private final TreeItem emptyitem = new TreeItem("");
+
+    @FXML
+    private TreeView loadedClasTree;
+
     @FXML
     private void openPipMan() {
         try {
@@ -25,5 +33,16 @@ public class MainController {
         } catch (IOException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    @FXML
+    private void refreshClasses(){
+        loadedClasTree.setRoot(emptyitem);
+        TreeItem rootItem = new TreeItem("Loaded Classes");
+        String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
+        for(String str : loadedclasses){
+            rootItem.getChildren().add(new TreeItem(str));
+        }
+        loadedClasTree.setRoot(rootItem);
     }
 }
