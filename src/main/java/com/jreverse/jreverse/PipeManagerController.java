@@ -1,5 +1,6 @@
 package com.jreverse.jreverse;
 
+import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.PipeManager.PipeManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,19 +31,22 @@ public class PipeManagerController {
     //Add Pipe stuff
 
     @FXML
-    private TextArea nameAddField;
+    private TextField nameAddField;
 
     @FXML
     private ChoiceBox pipeTypeChoice;
 
     @FXML
-    private TextArea sizeAddField;
+    private TextField sizeAddField;
 
     @FXML
     private Button addPipeButton;
 
     @FXML
-    private  void populateChoices(){
+    private Button tesbutt;
+
+    @FXML
+    private void populateChoices(){
         //Populate the ChoiceBox
         ObservableList<String> pipeOptionList = FXCollections.observableArrayList();
         pipeOptionList.add("int");
@@ -61,5 +65,11 @@ public class PipeManagerController {
         String piptype = pipeTypeChoice.getSelectionModel().getSelectedItem().toString();
 
         PipeManager.AddPipe(pipnam, pipsize, piptype);
+    }
+
+    @FXML
+    private void testfunp(){
+        String[] what = JReverseBridge.CallCoreFunction("TESTFUNC");
+        System.out.println(what[0] + " " + what[1]);
     }
 }

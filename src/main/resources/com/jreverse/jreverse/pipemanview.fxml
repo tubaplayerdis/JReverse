@@ -75,5 +75,6 @@
       </Label>
       <Button fx:id="refreshButton" layoutX="14.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#refreshPipes" prefHeight="25.0" prefWidth="149.0" text="Refresh" />
       <ChoiceBox fx:id="pipeTypeChoice" layoutX="188.0" layoutY="170.0" onMousePressed="#populateChoices" prefHeight="25.0" prefWidth="149.0" />
+      <Button fx:id="tesbutt" layoutX="195.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#testfunp" prefHeight="25.0" prefWidth="149.0" text="Test Function Pipe" />
    </children>
 </AnchorPane>

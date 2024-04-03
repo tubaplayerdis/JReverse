@@ -55,6 +55,14 @@ JNIEXPORT jstring JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_GetSt
 JNIEXPORT void JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_WriteStringPipe
   (JNIEnv *, jclass, jstring);
 
+/*
+ * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
+ * Method:    CallCoreFunction
+ * Signature: (Ljava/lang/String;)[Ljava/lang/String;
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_CallCoreFunction
+  (JNIEnv *, jclass, jstring);
+
 #ifdef __cplusplus
 }
 #endif

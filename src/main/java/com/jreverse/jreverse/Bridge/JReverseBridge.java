@@ -11,6 +11,9 @@ public class JReverseBridge {
 
     public static native String GetStringPipe();
     public static native void WriteStringPipe(String message);
+
+    public static native String[] CallCoreFunction(String name);
+
     // Load the native library
     static {
         System.loadLibrary("JReverseBridge");
