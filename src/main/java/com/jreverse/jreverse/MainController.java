@@ -1,9 +1,13 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.stage.Stage;
@@ -11,10 +15,19 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainController {
-    private final TreeItem emptyitem = new TreeItem("");
+    private final TreeItem<String> emptyitem = new TreeItem<String>("");
 
     @FXML
-    private TreeView loadedClasTree;
+    private TreeView<String> loadedClasTree;
+
+    @FXML
+    private ListView<String> FieldListView;
+
+    @FXML
+    private ListView<String> MethodListView;
+
+    @FXML
+    private ChoiceBox<String> InstacneChoiceBox;
 
     @FXML
     private void openPipMan() {
@@ -35,14 +48,80 @@ public class MainController {
         }
     }
 
+    private void addClass(TreeItem<String> parent, String className) {
+        String[] parts = className.split("/");
+        TreeItem<String> currentParent = parent;
+        for (String part : parts) {
+            TreeItem<String> child = findChild(currentParent, part);
+            if (child == null) {
+                child = new TreeItem<>(part);
+                currentParent.getChildren().add(child);
+            }
+            currentParent = child;
+        }
+    }
+
+    private TreeItem<String> findChild(TreeItem<String> parent, String value) {
+        for (TreeItem<String> child : parent.getChildren()) {
+            if (child.getValue().equals(value)) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+
     @FXML
     private void refreshClasses(){
         loadedClasTree.setRoot(emptyitem);
-        TreeItem rootItem = new TreeItem("Loaded Classes");
+        TreeItem<String> rootItem = new TreeItem<String>(startupController.procName);
         String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
         for(String str : loadedclasses){
-            rootItem.getChildren().add(new TreeItem(str));
+            if(str.contains("[")) str = str.replace("[","");
+            if(str.contains(";")) str = str.replace(";", "");
+            str = str.replaceFirst("L", "");
+            if(str.length() != 1) addClass(rootItem, str);
         }
         loadedClasTree.setRoot(rootItem);
     }
+
+    @FXML
+    private void populateClassInfo(){
+        //Deconstuct Tree into String
+        StringBuilder classpath = new StringBuilder();
+        TreeItem<String> selected = loadedClasTree.getSelectionModel().getSelectedItem();
+        while (selected != null){
+            if(selected.getValue() == startupController.procName) break;
+            classpath.insert(0, selected.getValue()+"/");
+            selected = selected.getParent();
+        }
+        if(classpath.lastIndexOf("/") != -1) classpath.deleteCharAt(classpath.length()-1);
+        if(classpath.length() < 2) return;
+        System.out.println(classpath.toString());
+        //Define Class String
+        String[] ClassArgs = {classpath.toString()};
+
+        //Populate Fields
+        String[] Fields = JReverseBridge.CallCoreFunction("getClassFields", ClassArgs);
+        ObservableList<String> FieldList = FXCollections.observableArrayList();
+        FieldList.addAll(Fields);
+        FieldListView.setItems(FieldList);
+        System.out.println(Fields[0]);
+
+        //Populate Methods
+        String[] Methods = JReverseBridge.CallCoreFunction("getClassMethods", ClassArgs);
+        ObservableList<String> MethodList = FXCollections.observableArrayList();
+        MethodList.addAll(Methods);
+        MethodListView.setItems(MethodList);
+        System.out.println(Methods[0]);
+
+        //Populate Instances
+        String[] Instances = JReverseBridge.CallCoreFunction("getClassInstances", ClassArgs);
+        System.out.println(Instances[0]);
+        ObservableList<String> InstanceList = FXCollections.observableArrayList();
+        InstanceList.addAll(Instances);
+        InstacneChoiceBox.setItems(InstanceList);
+        System.out.println(Instances[0]);
+    }
 }
+

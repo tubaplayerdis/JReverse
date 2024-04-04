@@ -40,6 +40,8 @@ public class startupController {
 
     String filterte = "";
 
+    public static String procName = "?";
+
     @FXML
     private void injectClick() throws IOException {
         if(currentPID == -1){
@@ -68,25 +70,22 @@ public class startupController {
     private int GetPid(String processName){
         try {
             // Execute 'tasklist' command
-            ProcessBuilder builder = new ProcessBuilder("tasklist");
+            ProcessBuilder builder = new ProcessBuilder("tasklist", "/fo", "csv");
             Process process = builder.start();
 
             // Read the output of the command
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
 
-            // Skip the first three lines of the output (header)
-            reader.readLine();
-            reader.readLine();
+            // Skip the header line
             reader.readLine();
 
-            // Search for the process name in the output
+            // Search for the process by name and print its PID
             while ((line = reader.readLine()) != null) {
-                if (line.contains(processName)) {
-                    // Extract PID from the line
-                    String[] parts = line.split("\\s+");
-                    String pid = parts[1];
-                    System.out.println(Integer.parseInt(pid));
+                String[] parts = line.split(",");
+                String processNameFromTasklist = parts[0].replaceAll("\"", ""); // Remove quotes
+                if (processNameFromTasklist.equalsIgnoreCase(processName)) {
+                    String pid = parts[1].replaceAll("\"", ""); // Remove quotes
                     return Integer.parseInt(pid);
                 }
             }
@@ -100,7 +99,7 @@ public class startupController {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1;
     }
     @FXML
     private void selectTarget(){
@@ -119,8 +118,16 @@ public class startupController {
             return ;
         }
         currentPID = PID;
-        targetField.setText("PATH: "+procinfo.command().get()+"\nUSER: "+procinfo.user().get()+"\nPID: "+currentPID);
-        System.out.println(procinfo.command().get());
+        if(!procinfo.command().get().isEmpty()){
+            String raw = procinfo.command().get();
+            String name = "?";
+            if(raw.lastIndexOf("\\") != -1){
+                name = raw.substring(raw.lastIndexOf("\\")+1);
+            }
+            targetField.setText("NAME: "+name+"\nPATH: "+procinfo.command().get()+"\nUSER: "+procinfo.user().get()+"\nPID: "+currentPID);
+            startupController.procName = name;
+            System.out.println(procinfo.command().get());
+        }
     }
 
     private void RefreshList(){
