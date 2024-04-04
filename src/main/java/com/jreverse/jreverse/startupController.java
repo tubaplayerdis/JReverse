@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Optional;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
@@ -18,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 
 
 public class startupController {
@@ -26,7 +29,7 @@ public class startupController {
     private ListView procList ;
 
     @FXML
-    private TextField PIDbox ;
+    private TextField filterField ;
 
     @FXML
     private TextArea targetField;
@@ -34,6 +37,8 @@ public class startupController {
     ObservableList<String> procStringList = FXCollections.observableArrayList();
 
     int currentPID = -1;
+
+    String filterte = "";
 
     @FXML
     private void injectClick() throws IOException {
@@ -60,9 +65,49 @@ public class startupController {
         System.out.println(JReverseBridge.GetStringPipe());
     }
 
+    private int GetPid(String processName){
+        try {
+            // Execute 'tasklist' command
+            ProcessBuilder builder = new ProcessBuilder("tasklist");
+            Process process = builder.start();
+
+            // Read the output of the command
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+
+            // Skip the first three lines of the output (header)
+            reader.readLine();
+            reader.readLine();
+            reader.readLine();
+
+            // Search for the process name in the output
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(processName)) {
+                    // Extract PID from the line
+                    String[] parts = line.split("\\s+");
+                    String pid = parts[1];
+                    System.out.println(Integer.parseInt(pid));
+                    return Integer.parseInt(pid);
+                }
+            }
+
+            // Close the reader
+            reader.close();
+
+            // Wait for the process to finish
+            process.waitFor();
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     @FXML
     private void selectTarget(){
-        Optional<ProcessHandle> prochan = ProcessHandle.of(Integer.parseInt(PIDbox.getText()));
+        System.out.println(procList.getSelectionModel().getSelectedItem().toString());
+        int PID = GetPid(procList.getSelectionModel().getSelectedItem().toString());
+        System.out.println(PID);
+        Optional<ProcessHandle> prochan = ProcessHandle.of(PID);
         if(prochan.isEmpty()){
            return;
         }
@@ -73,8 +118,9 @@ public class startupController {
             targetField.setText("The Process Handle Info was NULL");
             return ;
         }
+        currentPID = PID;
         targetField.setText("PATH: "+procinfo.command().get()+"\nUSER: "+procinfo.user().get()+"\nPID: "+currentPID);
-        currentPID = Integer.parseInt(PIDbox.getText());
+        System.out.println(procinfo.command().get());
     }
 
     private void RefreshList(){
@@ -83,19 +129,58 @@ public class startupController {
         procList.refresh();
     }
 
+
     @FXML
     private void refreshProgList() throws IOException {
         procStringList.clear();
         RefreshList();
+        ProcessBuilder builder = new ProcessBuilder("tasklist", "/fo", "csv");
+        Process process = builder.start();
+
+        // Read the output of the command
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
-        Process p = Runtime.getRuntime().exec(System.getenv("windir") +"\\system32\\"+"tasklist.exe /fo list");
-        BufferedReader input =
-                new BufferedReader(new InputStreamReader(p.getInputStream()));
-        while ((line = input.readLine()) != null) {
-            procStringList.add(line);//<-- Parse data here.
+
+        // Skip the first three lines of the output (header)
+        reader.readLine();
+        reader.readLine();
+        reader.readLine();
+
+        // Print the running processes
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            String processName = parts[0].replaceAll("\"", ""); // Remove quotes
+            if (processName.toLowerCase().endsWith(".exe")) {
+                if(line.contains(filterte)) {
+                    String add = line.substring(0,line.indexOf(","));
+                    procStringList.add(add.substring(1, add.length()-1));
+                }
+            }
+
         }
-        input.close();
+
+        // Close the reader
+        reader.close();
+
+        // Wait for the process to finish
+        try {
+            process.waitFor();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         RefreshList();
+    }
+
+    @FXML
+    private void modFilter(){
+        try{
+            refreshProgList();
+        } catch (IOException e){
+            System.out.println("Prog List \"error\"");
+        }
+
+
+        filterte = filterField.getText();
     }
 
 

@@ -21,7 +21,7 @@
                 <Font size="16.0" />
             </font>
         </CheckBox>
-        <ListView fx:id="procList" layoutX="20.0" layoutY="46.0" prefHeight="264.0" prefWidth="223.0" />
+        <ListView fx:id="procList" layoutX="20.0" layoutY="46.0" onMouseClicked="#selectTarget" prefHeight="304.0" prefWidth="223.0" />
         <Label layoutX="20.0" layoutY="11.0" text="Running Procceses:">
             <font>
                 <Font size="16.0" />
@@ -32,14 +32,12 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button layoutX="20.0" layoutY="351.0" mnemonicParsing="false" onMousePressed="#selectTarget" prefHeight="35.0" prefWidth="223.0" text="Select Target">
-            <font>
-                <Font size="16.0" />
-            </font>
-        </Button>
       <Button layoutX="166.0" layoutY="11.0" mnemonicParsing="false" onMouseReleased="#refreshProgList" prefHeight="25.0" prefWidth="77.0" text="Refresh" />
-      <TextField fx:id="PIDbox" layoutX="82.0" layoutY="318.0" prefHeight="25.0" prefWidth="161.0" promptText="Enter Process PID" />
-      <Label layoutX="20.0" layoutY="322.0" text="Enter PID:" />
-      <TextArea fx:id="targetField" editable="false" layoutX="257.0" layoutY="78.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label layoutX="20.0" layoutY="359.0" text="Filter:">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
+      <TextArea fx:id="targetField" editable="false" layoutX="257.0" layoutY="78.0" prefHeight="200.0" prefWidth="335.0" />
+      <TextField fx:id="filterField" layoutX="63.0" layoutY="356.0" onKeyTyped="#modFilter" prefHeight="25.0" prefWidth="180.0" />
     </children>
 </Pane>

@@ -1,6 +1,7 @@
 module com.jreverse.jreverse {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.management;
 
 
     opens com.jreverse.jreverse to javafx.fxml;
