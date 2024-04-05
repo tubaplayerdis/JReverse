@@ -6,12 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.ScriptViewController">
    <children>
-      <TextArea layoutX="14.0" layoutY="69.0" prefHeight="285.0" prefWidth="573.0" promptText="Preview Script Here">
+      <TextArea fx:id="ScriptTextBox" layoutX="14.0" layoutY="69.0" prefHeight="285.0" prefWidth="573.0" promptText="Preview Script Here">
          <font>
-            <Font size="8.0" />
+            <Font size="10.0" />
          </font>
       </TextArea>
       <Label layoutX="14.0" layoutY="48.0" text="Script Preview:">
@@ -19,8 +18,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="253.0" text="Run Script Python" />
-      <Button layoutX="334.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="253.0" text="Run Script Java" />
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#LoadScriptFile" prefHeight="25.0" prefWidth="573.0" text="Load Script" />
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="573.0" text="Run Script JavaScript" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#LoadScriptFile" prefHeight="25.0" prefWidth="573.0" text="Load script text from file" />
    </children>
 </AnchorPane>

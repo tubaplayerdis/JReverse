@@ -124,7 +124,7 @@ public class MainController {
         ObservableList<String> InstanceList = FXCollections.observableArrayList();
         InstanceList.addAll(Instances);
         //Add to info
-        InstacneInfoBox.setText(Instances[Instances.length-1]);
+        InstacneInfoBox.setText(Instances[0]);
         System.out.println(Instances[0]);
     }
 
@@ -146,6 +146,16 @@ public class MainController {
     @FXML
     private void FieldSelected(){
 
+    }
+
+    @FXML
+    private void dumpClass(){
+
+    }
+
+    @FXML
+    private void DecompileMethod(){
+        //use decompiler that supports raw bytecode. use CFR for class wide decompile in JReverseCore
     }
 }
 

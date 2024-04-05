@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TreeView?>
@@ -22,24 +23,24 @@
                 <Font size="16.0" />
             </font>
         </Button>
-        <ListView fx:id="FieldListView" layoutX="466.0" layoutY="96.0" onMousePressed="#FieldSelected" prefHeight="559.0" prefWidth="223.0" />
+        <ListView fx:id="FieldListView" layoutX="466.0" layoutY="96.0" onMousePressed="#FieldSelected" prefHeight="559.0" prefWidth="272.0" />
         <Label layoutX="466.0" layoutY="49.0" prefHeight="45.0" prefWidth="97.0" text="Fields:">
             <font>
                 <Font size="30.0" />
             </font>
         </Label>
-        <ListView fx:id="MethodListView" layoutX="704.0" layoutY="96.0" prefHeight="559.0" prefWidth="223.0" />
-        <Label layoutX="704.0" layoutY="49.0" prefHeight="45.0" prefWidth="153.0" text="Methods:">
+        <ListView fx:id="MethodListView" layoutX="747.0" layoutY="96.0" prefHeight="559.0" prefWidth="272.0" />
+        <Label layoutX="747.0" layoutY="49.0" prefHeight="45.0" prefWidth="153.0" text="Methods:">
             <font>
                 <Font size="30.0" />
             </font>
         </Label>
-        <Label layoutX="935.0" layoutY="49.0" prefHeight="45.0" prefWidth="315.0" text="Value Inspector:">
+        <Label layoutX="1027.0" layoutY="49.0" prefHeight="45.0" prefWidth="246.0" text="Decompiled Function:">
             <font>
-                <Font size="30.0" />
+                <Font size="25.0" />
             </font>
         </Label>
-        <Button layoutX="704.0" layoutY="671.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="223.0" text="Dump Selected Class">
+        <Button layoutX="747.0" layoutY="671.0" mnemonicParsing="false" onMouseClicked="#dumpClass" prefHeight="35.0" prefWidth="272.0" text="Dump Selected Class">
             <font>
                 <Font size="16.0" />
             </font>
@@ -63,6 +64,7 @@
             </Button>
         </items>
       </ToolBar>
-      <TextField fx:id="InstacneInfoBox" editable="false" layoutX="465.0" layoutY="680.0" prefHeight="25.0" prefWidth="223.0" />
+      <TextField fx:id="InstacneInfoBox" editable="false" layoutX="466.0" layoutY="680.0" prefHeight="25.0" prefWidth="272.0" />
+      <TextArea editable="false" layoutX="1027.0" layoutY="96.0" onMouseClicked="#DecompileMethod" prefHeight="559.0" prefWidth="246.0" promptText="Select A Method To Decompile" />
     </children>
 </Pane>
