@@ -6,10 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,8 +23,14 @@ public class MainController {
     @FXML
     private ListView<String> MethodListView;
 
+
     @FXML
-    private ChoiceBox<String> InstacneChoiceBox;
+    private TextField InstacneInfoBox;
+
+
+    public void initialize() {
+
+    }
 
     @FXML
     private void openPipMan() {
@@ -120,8 +123,29 @@ public class MainController {
         System.out.println(Instances[0]);
         ObservableList<String> InstanceList = FXCollections.observableArrayList();
         InstanceList.addAll(Instances);
-        InstacneChoiceBox.setItems(InstanceList);
+        //Add to info
+        InstacneInfoBox.setText(Instances[Instances.length-1]);
         System.out.println(Instances[0]);
+    }
+
+    @FXML
+    private void OpenScripterScene() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("script.fxml"));
+        /*
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+         */
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Stage stage = new Stage();
+        stage.setTitle("JReverse Script View");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void FieldSelected(){
+
     }
 }
 
