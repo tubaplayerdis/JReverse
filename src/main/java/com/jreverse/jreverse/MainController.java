@@ -27,6 +27,11 @@ public class MainController {
     @FXML
     private TextField InstacneInfoBox;
 
+    @FXML
+    private TextArea MethodDecompArea;
+
+    public static String CurrentClassName = "";
+
 
     public void initialize() {
 
@@ -103,6 +108,7 @@ public class MainController {
         System.out.println(classpath.toString());
         //Define Class String
         String[] ClassArgs = {classpath.toString()};
+        MainController.CurrentClassName = classpath.toString();
 
         //Populate Fields
         String[] Fields = JReverseBridge.CallCoreFunction("getClassFields", ClassArgs);
@@ -156,6 +162,30 @@ public class MainController {
     @FXML
     private void DecompileMethod(){
         //use decompiler that supports raw bytecode. use CFR for class wide decompile in JReverseCore
+        //Get Raw ByteCode
+        if(!MethodListView.getSelectionModel().getSelectedItem().contains("(")){
+            MethodDecompArea.setText("Invalid Method");
+        }
+
+        String isstatic = "true";
+        ObservableList<String> checklis = MethodListView.getItems();
+        for(int i = 0; i<checklis.size(); i++){
+            if(checklis.get(i) == MethodListView.getSelectionModel().getSelectedItem()) break;
+            if(checklis.get(i) == "NON STAIC"){
+                isstatic = "false";
+                break;
+            }
+        }
+
+        String[] farg = MethodListView.getSelectionModel().getSelectedItem().split("\\(");
+        String first = farg[0];
+        String second = farg[1];
+        StringBuilder builder = new StringBuilder(second);
+        builder.insert(0, "(");
+        second = builder.toString();
+        String[] args = {MainController.CurrentClassName, first, second, isstatic};
+        String[] bytecodes = JReverseBridge.CallCoreFunction("getMethodBytecodes",args);
+        MethodDecompArea.setText(bytecodes[0]);
     }
 }
 

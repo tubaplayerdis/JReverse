@@ -29,7 +29,7 @@
                 <Font size="30.0" />
             </font>
         </Label>
-        <ListView fx:id="MethodListView" layoutX="747.0" layoutY="96.0" prefHeight="559.0" prefWidth="272.0" />
+        <ListView fx:id="MethodListView" layoutX="747.0" layoutY="96.0" onMouseClicked="#DecompileMethod" prefHeight="559.0" prefWidth="272.0" />
         <Label layoutX="747.0" layoutY="49.0" prefHeight="45.0" prefWidth="153.0" text="Methods:">
             <font>
                 <Font size="30.0" />
@@ -65,6 +65,9 @@
         </items>
       </ToolBar>
       <TextField fx:id="InstacneInfoBox" editable="false" layoutX="466.0" layoutY="680.0" prefHeight="25.0" prefWidth="272.0" />
-      <TextArea editable="false" layoutX="1027.0" layoutY="96.0" onMouseClicked="#DecompileMethod" prefHeight="559.0" prefWidth="246.0" promptText="Select A Method To Decompile" />
+      <TextArea fx:id="MethodDecompArea" editable="false" layoutX="1027.0" layoutY="96.0" prefHeight="559.0" prefWidth="246.0" promptText="Select A Method To Decompile">
+         <font>
+            <Font size="10.0" />
+         </font></TextArea>
     </children>
 </Pane>
