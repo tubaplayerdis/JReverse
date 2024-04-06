@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 import java.io.IOException;
 
@@ -31,6 +33,8 @@ public class MainController {
     private TextArea MethodDecompArea;
 
     public static String CurrentClassName = "";
+
+
 
 
     public void initialize() {
@@ -159,6 +163,16 @@ public class MainController {
 
     }
 
+    private static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
+    }
+
     @FXML
     private void DecompileMethod(){
         //use decompiler that supports raw bytecode. use CFR for class wide decompile in JReverseCore
@@ -185,6 +199,10 @@ public class MainController {
         second = builder.toString();
         String[] args = {MainController.CurrentClassName, first, second, isstatic};
         String[] bytecodes = JReverseBridge.CallCoreFunction("getMethodBytecodes",args);
+
+        //Create or Write Method.class with data
+
+
         MethodDecompArea.setText(bytecodes[0]);
     }
 }
