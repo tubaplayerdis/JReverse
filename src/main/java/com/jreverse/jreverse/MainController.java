@@ -200,8 +200,7 @@ public class MainController {
         String[] args = {MainController.CurrentClassName, first, second, isstatic};
         String[] bytecodes = JReverseBridge.CallCoreFunction("getMethodBytecodes",args);
 
-        //Create or Write Method.class with data
-
+        //No More Work Needs to be done with this. move onto clas file load hooks and more advanced class modification
 
         MethodDecompArea.setText(bytecodes[0]);
     }
