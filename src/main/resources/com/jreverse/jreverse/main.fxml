@@ -29,13 +29,13 @@
                 <Font size="30.0" />
             </font>
         </Label>
-        <ListView fx:id="MethodListView" layoutX="747.0" layoutY="96.0" onMouseClicked="#DecompileMethod" prefHeight="559.0" prefWidth="272.0" />
+        <ListView fx:id="MethodListView" layoutX="747.0" layoutY="96.0" prefHeight="559.0" prefWidth="272.0" />
         <Label layoutX="747.0" layoutY="49.0" prefHeight="45.0" prefWidth="153.0" text="Methods:">
             <font>
                 <Font size="30.0" />
             </font>
         </Label>
-        <Label layoutX="1027.0" layoutY="49.0" prefHeight="45.0" prefWidth="246.0" text="Decompiled Function:">
+        <Label layoutX="1027.0" layoutY="49.0" prefHeight="45.0" prefWidth="246.0" text="Decompiled Class:">
             <font>
                 <Font size="25.0" />
             </font>
@@ -58,6 +58,11 @@
                </font>
             </Button>
             <Button layoutX="56.0" layoutY="10.0" mnemonicParsing="false" onMousePressed="#OpenScripterScene" prefHeight="25.0" prefWidth="140.0" text="Scripting Interface">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="ClassEditorButton" mnemonicParsing="false" text="Class Editor">
                <font>
                   <Font size="14.0" />
                </font>

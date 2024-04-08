@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.PipeManager.PipeManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.util.concurrent.TimeUnit;
 
 
 public class startupController {
@@ -40,23 +42,21 @@ public class startupController {
 
     String filterte = "";
 
-    public static String procName = "?";
+    public static String procName = "";
+    public static String procpath = "";
+
+    int injectionreturn;
 
     @FXML
     private void injectClick() throws IOException {
+        currentPID = GetPid(procName);
         if(currentPID == -1){
             return;
         }
-        /*
-        URL website = new URL("");
-        try (InputStream in = website.openStream()) {
-            Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
-        }
-        */
         JReverseBridge.testMethod();
         PipeManager.InitAPI();
         JReverseBridge.SetupPipe();
-        JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
+        injectionreturn = JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
         App.thestage.setResizable(false);
         App.thestage.setTitle("JReverse");
@@ -64,7 +64,7 @@ public class startupController {
         App.thestage.show();
         boolean test = JReverseBridge.testMethod();
         App.thestage.setResizable(test);
-        System.out.println(JReverseBridge.GetStringPipe());
+        //System.out.println(JReverseBridge.GetStringPipe());
     }
 
     private int GetPid(String processName){
@@ -120,12 +120,13 @@ public class startupController {
         currentPID = PID;
         if(!procinfo.command().get().isEmpty()){
             String raw = procinfo.command().get();
-            String name = "?";
+            String name = "";
             if(raw.lastIndexOf("\\") != -1){
                 name = raw.substring(raw.lastIndexOf("\\")+1);
             }
             targetField.setText("NAME: "+name+"\nPATH: "+procinfo.command().get()+"\nUSER: "+procinfo.user().get()+"\nPID: "+currentPID);
             startupController.procName = name;
+            startupController.procpath = procinfo.command().get();
             System.out.println(procinfo.command().get());
         }
     }
@@ -188,6 +189,61 @@ public class startupController {
 
 
         filterte = filterField.getText();
+    }
+
+    @FXML
+    private void WaitAndInject() throws IOException, InterruptedException {
+        if(startupController.procName.isEmpty()){
+            System.out.println("procname is empty!");
+            return;
+        }
+        if(startupController.procpath.isEmpty()){
+            System.out.println("procpath is empty!");
+            return;
+        }
+
+        System.out.println("Killing: "+procName);
+        //Kill The program
+        try {
+            ProcessBuilder killer = new ProcessBuilder("taskkill", "/f", "/im", procName); // Modify this to match the name of your program
+            Process killerProcess = killer.start();
+            killerProcess.waitFor();
+        } catch (IOException | InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            TimeUnit.MILLISECONDS.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Wait for restart
+        Runnable myThread = () ->
+        {
+            while(GetPid(procName) == -1){
+                //Wait for the proccess to get restarted
+                System.out.println("Waiting for process restart");
+            }
+
+            //Callback to java fx thread and inject
+            Platform.runLater(()->{
+                App.isOnStartup = true;
+                try {
+                    TimeUnit.MILLISECONDS.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    injectClick();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+        };
+        Thread run = new Thread(myThread);
+        run.start();
+        System.out.println(injectionreturn);
+
     }
 
 

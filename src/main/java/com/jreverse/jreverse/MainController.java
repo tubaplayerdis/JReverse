@@ -8,10 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 
-import java.io.IOException;
+import java.io.*;
 
 public class MainController {
     private final TreeItem<String> emptyitem = new TreeItem<String>("");
@@ -32,13 +30,20 @@ public class MainController {
     @FXML
     private TextArea MethodDecompArea;
 
+    @FXML
+    private Button ClassEditorButton;
+
     public static String CurrentClassName = "";
 
 
 
 
     public void initialize() {
-
+        if(App.isOnStartup == true){
+            ClassEditorButton.setDisable(false);
+        } else {
+            ClassEditorButton.setDisable(true);
+        }
     }
 
     @FXML
@@ -78,6 +83,31 @@ public class MainController {
             if (child.getValue().equals(value)) {
                 return child;
             }
+        }
+        return null;
+    }
+
+    private static byte[] convertStringToByteArray(String rawBytecodeString) {
+        // Convert hexadecimal string to byte array
+        int length = rawBytecodeString.length();
+        byte[] bytecode = new byte[length / 2];
+        for (int i = 0; i < length; i += 2) {
+            bytecode[i / 2] = (byte) ((Character.digit(rawBytecodeString.charAt(i), 16) << 4)
+                    + Character.digit(rawBytecodeString.charAt(i + 1), 16));
+        }
+        return bytecode;
+    }
+
+    private static String writeByteArrayToTempClassFile(byte[] bytecode) {
+        try {
+            File myFile = new File("output" + ".class");
+            FileOutputStream fos = new FileOutputStream(myFile);
+            fos.write(bytecode);
+            fos.close();
+            System.out.println("Bytecode written to output.class");
+            return myFile.getAbsolutePath();
+        } catch (IOException e) {
+            System.err.println("Error writing bytecode to file: " + e.getMessage());
         }
         return null;
     }
@@ -136,6 +166,13 @@ public class MainController {
         //Add to info
         InstacneInfoBox.setText(Instances[0]);
         System.out.println(Instances[0]);
+
+        String[] ByteArgs = {MainController.CurrentClassName};
+        String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
+        MethodDecompArea.setWrapText(true);
+        MethodDecompArea.setText("Decomp of "+ClassByteCodes[0]+":\n\n"+ClassByteCodes[1].toUpperCase());
+
+        System.out.println(writeByteArrayToTempClassFile(convertStringToByteArray(ClassByteCodes[1].toUpperCase())));
     }
 
     @FXML
@@ -168,13 +205,13 @@ public class MainController {
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
             data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
+                    + Character.digit(s.charAt(i + 1), 16));
         }
         return data;
     }
 
     @FXML
-    private void DecompileMethod(){
+    private void DecompileMethod() throws IOException {
         //use decompiler that supports raw bytecode. use CFR for class wide decompile in JReverseCore
         //Get Raw ByteCode
         if(!MethodListView.getSelectionModel().getSelectedItem().contains("(")){
@@ -201,6 +238,8 @@ public class MainController {
         String[] bytecodes = JReverseBridge.CallCoreFunction("getMethodBytecodes",args);
 
         //No More Work Needs to be done with this. move onto clas file load hooks and more advanced class modification
+        MethodDecompArea.setWrapText(true);
+
 
         MethodDecompArea.setText(bytecodes[0]);
     }

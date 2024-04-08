@@ -13,6 +13,8 @@ public class App extends Application {
 
     private static Scene thescene;
     public static Stage thestage;
+
+    public static Boolean isOnStartup = false;
     public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader loader =  new FXMLLoader();
         return loader.load(App.class.getResource(fxml + ".fxml"));
