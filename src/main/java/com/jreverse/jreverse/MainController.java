@@ -10,6 +10,14 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HexFormat;
+import java.util.List;
+
+import javassist.bytecode.ClassFile;
 
 public class MainController {
     private final TreeItem<String> emptyitem = new TreeItem<String>("");
@@ -100,7 +108,7 @@ public class MainController {
 
     private static String writeByteArrayToTempClassFile(byte[] bytecode) {
         try {
-            File myFile = new File("output" + ".class");
+            File myFile = new File("temp" + ".class");
             FileOutputStream fos = new FileOutputStream(myFile);
             fos.write(bytecode);
             fos.close();
@@ -172,7 +180,59 @@ public class MainController {
         MethodDecompArea.setWrapText(true);
         MethodDecompArea.setText("Decomp of "+ClassByteCodes[0]+":\n\n"+ClassByteCodes[1].toUpperCase());
 
-        System.out.println(writeByteArrayToTempClassFile(convertStringToByteArray(ClassByteCodes[1].toUpperCase())));
+        //byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase().replace(" ",""));
+
+        //System.out.println(writeByteArrayToTempClassFile(bytesofclass));
+    }
+
+    @FXML
+    private void ResolveByteCodes() throws IOException {
+        Runnable resolveThread = () -> {
+            List<String> returnitems = new ArrayList<String>();
+            String[] UnresolvedByteCodes = JReverseBridge.CallCoreFunction("getUnknownClassFiles", JReverseBridge.NoneArg);
+
+            for(String unresolvedbytes : UnresolvedByteCodes){
+                //Check for file
+                try {
+                    Files.deleteIfExists(Paths.get("temp.class"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                System.out.println(unresolvedbytes);
+
+                //Create and write to file
+                byte[] bytesofclass = HexFormat.of().parseHex(unresolvedbytes.toUpperCase().replace(" ",""));
+                System.out.println((writeByteArrayToTempClassFile(bytesofclass)));
+
+                //Open File
+                File classFile = new File("temp.class");
+
+                try (FileInputStream fis = new FileInputStream(classFile);
+                     DataInputStream dis = new DataInputStream(fis)) {
+
+                    // Create a ClassFile object by reading the .class file
+                    ClassFile cf = new ClassFile(dis);
+
+                    // Get the class name
+                    String className = cf.getName().replace(".","/");
+
+                    returnitems.add(className);
+                    returnitems.add(unresolvedbytes);
+
+                    System.out.println("Resolved: "+className);
+
+                    //Write back to the Core
+
+                } catch (IOException e) {
+                    System.err.println("Error reading .class file: " + e.getMessage());
+                }
+            }
+            System.out.println("Sending off class files");
+            JReverseBridge.CallCoreFunction("setUnknownClassFiles", returnitems.toArray(new String[returnitems.size()]));
+        };
+        Thread run = new Thread(resolveThread);
+        run.start();
     }
 
     @FXML

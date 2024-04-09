@@ -208,14 +208,15 @@ public class startupController {
             ProcessBuilder killer = new ProcessBuilder("taskkill", "/f", "/im", procName); // Modify this to match the name of your program
             Process killerProcess = killer.start();
             killerProcess.waitFor();
+
+            while(GetPid(procName) != -1){
+                System.out.println("Waiting for process kill");
+            }
+
         } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
         }
-        try {
-            TimeUnit.MILLISECONDS.sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
 
         //Wait for restart
         Runnable myThread = () ->

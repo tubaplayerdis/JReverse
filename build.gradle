@@ -35,6 +35,7 @@ javafx {
 }
 
 dependencies {
+    implementation group: 'org.javassist', name: 'javassist', version: '3.30.2-GA'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
