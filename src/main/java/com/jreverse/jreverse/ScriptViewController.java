@@ -3,10 +3,6 @@ package com.jreverse.jreverse;
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.NotFoundException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -53,22 +49,11 @@ public class ScriptViewController {
 
         String[] args = {"No Bytecodes","No Bytecodes","No Bytecodes"};
 
-        ClassPool classPool = ClassPool.getDefault();
-        String className = "com.jreverse.jreverse.Core.JReverseScriptingCore";
-        try {
-            // Get the CtClass representation of the class
-            CtClass ctClass = classPool.get(className);
+        final String usePath = System.getProperty("user.dir");
+        //looks like: C:\Users\aaron\IdeaProjects\jreverse
+        args[0] = usePath+"\\src\\main\\java\\com\\jreverse\\jreverse\\Core\\JReverseScriptingCore.class";
 
-            // Retrieve the bytecode as a byte array
-            byte[] bytecode = ctClass.toBytecode();
-
-            args[0] = new String(bytecode);
-
-            // Don't forget to close the CtClass when done
-            ctClass.detach();
-        } catch (NotFoundException | IOException | CannotCompileException e) {
-            System.out.println(e.getMessage());
-        }
+        System.out.println("Sending off: "+args[0]);
 
         String res[] = JReverseBridge.CallCoreFunction("setupScriptingEnviroment", args);
 
