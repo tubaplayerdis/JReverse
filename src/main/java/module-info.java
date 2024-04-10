@@ -4,6 +4,7 @@ module com.jreverse.jreverse {
     requires java.management;
     requires java.desktop;
     requires org.javassist;
+    requires cfr;
 
 
     opens com.jreverse.jreverse to javafx.fxml;

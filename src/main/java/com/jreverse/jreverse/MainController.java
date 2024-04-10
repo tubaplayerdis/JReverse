@@ -8,16 +8,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javassist.bytecode.ClassFile;
+import org.benf.cfr.reader.api.CfrDriver;
+import org.benf.cfr.reader.api.OutputSinkFactory;
+import org.benf.cfr.reader.api.SinkReturns;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HexFormat;
-import java.util.List;
-
-import javassist.bytecode.ClassFile;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class MainController {
     private final TreeItem<String> emptyitem = new TreeItem<String>("");
@@ -44,10 +44,8 @@ public class MainController {
     public static String CurrentClassName = "";
 
 
-
-
     public void initialize() {
-        if(App.isOnStartup == true){
+        if (App.isOnStartup == true) {
             ClassEditorButton.setDisable(false);
         } else {
             ClassEditorButton.setDisable(true);
@@ -68,7 +66,7 @@ public class MainController {
             stage.setTitle("JReverse Pipe Manager");
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -122,31 +120,31 @@ public class MainController {
 
 
     @FXML
-    private void refreshClasses(){
+    private void refreshClasses() {
         loadedClasTree.setRoot(emptyitem);
         TreeItem<String> rootItem = new TreeItem<String>(startupController.procName);
         String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
-        for(String str : loadedclasses){
-            if(str.contains("[")) str = str.replace("[","");
-            if(str.contains(";")) str = str.replace(";", "");
+        for (String str : loadedclasses) {
+            if (str.contains("[")) str = str.replace("[", "");
+            if (str.contains(";")) str = str.replace(";", "");
             str = str.replaceFirst("L", "");
-            if(str.length() != 1) addClass(rootItem, str);
+            if (str.length() != 1) addClass(rootItem, str);
         }
         loadedClasTree.setRoot(rootItem);
     }
 
     @FXML
-    private void populateClassInfo(){
+    private void populateClassInfo() {
         //Deconstuct Tree into String
         StringBuilder classpath = new StringBuilder();
         TreeItem<String> selected = loadedClasTree.getSelectionModel().getSelectedItem();
-        while (selected != null){
-            if(selected.getValue() == startupController.procName) break;
-            classpath.insert(0, selected.getValue()+"/");
+        while (selected != null) {
+            if (selected.getValue() == startupController.procName) break;
+            classpath.insert(0, selected.getValue() + "/");
             selected = selected.getParent();
         }
-        if(classpath.lastIndexOf("/") != -1) classpath.deleteCharAt(classpath.length()-1);
-        if(classpath.length() < 2) return;
+        if (classpath.lastIndexOf("/") != -1) classpath.deleteCharAt(classpath.length() - 1);
+        if (classpath.length() < 2) return;
         System.out.println(classpath.toString());
         //Define Class String
         String[] ClassArgs = {classpath.toString()};
@@ -178,7 +176,33 @@ public class MainController {
         String[] ByteArgs = {MainController.CurrentClassName};
         String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
         MethodDecompArea.setWrapText(true);
-        MethodDecompArea.setText("Decomp of "+ClassByteCodes[0]+":\n\n"+ClassByteCodes[1].toUpperCase());
+
+        if (ClassByteCodes[0] == "NOT FOUND") {
+            MethodDecompArea.setText("Decomp of " + ClassByteCodes[0] + ":\n\n" + ClassByteCodes[1]);
+            return;
+        }
+
+        //Write the Data to temp.class;
+        byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase().replace(" ", ""));
+        writeByteArrayToTempClassFile(bytesofclass);
+
+        //Setup For Decomp
+        String classFilePath = "temp.class"; // Path to your .class file
+
+
+        ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputBuffer));
+
+        //Cfr bs
+        CfrDriver cfr = new CfrDriver.Builder().build();
+        cfr.analyse(Collections.singletonList(classFilePath));
+
+        String decompiledString = outputBuffer.toString();
+
+        //Reset System.out
+        System.setOut(System.out);
+
+        MethodDecompArea.setText("Decomp of " + ClassByteCodes[0] + ":\n\n" + decompiledString);
 
         //byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase().replace(" ",""));
 
@@ -191,7 +215,7 @@ public class MainController {
             List<String> returnitems = new ArrayList<String>();
             String[] UnresolvedByteCodes = JReverseBridge.CallCoreFunction("getUnknownClassFiles", JReverseBridge.NoneArg);
 
-            for(String unresolvedbytes : UnresolvedByteCodes){
+            for (String unresolvedbytes : UnresolvedByteCodes) {
                 //Check for file
                 try {
                     Files.deleteIfExists(Paths.get("temp.class"));
@@ -199,10 +223,8 @@ public class MainController {
                     throw new RuntimeException(e);
                 }
 
-                System.out.println(unresolvedbytes);
-
                 //Create and write to file
-                byte[] bytesofclass = HexFormat.of().parseHex(unresolvedbytes.toUpperCase().replace(" ",""));
+                byte[] bytesofclass = HexFormat.of().parseHex(unresolvedbytes.toUpperCase().replace(" ", ""));
                 System.out.println((writeByteArrayToTempClassFile(bytesofclass)));
 
                 //Open File
@@ -215,12 +237,12 @@ public class MainController {
                     ClassFile cf = new ClassFile(dis);
 
                     // Get the class name
-                    String className = cf.getName().replace(".","/");
+                    String className = cf.getName().replace(".", "/");
 
                     returnitems.add(className);
                     returnitems.add(unresolvedbytes);
 
-                    System.out.println("Resolved: "+className);
+                    System.out.println("Resolved: " + className);
 
                     //Write back to the Core
 
@@ -229,10 +251,22 @@ public class MainController {
                 }
             }
             System.out.println("Sending off class files");
+            System.out.println("#of Resolved Classes: " + UnresolvedByteCodes.length);
             JReverseBridge.CallCoreFunction("setUnknownClassFiles", returnitems.toArray(new String[returnitems.size()]));
         };
         Thread run = new Thread(resolveThread);
         run.start();
+    }
+
+    @FXML
+    private void DumpClassFileNames() {
+        String[] ClassFileNames = JReverseBridge.CallCoreFunction("getClassFileNames", JReverseBridge.NoneArg);
+        Arrays.sort(ClassFileNames);
+        StringBuilder builder = new StringBuilder();
+        for (String str : ClassFileNames) {
+            builder.append(str + "\n");
+        }
+        MethodDecompArea.setText(builder.toString());
     }
 
     @FXML
@@ -251,12 +285,12 @@ public class MainController {
     }
 
     @FXML
-    private void FieldSelected(){
+    private void FieldSelected() {
 
     }
 
     @FXML
-    private void dumpClass(){
+    private void dumpClass() {
 
     }
 
@@ -274,15 +308,15 @@ public class MainController {
     private void DecompileMethod() throws IOException {
         //use decompiler that supports raw bytecode. use CFR for class wide decompile in JReverseCore
         //Get Raw ByteCode
-        if(!MethodListView.getSelectionModel().getSelectedItem().contains("(")){
+        if (!MethodListView.getSelectionModel().getSelectedItem().contains("(")) {
             MethodDecompArea.setText("Invalid Method");
         }
 
         String isstatic = "true";
         ObservableList<String> checklis = MethodListView.getItems();
-        for(int i = 0; i<checklis.size(); i++){
-            if(checklis.get(i) == MethodListView.getSelectionModel().getSelectedItem()) break;
-            if(checklis.get(i) == "NON STAIC"){
+        for (int i = 0; i < checklis.size(); i++) {
+            if (checklis.get(i) == MethodListView.getSelectionModel().getSelectedItem()) break;
+            if (checklis.get(i) == "NON STAIC") {
                 isstatic = "false";
                 break;
             }
@@ -295,7 +329,7 @@ public class MainController {
         builder.insert(0, "(");
         second = builder.toString();
         String[] args = {MainController.CurrentClassName, first, second, isstatic};
-        String[] bytecodes = JReverseBridge.CallCoreFunction("getMethodBytecodes",args);
+        String[] bytecodes = JReverseBridge.CallCoreFunction("getMethodBytecodes", args);
 
         //No More Work Needs to be done with this. move onto clas file load hooks and more advanced class modification
         MethodDecompArea.setWrapText(true);
@@ -303,5 +337,29 @@ public class MainController {
 
         MethodDecompArea.setText(bytecodes[0]);
     }
-}
 
+
+    private static class BCVOutputSinkFactory implements OutputSinkFactory {
+
+        private final Consumer<SinkReturns.Decompiled> dumpDecompiled;
+
+        private BCVOutputSinkFactory(Consumer<SinkReturns.Decompiled> dumpDecompiled) {
+            this.dumpDecompiled = dumpDecompiled;
+        }
+
+        @Override
+        public List<SinkClass> getSupportedSinks(SinkType sinkType, Collection<SinkClass> available) {
+            return Collections.singletonList(SinkClass.DECOMPILED);
+        }
+
+        @Override
+        public <T> Sink<T> getSink(SinkType sinkType, SinkClass sinkClass) {
+            if (sinkType == SinkType.JAVA && sinkClass == SinkClass.DECOMPILED) {
+                return x -> dumpDecompiled.accept((SinkReturns.Decompiled) x);
+            }
+            return ignore -> {
+            };
+        }
+
+    }
+}

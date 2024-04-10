@@ -83,12 +83,18 @@
                </font>
             </Button>
             <Separator layoutX="164.0" layoutY="10.0" orientation="VERTICAL" prefHeight="30.0" prefWidth="15.0" />
+            <Button layoutX="548.0" layoutY="10.0" mnemonicParsing="false" onMousePressed="#DumpClassFileNames" text="Dump Class File Names">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Separator layoutX="747.0" layoutY="10.0" orientation="VERTICAL" prefHeight="30.0" prefWidth="15.0" />
             <Label text="Messages:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField editable="false" prefHeight="30.0" prefWidth="229.0" promptText="Messages will go here">
+            <TextField editable="false" prefHeight="30.0" prefWidth="184.0" promptText="Messages will go here">
                <font>
                   <Font size="14.0" />
                </font>
