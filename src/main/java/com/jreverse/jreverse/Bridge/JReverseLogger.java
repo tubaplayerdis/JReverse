@@ -5,5 +5,5 @@ public class JReverseLogger {
         System.out.println(message);
     }
 
-    static int PipeCallBackLimit = 100;
+    public static int PipeCallBackLimit = 100;
 }

@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javassist.bytecode.ClassFile;
-import org.benf.cfr.reader.api.CfrDriver;
 import org.benf.cfr.reader.api.OutputSinkFactory;
 import org.benf.cfr.reader.api.SinkReturns;
 
@@ -110,7 +109,7 @@ public class MainController {
             FileOutputStream fos = new FileOutputStream(myFile);
             fos.write(bytecode);
             fos.close();
-            System.out.println("Bytecode written to output.class");
+            System.out.println("Bytecode written to temp.class");
             return myFile.getAbsolutePath();
         } catch (IOException e) {
             System.err.println("Error writing bytecode to file: " + e.getMessage());
@@ -134,7 +133,7 @@ public class MainController {
     }
 
     @FXML
-    private void populateClassInfo() {
+    private void populateClassInfo() throws IOException, InterruptedException {
         //Deconstuct Tree into String
         StringBuilder classpath = new StringBuilder();
         TreeItem<String> selected = loadedClasTree.getSelectionModel().getSelectedItem();
@@ -175,12 +174,15 @@ public class MainController {
 
         String[] ByteArgs = {MainController.CurrentClassName};
         String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
-        MethodDecompArea.setWrapText(true);
+        MethodDecompArea.setWrapText(false);
 
         if (ClassByteCodes[0] == "NOT FOUND") {
             MethodDecompArea.setText("Decomp of " + ClassByteCodes[0] + ":\n\n" + ClassByteCodes[1]);
             return;
         }
+
+        final String usePath = System.getProperty("user.dir");
+        //looks like: C:\Users\aaron\IdeaProjects\jreverse
 
         //Write the Data to temp.class;
         byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase().replace(" ", ""));
@@ -189,18 +191,24 @@ public class MainController {
         //Setup For Decomp
         String classFilePath = "temp.class"; // Path to your .class file
 
+        System.out.println("Current Path: "+System.getProperty("user.dir"));
 
-        ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputBuffer));
+
+        String decompiledString = "Failed Decompilation!";
 
         //Cfr bs
-        CfrDriver cfr = new CfrDriver.Builder().build();
-        cfr.analyse(Collections.singletonList(classFilePath));
 
-        String decompiledString = outputBuffer.toString();
+        ProcessBuilder builder = new ProcessBuilder("java", "-jar", usePath+"\\libs\\cfr-0.152.jar", usePath+"\\temp.class");
+        Process process = builder.start();
 
-        //Reset System.out
-        System.setOut(System.out);
+        // Read the output of the command
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            if(decompiledString == "Failed Decompilation!") decompiledString="";
+            decompiledString = decompiledString+line+"\n";
+        }
 
         MethodDecompArea.setText("Decomp of " + ClassByteCodes[0] + ":\n\n" + decompiledString);
 

@@ -1,11 +1,15 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import com.jreverse.jreverse.Bridge.JReverseLogger;
 import com.jreverse.jreverse.PipeManager.PipeManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 
 public class PipeManagerController {
     @FXML
@@ -28,48 +32,37 @@ public class PipeManagerController {
         loadedPipeView.setItems(pipeStringList);
     }
 
-    //Add Pipe stuff
-
-    @FXML
-    private TextField nameAddField;
-
-    @FXML
-    private ChoiceBox pipeTypeChoice;
-
-    @FXML
-    private TextField sizeAddField;
-
-    @FXML
-    private Button addPipeButton;
-
     @FXML
     private Button tesbutt;
 
-    @FXML
-    private void populateChoices(){
-        //Populate the ChoiceBox
-        ObservableList<String> pipeOptionList = FXCollections.observableArrayList();
-        pipeOptionList.add("int");
-        pipeOptionList.add("bool");
-        pipeOptionList.add("float");
-        pipeOptionList.add("double");
-        pipeOptionList.add("std::string");
-        pipeOptionList.add("std::vector<std::string>");
-        pipeTypeChoice.setItems(pipeOptionList);
-    }
-
-    @FXML
-    private void addPipe(){
-        String pipnam = nameAddField.getText();
-        int pipsize = Integer.parseInt(sizeAddField.getText());
-        String piptype = pipeTypeChoice.getSelectionModel().getSelectedItem().toString();
-
-        PipeManager.AddPipe(pipnam, pipsize, piptype);
-    }
 
     @FXML
     private void testfunp(){
         String[] what = JReverseBridge.CallCoreFunction("TESTFUNC", JReverseBridge.NoneArg);
         System.out.println(what[0] + " " + what[1]);
+    }
+
+    @FXML
+    private Slider returnThreshSlider;
+
+    @FXML
+    private void setReturnThreshold(){
+        JReverseLogger.PipeCallBackLimit = (int)returnThreshSlider.getValue();
+    }
+
+    @FXML
+    private TextField getinfoField;
+
+    @FXML
+    private ListView<String> pipeInfoBox;
+
+    @FXML
+    private void getPipeInfo(){
+        String[] pipinfo = PipeManager.GetPipeInfo(getinfoField.getText());
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.add("Mode: "+pipinfo[0]);
+        list.add("Name: "+pipinfo[1]);
+        list.add("Size: "+pipinfo[2]);
+        pipeInfoBox.setItems(list);
     }
 }

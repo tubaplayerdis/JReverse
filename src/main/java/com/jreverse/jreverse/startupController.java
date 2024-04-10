@@ -1,15 +1,6 @@
 package com.jreverse.jreverse;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.Optional;
-
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.PipeManager.PipeManager;
 import javafx.application.Platform;
@@ -20,8 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
@@ -49,6 +43,10 @@ public class startupController {
 
     @FXML
     private void injectClick() throws IOException {
+        //Use this for relative DLL when going to publish
+        final String usePath = System.getProperty("user.dir");
+        //looks like: C:\Users\aaron\IdeaProjects\jreverse
+
         currentPID = GetPid(procName);
         if(currentPID == -1){
             return;

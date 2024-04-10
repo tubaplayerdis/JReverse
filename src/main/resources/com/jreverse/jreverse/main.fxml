@@ -24,35 +24,35 @@
                 <Font size="16.0" />
             </font>
         </Button>
-        <ListView fx:id="FieldListView" layoutX="466.0" layoutY="62.0" onMousePressed="#FieldSelected" prefHeight="553.0" prefWidth="272.0" />
+        <ListView fx:id="FieldListView" layoutX="466.0" layoutY="62.0" onMousePressed="#FieldSelected" prefHeight="553.0" prefWidth="246.0" />
         <Label layoutX="466.0" layoutY="14.0" prefHeight="45.0" prefWidth="97.0" text="Fields:">
             <font>
                 <Font size="30.0" />
             </font>
         </Label>
-        <ListView fx:id="MethodListView" layoutX="747.0" layoutY="62.0" prefHeight="553.0" prefWidth="272.0" />
-        <Label layoutX="747.0" layoutY="14.0" prefHeight="45.0" prefWidth="153.0" text="Methods:">
+        <ListView fx:id="MethodListView" layoutX="723.0" layoutY="62.0" prefHeight="553.0" prefWidth="246.0" />
+        <Label layoutX="723.0" layoutY="14.0" prefHeight="45.0" prefWidth="153.0" text="Methods:">
             <font>
                 <Font size="30.0" />
             </font>
         </Label>
-        <Label layoutX="1027.0" layoutY="14.0" prefHeight="45.0" prefWidth="246.0" text="Decompiled Class:">
+        <Label layoutX="975.0" layoutY="14.0" prefHeight="45.0" prefWidth="246.0" text="Decompiled Class:">
             <font>
                 <Font size="25.0" />
             </font>
         </Label>
-        <Button layoutX="747.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#dumpClass" prefHeight="35.0" prefWidth="272.0" text="Dump Selected Class">
+        <Button layoutX="723.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#dumpClass" prefHeight="35.0" prefWidth="246.0" text="Dump Selected Class">
             <font>
                 <Font size="16.0" />
             </font>
         </Button>
-      <Label layoutX="466.0" layoutY="621.0" text="Instances:">
+      <Label layoutX="466.0" layoutY="625.0" text="Instances:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="InstacneInfoBox" editable="false" layoutX="553.0" layoutY="625.0" prefHeight="25.0" prefWidth="183.0" />
-      <TextArea fx:id="MethodDecompArea" editable="false" layoutX="1027.0" layoutY="62.0" prefHeight="553.0" prefWidth="246.0" promptText="Select A Method To Decompile">
+      <TextField fx:id="InstacneInfoBox" editable="false" layoutX="542.0" layoutY="625.0" prefHeight="25.0" prefWidth="170.0" />
+      <TextArea fx:id="MethodDecompArea" editable="false" layoutX="975.0" layoutY="62.0" prefHeight="553.0" prefWidth="298.0" promptText="Select A Method To Decompile">
          <font>
             <Font size="10.0" />
          </font></TextArea>

@@ -32,6 +32,11 @@ public class App extends Application {
         JReverseBridge.InitBridge();
     }
 
+    @Override
+    public void stop() {
+        JReverseBridge.CallCoreFunction("uninjectCore", JReverseBridge.NoneArg);
+    }
+
     public static void main(String[] args) {
         launch();
     }

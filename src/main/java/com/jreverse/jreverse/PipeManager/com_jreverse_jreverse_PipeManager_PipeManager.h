@@ -25,6 +25,14 @@ JNIEXPORT jobjectArray JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManage
 
 /*
  * Class:     com_jreverse_jreverse_PipeManager_PipeManager
+ * Method:    GetPipeInfo
+ * Signature: (Ljava/lang/String;)[Ljava/lang/String;
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_GetPipeInfo
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_jreverse_jreverse_PipeManager_PipeManager
  * Method:    AddPipe
  * Signature: (Ljava/lang/String;ILjava/lang/String;)V
  */
