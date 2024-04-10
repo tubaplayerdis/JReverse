@@ -1,15 +1,18 @@
 package com.jreverse.jreverse;
 
+import com.jreverse.jreverse.Bridge.JReverseBridge;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.NotFoundException;
 
-import javax.swing.JFileChooser;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
-import javax.swing.filechooser.*;
 import java.io.FileReader;
+import java.io.IOException;
 
 public class ScriptViewController {
 
@@ -46,8 +49,30 @@ public class ScriptViewController {
 
     //Rename Func Below
     @FXML
-    private void RunPythonScript(){
+    private void setupScriptingEnv(){
 
+        String[] args = {"No Bytecodes","No Bytecodes","No Bytecodes"};
+
+        ClassPool classPool = ClassPool.getDefault();
+        String className = "com.jreverse.jreverse.Core.JReverseScriptingCore";
+        try {
+            // Get the CtClass representation of the class
+            CtClass ctClass = classPool.get(className);
+
+            // Retrieve the bytecode as a byte array
+            byte[] bytecode = ctClass.toBytecode();
+
+            args[0] = new String(bytecode);
+
+            // Don't forget to close the CtClass when done
+            ctClass.detach();
+        } catch (NotFoundException | IOException | CannotCompileException e) {
+            System.out.println(e.getMessage());
+        }
+
+        String res[] = JReverseBridge.CallCoreFunction("setupScriptingEnviroment", args);
+
+        System.out.println("Scripting Environment Setup Result: "+res[0]);
     }
 
 }

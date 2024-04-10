@@ -48,6 +48,7 @@ public class PipeManagerController {
     @FXML
     private void setReturnThreshold(){
         JReverseLogger.PipeCallBackLimit = (int)returnThreshSlider.getValue();
+        System.out.println("Set the Return Pipe Threshold to: "+(int)returnThreshSlider.getValue());
     }
 
     @FXML

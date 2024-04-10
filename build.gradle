@@ -37,6 +37,7 @@ javafx {
 dependencies {
     implementation group: 'org.javassist', name: 'javassist', version: '3.30.2-GA'
     implementation group: 'org.benf', name: 'cfr', version: '0.152'
+    implementation 'org.openjdk.nashorn:nashorn-core:15.0'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }

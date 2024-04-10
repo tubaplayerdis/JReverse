@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.ScriptViewController">
    <children>
-      <TextArea fx:id="ScriptTextBox" layoutX="14.0" layoutY="69.0" prefHeight="285.0" prefWidth="573.0" promptText="Preview Script Here">
+      <TextArea fx:id="ScriptTextBox" layoutX="14.0" layoutY="69.0" prefHeight="284.0" prefWidth="573.0" promptText="Preview Script Here">
          <font>
             <Font size="10.0" />
          </font>
@@ -18,7 +18,8 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="573.0" text="Run Script JavaScript" />
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="281.0" text="Run Script JavaScript" />
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#LoadScriptFile" prefHeight="25.0" prefWidth="573.0" text="Load script text from file" />
+      <Button layoutX="306.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#setupScriptingEnv" prefHeight="25.0" prefWidth="281.0" text="Setup Scripting Enviroment" />
    </children>
 </AnchorPane>
