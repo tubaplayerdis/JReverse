@@ -25,6 +25,14 @@ JNIEXPORT void JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_InitBrid
 
 /*
  * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
+ * Method:    StartAndInjectDLL
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_StartAndInjectDLL
+  (JNIEnv *, jclass, jstring, jstring);
+
+/*
+ * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
  * Method:    InjectDLL
  * Signature: (ILjava/lang/String;)I
  */

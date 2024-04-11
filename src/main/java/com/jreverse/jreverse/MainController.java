@@ -176,8 +176,9 @@ public class MainController {
         String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
         MethodDecompArea.setWrapText(false);
 
-        if (ClassByteCodes[0] == "NOT FOUND") {
-            MethodDecompArea.setText("Decomp of " + ClassByteCodes[0] + ":\n\n" + ClassByteCodes[1]);
+        System.out.println(ClassByteCodes[1]);
+        if (ClassByteCodes[1].equals("Class File Not Found")) {
+            MethodDecompArea.setText("Class File for: "+MainController.CurrentClassName+" was not found!");
             return;
         }
 
@@ -185,7 +186,8 @@ public class MainController {
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
 
         //Write the Data to temp.class;
-        byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase().replace(" ", ""));
+        System.out.println("Decompiling BYTECODES: "+ClassByteCodes[1].toUpperCase());
+        byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase());
         writeByteArrayToTempClassFile(bytesofclass);
 
         //Setup For Decomp
@@ -222,6 +224,8 @@ public class MainController {
         Runnable resolveThread = () -> {
             List<String> returnitems = new ArrayList<String>();
             String[] UnresolvedByteCodes = JReverseBridge.CallCoreFunction("getUnknownClassFiles", JReverseBridge.NoneArg);
+
+            if(UnresolvedByteCodes[0].equals("NO CLASSES")) return;
 
             for (String unresolvedbytes : UnresolvedByteCodes) {
                 //Check for file

@@ -16,7 +16,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 
 public class startupController {
@@ -227,11 +226,6 @@ public class startupController {
             //Callback to java fx thread and inject
             Platform.runLater(()->{
                 App.isOnStartup = true;
-                try {
-                    TimeUnit.MILLISECONDS.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
                 try {
                     injectClick();
                 } catch (IOException e) {

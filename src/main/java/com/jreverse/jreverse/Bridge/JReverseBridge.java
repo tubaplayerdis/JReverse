@@ -6,6 +6,7 @@ public class JReverseBridge {
 
     public static native void InitBridge();
 
+    public static native int StartAndInjectDLL(String path, String app);
     public static native int InjectDLL(int PID, String path);
 
     public static native void SetupPipe();
