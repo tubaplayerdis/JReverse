@@ -18,7 +18,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="281.0" text="Run Script JavaScript" />
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#runScriptOnTarget" prefHeight="25.0" prefWidth="281.0" text="Run Script JavaScript" />
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#LoadScriptFile" prefHeight="25.0" prefWidth="573.0" text="Load script text from file" />
       <Button layoutX="306.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#setupScriptingEnv" prefHeight="25.0" prefWidth="281.0" text="Setup Scripting Enviroment" />
    </children>

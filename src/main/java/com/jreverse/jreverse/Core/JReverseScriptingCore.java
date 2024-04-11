@@ -19,7 +19,7 @@ public class JReverseScriptingCore {
         return 0;
     }
 
-    public static String RunScript(String abpath) throws IOException, ScriptException {
+    public static String RunScript(String abpath) throws IOException {
         if(Files.exists(Paths.get(abpath)) != true) return "Script File Does Not Exist";
         String scripttext = new String(Files.readAllBytes(Paths.get(abpath)));
         if(scripttext.isEmpty() || scripttext == null) return "Script Text Is NULL";

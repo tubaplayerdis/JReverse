@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class ScriptViewController {
 
-    private String scriptPath;
+    private static String scriptPath;
 
     @FXML
     private TextArea ScriptTextBox;
@@ -34,6 +34,8 @@ public class ScriptViewController {
             FileReader fr = new FileReader(file.getAbsolutePath());
             String scripttext = "";
 
+            scriptPath = file.getAbsolutePath();
+
             int i;
             while ((i = fr.read()) != -1){
                 scripttext+=(char)i;
@@ -43,7 +45,13 @@ public class ScriptViewController {
         }
     }
 
-    //Rename Func Below
+    @FXML
+    private void runScriptOnTarget(){
+        String[] args = {scriptPath};
+        String[] res = JReverseBridge.CallCoreFunction("runScript", args);
+        System.out.println(res[0]);
+    }
+
     @FXML
     private void setupScriptingEnv(){
 

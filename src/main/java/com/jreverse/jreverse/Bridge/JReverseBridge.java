@@ -10,6 +10,8 @@ public class JReverseBridge {
 
     public static native void SetupPipe();
 
+    public static native void SetCurrentClassBytes(Byte[] arg);
+
     public static native void PrimeLoadedClasses();
 
     public static native String GetStringPipe();

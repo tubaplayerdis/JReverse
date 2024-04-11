@@ -41,6 +41,14 @@ JNIEXPORT void JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_SetupPip
 
 /*
  * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
+ * Method:    SetCurrentClassBytes
+ * Signature: ([Ljava/lang/Byte;)V
+ */
+JNIEXPORT void JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_SetCurrentClassBytes
+  (JNIEnv *, jclass, jobjectArray);
+
+/*
+ * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
  * Method:    PrimeLoadedClasses
  * Signature: ()V
  */
