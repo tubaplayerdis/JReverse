@@ -2,13 +2,15 @@ package com.jreverse.jreverse.Core;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
-import java.io.StringWriter;
+
+// ---------------------------------------------------------------
+// COMPILE THIS FILE IN JAVA VERSION 1.8 FOR MAXIMUM COMPATIBILITY
+// ---------------------------------------------------------------
 
 public class JReverseScriptingCore {
     public static StringWriter writer = new StringWriter();
@@ -23,22 +25,22 @@ public class JReverseScriptingCore {
         return 0;
     }
 
-    public static String RunScript(String abpath) {
+    public static String RunScript(String abpath) throws IOException {
         if(Objects.isNull(engine)) return "Script Engine Was NULL";
-        Path pathab = Paths.get(abpath);
-        if(!Files.exists(pathab)) return "Script File Does Not Exist";
-        String scripttext = null;
-        try {
-            scripttext = Files.readString(pathab);
-        } catch (IOException e) {
-            return "IOExeption: "+e.getMessage();
+
+        // Check if the file exists
+        if (!Files.exists(Paths.get(abpath))) {
+            return "Script File Does Not Exist";
         }
+
+        String scripttext = new String(Files.readAllBytes(Paths.get(abpath)));
+
         if(scripttext.isEmpty()) return "Script Text Is NULL";
         try{
             engine.eval(scripttext);
-        } catch (ScriptException e){
+        } catch (Exception e){
             return "Script Error: "+e.getMessage();
         }
-        return writer.toString();
+        return String.valueOf(writer.toString());
     }
 }

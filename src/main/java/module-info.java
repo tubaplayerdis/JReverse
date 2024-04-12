@@ -4,8 +4,8 @@ module com.jreverse.jreverse {
     requires java.management;
     requires java.desktop;
     requires org.javassist;
-    requires static cfr;
-    requires java.scripting;//This worked. only took 12 hours
+    requires static cfr;//This worked. only took 12 hours
+    requires java.scripting;
 
 
     opens com.jreverse.jreverse to javafx.fxml;

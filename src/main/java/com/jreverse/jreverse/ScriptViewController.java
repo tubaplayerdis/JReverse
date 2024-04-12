@@ -1,21 +1,39 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import com.jreverse.jreverse.Bridge.JReverseLogger;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ScriptViewController {
 
+    private static Boolean issetup = false;
     private static String scriptPath;
 
     @FXML
     private TextArea ScriptTextBox;
+
+    @FXML
+    private Button SetupScriptenvBut;
+
+    @FXML
+    private TextArea ScriptOutputBox;
+
+    @FXML
+    private void initialize(){
+        SetupScriptenvBut.setDisable(issetup);
+    }
+
+    private static File CurrentFile;
 
     @FXML
     private void LoadScriptFile() throws IOException {
@@ -42,14 +60,37 @@ public class ScriptViewController {
             }
             //Set the text of the textarea;
             ScriptTextBox.setText(scripttext);
+            CurrentFile = file;
         }
     }
 
     @FXML
-    private void runScriptOnTarget(){
+    private void UpdateScriptFile() throws IOException {
+        if(Objects.isNull(CurrentFile)){
+            ScriptTextBox.setText("");
+            ScriptOutputBox.setText("Please choose a file via the button above!");
+            return;
+        }
+        FileWriter CurrentFileWriter = new FileWriter(CurrentFile,false);
+        CurrentFileWriter.write(ScriptTextBox.getText());
+        CurrentFileWriter.close();
+    }
+
+    @FXML
+    private void runScriptOnTarget() throws IOException {
+        if(Objects.isNull(CurrentFile)){
+            ScriptTextBox.setText("");
+            ScriptOutputBox.setText("Please choose a file via the button above!");
+            return;
+        }
+        if(!issetup){
+            ScriptOutputBox.setText("Please setup the scripting environment!!");
+            return;
+        }
+        //Run Script
         String[] args = {scriptPath};
         String[] res = JReverseBridge.CallCoreFunction("runScript", args);
-        System.out.println(res[0]);
+        ScriptOutputBox.setText(res[0]);
     }
 
     @FXML
@@ -61,11 +102,15 @@ public class ScriptViewController {
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
         args[0] = usePath+"\\src\\main\\java\\com\\jreverse\\jreverse\\Core\\JReverseScriptingCore.class";
 
-        System.out.println("Sending off: "+args[0]);
-
+        JReverseLogger.PipeCallBackLimit = 400;
         String res[] = JReverseBridge.CallCoreFunction("setupScriptingEnviroment", args);
+        JReverseLogger.PipeCallBackLimit = 200;
 
-        System.out.println("Scripting Environment Setup Result: "+res[0]);
+        if(res[0].equals("1")) {ScriptOutputBox.setText("There was an error setting up the scripting environment:\n\n\n"+res[1]); return; }
+
+        ScriptOutputBox.setText(res[0]);
+        SetupScriptenvBut.setDisable(true);
+        issetup = true;
     }
 
 }

@@ -5,5 +5,10 @@ public class JReverseLogger {
         System.out.println(message);
     }
 
+    static void RemoveAndPrint(String message)
+    {
+        System.out.print((char) 8); // Intellij Specific
+        System.out.println(message);
+    }
     public static int PipeCallBackLimit = 200;
 }
