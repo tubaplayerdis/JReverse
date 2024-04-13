@@ -24,6 +24,16 @@ public class JReverseScriptingCore {
         engine.getContext().setWriter(writer);
         return 0;
     }
+    
+    public static String AddClass(String Classto){
+        try {
+            Class<?> claz = Class.forName(Classto);
+        } catch (ClassNotFoundException e){
+            return e.getMessage();
+        }
+
+        return "Successfully added class";
+    }
 
     public static String RunScript(String abpath) throws IOException {
         if(Objects.isNull(engine)) return "Script Engine Was NULL";
