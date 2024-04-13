@@ -41,7 +41,7 @@ public class ScriptViewController {
         //https://docs.oracle.com/en/java/javase/11/scripting/java-scripting-api.html#GUID-BB128CF4-E0AE-487D-AF6C-3507AB186455
         //https://docs.oracle.com/en/java/javase/11/scripting/java-scripting-programmers-guide.pdf
         JFileChooser j = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("JavaScript Files", "js");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Python Files", "py");
         j.setFileFilter(filter);
         j.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -100,7 +100,10 @@ public class ScriptViewController {
 
         final String usePath = System.getProperty("user.dir");
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
-        args[0] = usePath+"\\src\\main\\java\\com\\jreverse\\jreverse\\Core\\JReverseScriptingCore.class";
+        args[0] = usePath+"\\src\\main\\java\\com\\jreverse\\jreverse\\Core\\com\\jreverse\\jreverse\\Core\\JReverseScriptingCore.class";
+        args[1] = usePath+"\\libs\\jython-standalone-2.7.3.jar";
+
+        System.out.println(args[1]);
 
         JReverseLogger.PipeCallBackLimit = 400;
         String res[] = JReverseBridge.CallCoreFunction("setupScriptingEnviroment", args);

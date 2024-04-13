@@ -1,7 +1,7 @@
 package com.jreverse.jreverse.Core;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import org.python.util.PythonInterpreter;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
@@ -14,29 +14,21 @@ import java.util.Objects;
 
 public class JReverseScriptingCore {
     public static StringWriter writer = new StringWriter();
-    public static ScriptEngine engine;
+    public static PythonInterpreter interpreter;
     public static int Main(){
-        ScriptEngineManager manager = new ScriptEngineManager();
-        engine = manager.getEngineByName("nashorn");
-        if(Objects.isNull(engine)){
+        interpreter = new PythonInterpreter();
+        if(Objects.isNull(interpreter)){
             return 1;
         }
-        engine.getContext().setWriter(writer);
+        interpreter.setOut(writer);
         return 0;
     }
-    
     public static String AddClass(String Classto){
-        try {
-            Class<?> claz = Class.forName(Classto);
-        } catch (ClassNotFoundException e){
-            return e.getMessage();
-        }
-
-        return "Successfully added class";
+        return "Development not needed";
     }
 
     public static String RunScript(String abpath) throws IOException {
-        if(Objects.isNull(engine)) return "Script Engine Was NULL";
+        if(Objects.isNull(interpreter)) return "Interpreter Engine Was NULL";
 
         // Check if the file exists
         if (!Files.exists(Paths.get(abpath))) {
@@ -47,9 +39,9 @@ public class JReverseScriptingCore {
 
         if(scripttext.isEmpty()) return "Script Text Is NULL";
         try{
-            engine.eval(scripttext);
+            interpreter.eval(scripttext);
         } catch (Exception e){
-            return "Script Error: "+e.getMessage();
+            return "Interpreter Error: "+e.getMessage();
         }
         return String.valueOf(writer.toString());
     }

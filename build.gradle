@@ -17,6 +17,28 @@ ext {
     junitVersion = '5.10.0'
 }
 
+
+task compileScriptingCore(type: JavaCompile) {
+    // Set the source file to compile
+    source = fileTree('src/main/java/com/jreverse/jreverse/Core').include('JReverseScriptingCore.java')
+
+    classpath = sourceSets.main.compileClasspath
+
+    setDestinationDirectory(file("src/main/java/com/jreverse/jreverse/Core"))
+
+    // Set compilation options for the specific file
+    options.compilerArgs = [
+            // Add any specific compiler arguments here
+            '-Xlint'
+    ]
+
+    // Set source and target compatibility
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+compileJava.dependsOn compileScriptingCore
+
 sourceCompatibility = '17'
 targetCompatibility = '17'
 
@@ -37,6 +59,7 @@ javafx {
 dependencies {
     implementation group: 'org.javassist', name: 'javassist', version: '3.30.2-GA'
     implementation group: 'org.benf', name: 'cfr', version: '0.152'
+    implementation 'org.python:jython-standalone:2.7.3'
     implementation 'org.openjdk.nashorn:nashorn-core:15.0'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
@@ -57,3 +80,4 @@ jlink {
 jlinkZip {
     group = 'distribution'
 }
+
