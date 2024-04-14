@@ -14,13 +14,8 @@ import java.util.Objects;
 
 public class JReverseScriptingCore {
     public static StringWriter writer = new StringWriter();
-    public static PythonInterpreter interpreter;
+
     public static int Main(){
-        interpreter = new PythonInterpreter();
-        if(Objects.isNull(interpreter)){
-            return 1;
-        }
-        interpreter.setOut(writer);
         return 0;
     }
     public static String AddClass(String Classto){
@@ -28,6 +23,9 @@ public class JReverseScriptingCore {
     }
 
     public static String RunScript(String abpath) throws IOException {
+        PythonInterpreter interpreter = new PythonInterpreter();
+        interpreter.setOut(writer);
+
         if(Objects.isNull(interpreter)) return "Interpreter Engine Was NULL";
 
         // Check if the file exists
@@ -39,7 +37,7 @@ public class JReverseScriptingCore {
 
         if(scripttext.isEmpty()) return "Script Text Is NULL";
         try{
-            interpreter.eval(scripttext);
+            interpreter.exec(scripttext);
         } catch (Exception e){
             return "Interpreter Error: "+e.getMessage();
         }

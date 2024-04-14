@@ -9,15 +9,6 @@ plugins {
 group 'com.jreverse'
 version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
-
-ext {
-    junitVersion = '5.10.0'
-}
-
-
 task compileScriptingCore(type: JavaCompile) {
     // Set the source file to compile
     source = fileTree('src/main/java/com/jreverse/jreverse/Core').include('JReverseScriptingCore.java')
@@ -38,6 +29,14 @@ task compileScriptingCore(type: JavaCompile) {
 }
 
 compileJava.dependsOn compileScriptingCore
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '5.10.0'
+}
 
 sourceCompatibility = '17'
 targetCompatibility = '17'
@@ -80,4 +79,5 @@ jlink {
 jlinkZip {
     group = 'distribution'
 }
+
 

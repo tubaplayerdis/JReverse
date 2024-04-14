@@ -2,6 +2,7 @@ package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Bridge.JReverseLogger;
+import com.jreverse.jreverse.Core.JReverseScriptingCore;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -95,6 +96,7 @@ public class ScriptViewController {
 
     @FXML
     private void setupScriptingEnv(){
+        JReverseScriptingCore.Main();
 
         String[] args = {"No Bytecodes","No Bytecodes","No Bytecodes"};
 
@@ -102,6 +104,7 @@ public class ScriptViewController {
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
         args[0] = usePath+"\\src\\main\\java\\com\\jreverse\\jreverse\\Core\\com\\jreverse\\jreverse\\Core\\JReverseScriptingCore.class";
         args[1] = usePath+"\\libs\\jython-standalone-2.7.3.jar";
+        args[1] = args[1].replace("\\","/");
 
         System.out.println(args[1]);
 
