@@ -41,6 +41,7 @@ public class JReverseScriptingCore {
         } catch (Exception e){
             return "Interpreter Error: "+e.getMessage();
         }
-        return String.valueOf(writer.toString());
+        String res = writer.toString();
+        return res;
     }
 }
