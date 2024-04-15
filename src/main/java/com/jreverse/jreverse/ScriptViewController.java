@@ -89,10 +89,14 @@ public class ScriptViewController {
             return;
         }
         //Run Script
+        JReverseLogger.PipeCallBackLimit = 2000;
         String[] args = {scriptPath};
         String[] res = JReverseBridge.CallCoreFunction("runScript", args);
         ScriptOutputBox.setText(res[0]);
+
+
     }
+
 
     @FXML
     private void setupScriptingEnv(){
@@ -103,7 +107,7 @@ public class ScriptViewController {
         final String usePath = System.getProperty("user.dir");
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
         args[0] = usePath+"\\src\\main\\java\\com\\jreverse\\jreverse\\Core\\com\\jreverse\\jreverse\\Core\\JReverseScriptingCore.class";
-        args[1] = usePath+"\\libs\\jython-2.7.3.jar";
+        args[1] = usePath+"\\libs\\jython-standalone-2.7.3.jar";
         args[1] = args[1].replace("\\","/");
 
         System.out.println(args[1]);

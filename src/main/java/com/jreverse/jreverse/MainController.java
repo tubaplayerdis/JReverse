@@ -123,6 +123,7 @@ public class MainController {
         loadedClasTree.setRoot(emptyitem);
         TreeItem<String> rootItem = new TreeItem<String>(startupController.procName);
         String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
+        Arrays.sort(loadedclasses);
         for (String str : loadedclasses) {
             if (str.contains("[")) str = str.replace("[", "");
             if (str.contains(";")) str = str.replace(";", "");

@@ -1,11 +1,14 @@
 package com.jreverse.jreverse.Core;
 
+import org.python.util.PythonInterpreter;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
+
 
 // ---------------------------------------------------------------
 // COMPILE THIS FILE IN JAVA VERSION 1.8 FOR MAXIMUM COMPATIBILITY
@@ -24,7 +27,7 @@ public class JReverseScriptingCore {
     public static String RunScript(String abpath) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream stream = new PrintStream(baos);
-        try(org.python.util.PythonInterpreter interpreter = new org.python.util.PythonInterpreter()) {
+        try(PythonInterpreter interpreter = new PythonInterpreter()) {
             PrintStream old = System.out;
             //Set Stream
             System.setOut(stream);
