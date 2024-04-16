@@ -9,14 +9,14 @@ import java.io.IOException;
 
 public class JReverseScriptingCore {
 
+    public static native Object[] GetClassInstances(String name);
+
     public static int Main(){
         return 0;
     }
     public static String AddClass(String Classto){
         return "Development not needed";
     }
-
-    public static native Object[] GetClassInstances(String name);
 
     public static String RunScript(String abpath) throws IOException {
         return "Use of this method is Depreciated!";
