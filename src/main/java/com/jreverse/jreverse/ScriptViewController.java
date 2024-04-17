@@ -92,7 +92,7 @@ public class ScriptViewController {
         JReverseLogger.PipeCallBackLimit = 2000;
         String[] args = {scriptPath};
         String[] res = JReverseBridge.CallCoreFunction("runScript", args);
-        ScriptOutputBox.setText(res[0]);
+        if(!res[0].equals("Executed Script!")) ScriptOutputBox.setText(res[0]);
 
 
     }
@@ -121,6 +121,16 @@ public class ScriptViewController {
         ScriptOutputBox.setText(res[0]);
         SetupScriptenvBut.setDisable(true);
         issetup = true;
+    }
+
+    @FXML
+    private void updateOutput(){
+        ScriptOutputBox.setText(JReverseBridge.CallCoreFunction("getStringWriterData", JReverseBridge.NoneArg)[0]);
+    }
+
+    @FXML
+    private void flushOutput(){
+        ScriptOutputBox.setText(JReverseBridge.CallCoreFunction("clearStringWriterData", JReverseBridge.NoneArg)[0]);
     }
 
 }

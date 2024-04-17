@@ -18,7 +18,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#runScriptOnTarget" prefHeight="25.0" prefWidth="573.0" text="Execute Script On Target" />
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#runScriptOnTarget" prefHeight="25.0" prefWidth="346.0" text="Execute Script On Target" />
       <Button layoutX="241.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#LoadScriptFile" prefHeight="25.0" prefWidth="346.0" text="Load Script File" />
       <Button fx:id="SetupScriptenvBut" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#setupScriptingEnv" prefHeight="25.0" prefWidth="214.0" text="Setup Scripting Enviroment" />
       <Label layoutX="372.0" layoutY="48.0" text="Script Output:">
@@ -31,5 +31,7 @@
             <Font size="10.0" />
          </font>
       </TextArea>
+      <Button layoutX="372.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#updateOutput" prefHeight="25.0" prefWidth="105.0" text="Get output" />
+      <Button layoutX="481.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#flushOutput" prefHeight="25.0" prefWidth="105.0" text="Flush output" />
    </children>
 </AnchorPane>
