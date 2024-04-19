@@ -40,6 +40,7 @@ public class PipeManagerController {
     private void testfunp(){
         String[] what = JReverseBridge.CallCoreFunction("TESTFUNC", JReverseBridge.NoneArg);
         System.out.println(what[0] + " " + what[1]);
+        //Add box to display this output
     }
 
     @FXML

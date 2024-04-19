@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,10 +58,11 @@ public class startupController {
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
         App.thestage.setResizable(false);
         App.thestage.setTitle("JReverse");
+        Image image = new Image(usePath+"/icon/JReverseIcon.png");
+        App.thestage.getIcons().add(image);
         App.thestage.setScene(scene);
         App.thestage.show();
         boolean test = JReverseBridge.testMethod();
-        App.thestage.setResizable(test);
         //System.out.println(JReverseBridge.GetStringPipe());
     }
 

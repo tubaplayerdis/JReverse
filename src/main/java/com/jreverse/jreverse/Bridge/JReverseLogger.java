@@ -10,5 +10,5 @@ public class JReverseLogger {
         System.out.print((char) 8); // Intellij Specific
         System.out.println(message);
     }
-    public static int PipeCallBackLimit = 200;
+    public static int PipeCallBackLimit = 2000;
 }

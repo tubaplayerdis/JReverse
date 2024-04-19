@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javassist.bytecode.ClassFile;
 import org.benf.cfr.reader.api.OutputSinkFactory;
@@ -42,6 +43,8 @@ public class MainController {
 
     public static String CurrentClassName = "";
 
+    public final String usePath = System.getProperty("user.dir");
+
 
     public void initialize() {
         if (App.isOnStartup == true) {
@@ -62,6 +65,8 @@ public class MainController {
              */
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
             Stage stage = new Stage();
+            Image image = new Image(usePath+"/icon/JReverseIcon.png");
+            stage.getIcons().add(image);
             stage.setTitle("JReverse Pipe Manager");
             stage.setScene(scene);
             stage.show();
@@ -292,6 +297,8 @@ public class MainController {
          */
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         Stage stage = new Stage();
+        Image image = new Image(usePath+"/icon/JReverseIcon.png");
+        stage.getIcons().add(image);
         stage.setTitle("JReverse Scripting Interface");
         stage.setScene(scene);
         stage.show();

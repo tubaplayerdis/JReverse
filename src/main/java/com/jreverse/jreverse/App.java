@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,6 +25,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         thescene = new Scene(loadFXML("startup"), 600, 400);
+        String susPath = System.getProperty("user.dir");
+        Image image = new Image(susPath+"/icon/JReverseIcon.png");
+        stage.getIcons().add(image);
         stage.setResizable(false);
         stage.setTitle("JReverse");
         stage.setScene(thescene);
