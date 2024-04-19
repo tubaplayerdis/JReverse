@@ -8,12 +8,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
@@ -29,6 +31,9 @@ public class startupController {
 
     @FXML
     private TextArea targetField;
+
+    @FXML
+    private CheckBox StartupInjectCheckBox;
 
     ObservableList<String> procStringList = FXCollections.observableArrayList();
 
@@ -56,6 +61,8 @@ public class startupController {
         JReverseBridge.SetupPipe();
         injectionreturn = JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
+        File style = new File(usePath+"/stylesheets/style.css");
+        //scene.getStylesheets().add(style.toURI().toURL().toExternalForm());
         App.thestage.setResizable(false);
         App.thestage.setTitle("JReverse");
         Image image = new Image(usePath+"/icon/JReverseIcon.png");
@@ -192,6 +199,8 @@ public class startupController {
 
     @FXML
     private void WaitAndInject() throws IOException, InterruptedException {
+        if(!StartupInjectCheckBox.isSelected()) return;;
+
         if(startupController.procName.isEmpty()){
             System.out.println("procname is empty!");
             return;

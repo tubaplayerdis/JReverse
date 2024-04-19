@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class App extends Application {
@@ -26,6 +27,8 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         thescene = new Scene(loadFXML("startup"), 600, 400);
         String susPath = System.getProperty("user.dir");
+        File style = new File(susPath+"/stylesheets/style.css");
+        thescene.getStylesheets().add(style.toURI().toURL().toExternalForm());
         Image image = new Image(susPath+"/icon/JReverseIcon.png");
         stage.getIcons().add(image);
         stage.setResizable(false);

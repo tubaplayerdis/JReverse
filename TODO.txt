@@ -1,0 +1,21 @@
+Todo:
+
+1. Fix Scripting inconsistencies with getting class instances.
+2. Class Editor w Better Class Hooking.
+3. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc.
+4. Implement class dumper which would dump everything, including source code, methods, fields etc.
+5. Implement Source Code Dropper which would dump all the source code it could.
+6. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
+7. Implement Custom UI Elements with a darker theme.
+
+Features to impl:
+
+1. Better Class Hooking. Possibly Start process with dll. (Already Implemented on JReverseBridge)
+2. Class Editor.
+3. Better UI
+
+Notes:
+
+ - Code is messy
+ - Make Injectable less Crash Prone
+ - Test other applications
