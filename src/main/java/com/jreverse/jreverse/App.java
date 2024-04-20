@@ -29,6 +29,7 @@ public class App extends Application {
         String susPath = System.getProperty("user.dir");
         File style = new File(susPath+"/stylesheets/style.css");
         thescene.getStylesheets().add(style.toURI().toURL().toExternalForm());
+        //App.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
         Image image = new Image(susPath+"/icon/JReverseIcon.png");
         stage.getIcons().add(image);
         stage.setResizable(false);

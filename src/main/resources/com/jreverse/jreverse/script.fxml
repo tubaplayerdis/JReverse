@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.ScriptViewController">
+<AnchorPane prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.ScriptViewController">
    <children>
-      <TextArea fx:id="ScriptTextBox" layoutX="14.0" layoutY="69.0" onKeyTyped="#UpdateScriptFile" prefHeight="284.0" prefWidth="346.0" promptText="Preview Script Here">
+      <TextArea fx:id="ScriptTextBox" layoutX="14.0" layoutY="69.0" onKeyTyped="#UpdateScriptFile" prefHeight="365.0" prefWidth="313.0" promptText="Preview Script Here">
          <font>
             <Font size="10.0" />
          </font>
@@ -18,20 +18,25 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#runScriptOnTarget" prefHeight="25.0" prefWidth="346.0" text="Execute Script On Target" />
-      <Button layoutX="241.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#LoadScriptFile" prefHeight="25.0" prefWidth="346.0" text="Load Script File" />
+      <Button layoutX="14.0" layoutY="441.0" mnemonicParsing="false" onMouseClicked="#runScriptOnTarget" prefHeight="25.0" prefWidth="313.0" text="Execute Script On Target" />
+      <Button layoutX="241.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#LoadScriptFile" prefHeight="25.0" prefWidth="285.0" text="Load Script File" />
       <Button fx:id="SetupScriptenvBut" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#setupScriptingEnv" prefHeight="25.0" prefWidth="214.0" text="Setup Scripting Enviroment" />
-      <Label layoutX="372.0" layoutY="48.0" text="Script Output:">
+      <Label layoutX="337.0" layoutY="48.0" text="Script Output:">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextArea fx:id="ScriptOutputBox" editable="false" layoutX="372.0" layoutY="69.0" prefHeight="284.0" prefWidth="214.0" promptText="Output will go here">
+      <TextArea fx:id="ScriptOutputBox" editable="false" layoutX="334.0" layoutY="69.0" prefHeight="365.0" prefWidth="191.0" promptText="Output will go here">
          <font>
             <Font size="10.0" />
          </font>
       </TextArea>
-      <Button layoutX="372.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#updateOutput" prefHeight="25.0" prefWidth="105.0" text="Get output" />
-      <Button layoutX="481.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#flushOutput" prefHeight="25.0" prefWidth="105.0" text="Flush output" />
+      <Button layoutX="336.0" layoutY="441.0" mnemonicParsing="false" onMouseClicked="#updateOutput" prefHeight="25.0" prefWidth="83.0" text="Get output" />
+      <Button layoutX="442.0" layoutY="441.0" mnemonicParsing="false" onMouseClicked="#flushOutput" prefHeight="25.0" prefWidth="83.0" text="Flush output" />
+      <Label layoutX="526.0" layoutY="48.0" text="Interpreters:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

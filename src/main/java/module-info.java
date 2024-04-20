@@ -7,6 +7,7 @@ module com.jreverse.jreverse {
     requires static cfr;//This worked. only took 12 hours
     requires java.scripting;
     requires static jython.standalone;
+    requires atlantafx.base;
 
 
     opens com.jreverse.jreverse to javafx.fxml;
