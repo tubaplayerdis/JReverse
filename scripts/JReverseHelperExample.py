@@ -1,7 +1,7 @@
 from com.jreverse.jreverse.Core import JReverseScriptingCore
-#import the class you want to use here
+from org.example import coolclass
 
-objs = JReverseScriptingCore.GetClassInstances("class you want to use") #Format: org/example/example ,There are no dots, Replace them with forward slashes
+objs = JReverseScriptingCore.GetClassInstances("Lorg/example/coolclass;") #Format: Lorg/example/coolclass; ,Uses JNI formating for class names. This allows for more freedom if you want different types
 
 for obj in objs:
     #Call Functions
