@@ -41,11 +41,6 @@
                 <Font size="25.0" />
             </font>
         </Label>
-        <Button layoutX="723.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#dumpClass" prefHeight="35.0" prefWidth="246.0" text="Dump Selected Class">
-            <font>
-                <Font size="16.0" />
-            </font>
-        </Button>
       <Label layoutX="466.0" layoutY="625.0" text="Instances:">
          <font>
             <Font size="16.0" />
@@ -59,7 +54,7 @@
       <ToolBar layoutY="680.0" prefHeight="40.0" prefWidth="1280.0">
          <items>
             <Separator layoutX="728.0" layoutY="10.0" orientation="VERTICAL" prefHeight="30.0" prefWidth="15.0" />
-            <Button mnemonicParsing="false" onMouseClicked="#openPipMan" prefHeight="25.0" prefWidth="150.0" text="Pipe Manager">
+            <Button layoutX="48.0" layoutY="10.0" mnemonicParsing="false" onMousePressed="#OpenSettings" prefHeight="30.0" prefWidth="150.0" text="Settings">
                <font>
                   <Font size="14.0" />
                </font>
@@ -77,29 +72,24 @@
                </font>
             </Button>
             <Separator orientation="VERTICAL" prefHeight="30.0" prefWidth="15.0" />
-            <Button mnemonicParsing="false" onMousePressed="#ResolveByteCodes" text="Resolve Unknown Bytecodes">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Separator layoutX="164.0" layoutY="10.0" orientation="VERTICAL" prefHeight="30.0" prefWidth="15.0" />
-            <Button layoutX="548.0" layoutY="10.0" mnemonicParsing="false" onMousePressed="#DumpClassFileNames" text="Dump Class File Names">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Separator layoutX="747.0" layoutY="10.0" orientation="VERTICAL" prefHeight="30.0" prefWidth="15.0" />
             <Label text="Messages:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField editable="false" prefHeight="30.0" prefWidth="184.0" promptText="Messages will go here">
+            <TextField editable="false" prefHeight="30.0" prefWidth="258.0" promptText="Messages will go here">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
          </items>
       </ToolBar>
+      <Label layoutX="723.0" layoutY="625.0" text="Utlilities:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button layoutX="800.0" layoutY="625.0" mnemonicParsing="false" onMouseClicked="#dumpClass" prefHeight="25.0" prefWidth="170.0" text="Dump Current Class" />
+      <Button layoutX="800.0" layoutY="655.0" mnemonicParsing="false" onMouseClicked="#dumpSouce" prefHeight="25.0" prefWidth="170.0" text="Dump Souce Code" />
     </children>
 </Pane>

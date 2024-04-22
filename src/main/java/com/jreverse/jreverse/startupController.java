@@ -58,7 +58,6 @@ public class startupController {
         }
         JReverseBridge.testMethod();
         PipeManager.InitAPI();
-        JReverseBridge.SetupPipe();
         injectionreturn = JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
         File style = new File(usePath+"/stylesheets/style.css");
@@ -69,7 +68,6 @@ public class startupController {
         App.thestage.getIcons().add(image);
         App.thestage.setScene(scene);
         App.thestage.show();
-        boolean test = JReverseBridge.testMethod();
         //System.out.println(JReverseBridge.GetStringPipe());
     }
 
@@ -198,6 +196,9 @@ public class startupController {
     }
 
     @FXML
+    private CheckBox AutoStartCheckBox;
+
+    @FXML
     private void WaitAndInject() throws IOException, InterruptedException {
         if(!StartupInjectCheckBox.isSelected()) return;;
 
@@ -225,6 +226,21 @@ public class startupController {
             System.out.println(e.getMessage());
         }
 
+
+        //Auto Start
+        if(AutoStartCheckBox.isSelected()){
+            final String usePath = System.getProperty("user.dir");
+            JReverseBridge.StartAndInjectDLL("C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll", procpath);
+            Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
+            File style = new File(usePath+"/stylesheets/style.css");
+            //scene.getStylesheets().add(style.toURI().toURL().toExternalForm());
+            App.thestage.setResizable(false);
+            App.thestage.setTitle("JReverse");
+            Image image = new Image(usePath+"/icon/JReverseIcon.png");
+            App.thestage.getIcons().add(image);
+            App.thestage.setScene(scene);
+            App.thestage.show();
+        }
 
         //Wait for restart
         Runnable myThread = () ->

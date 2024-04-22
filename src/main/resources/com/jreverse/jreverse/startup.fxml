@@ -34,7 +34,12 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <CheckBox fx:id="StartupInjectCheckBox" layoutX="254.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#WaitAndInject" text="Inject on startup (You Restart the Target)">
+      <CheckBox fx:id="StartupInjectCheckBox" layoutX="254.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#WaitAndInject" text="Inject on startup">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="AutoStartCheckBox" layoutX="422.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#WaitAndInject" text="Auto Start">
          <font>
             <Font size="16.0" />
          </font>

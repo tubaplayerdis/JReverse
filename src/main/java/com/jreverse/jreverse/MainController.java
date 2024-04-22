@@ -10,14 +10,16 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javassist.bytecode.ClassFile;
-import org.benf.cfr.reader.api.OutputSinkFactory;
-import org.benf.cfr.reader.api.SinkReturns;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HexFormat;
+import java.util.List;
 
 public class MainController {
     private final TreeItem<String> emptyitem = new TreeItem<String>("");
@@ -227,53 +229,49 @@ public class MainController {
 
     @FXML
     private void ResolveByteCodes() throws IOException {
-        Runnable resolveThread = () -> {
-            List<String> returnitems = new ArrayList<String>();
-            String[] UnresolvedByteCodes = JReverseBridge.CallCoreFunction("getUnknownClassFiles", JReverseBridge.NoneArg);
+        List<String> returnitems = new ArrayList<String>();
+        String[] UnresolvedByteCodes = JReverseBridge.CallCoreFunction("getUnknownClassFiles", JReverseBridge.NoneArg);
 
-            if(UnresolvedByteCodes[0].equals("NO CLASSES")) return;
+        if(UnresolvedByteCodes[0].equals("NO CLASSES")) return;
 
-            for (String unresolvedbytes : UnresolvedByteCodes) {
-                //Check for file
-                try {
-                    Files.deleteIfExists(Paths.get("temp.class"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-                //Create and write to file
-                byte[] bytesofclass = HexFormat.of().parseHex(unresolvedbytes.toUpperCase().replace(" ", ""));
-                System.out.println((writeByteArrayToTempClassFile(bytesofclass)));
-
-                //Open File
-                File classFile = new File("temp.class");
-
-                try (FileInputStream fis = new FileInputStream(classFile);
-                     DataInputStream dis = new DataInputStream(fis)) {
-
-                    // Create a ClassFile object by reading the .class file
-                    ClassFile cf = new ClassFile(dis);
-
-                    // Get the class name
-                    String className = cf.getName().replace(".", "/");
-
-                    returnitems.add(className);
-                    returnitems.add(unresolvedbytes);
-
-                    System.out.println("Resolved: " + className);
-
-                    //Write back to the Core
-
-                } catch (IOException e) {
-                    System.err.println("Error reading .class file: " + e.getMessage());
-                }
+        for (String unresolvedbytes : UnresolvedByteCodes) {
+            //Check for file
+            try {
+                Files.deleteIfExists(Paths.get("temp.class"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            System.out.println("Sending off class files");
-            System.out.println("#of Resolved Classes: " + UnresolvedByteCodes.length);
-            JReverseBridge.CallCoreFunction("setUnknownClassFiles", returnitems.toArray(new String[returnitems.size()]));
-        };
-        Thread run = new Thread(resolveThread);
-        run.start();
+
+            //Create and write to file
+            byte[] bytesofclass = HexFormat.of().parseHex(unresolvedbytes.toUpperCase().replace(" ", ""));
+            System.out.println((writeByteArrayToTempClassFile(bytesofclass)));
+
+            //Open File
+            File classFile = new File("temp.class");
+
+            try (FileInputStream fis = new FileInputStream(classFile);
+                 DataInputStream dis = new DataInputStream(fis)) {
+
+                // Create a ClassFile object by reading the .class file
+                ClassFile cf = new ClassFile(dis);
+
+                // Get the class name
+                String className = cf.getName().replace(".", "/");
+
+                returnitems.add(className);
+                returnitems.add(unresolvedbytes);
+
+                System.out.println("Resolved: " + className);
+
+                //Write back to the Core
+
+            } catch (IOException e) {
+                System.err.println("Error reading .class file: " + e.getMessage());
+            }
+        }
+        System.out.println("Sending off class files");
+        System.out.println("#of Resolved Classes: " + UnresolvedByteCodes.length);
+        JReverseBridge.CallCoreFunction("setUnknownClassFiles", returnitems.toArray(new String[returnitems.size()]));
     }
 
     @FXML
@@ -359,28 +357,72 @@ public class MainController {
         MethodDecompArea.setText(bytecodes[0]);
     }
 
+    private static void createFoldersAndFile(String input, String base, byte[] data) throws IOException {
+        // Split the input string by the last occurrence of "/"
+        int lastSlashIndex = input.lastIndexOf("/");
+        String foldersPath = base+ "/" + input.substring(0, lastSlashIndex);
+        String fileName = input.substring(lastSlashIndex + 1);
 
-    private static class BCVOutputSinkFactory implements OutputSinkFactory {
-
-        private final Consumer<SinkReturns.Decompiled> dumpDecompiled;
-
-        private BCVOutputSinkFactory(Consumer<SinkReturns.Decompiled> dumpDecompiled) {
-            this.dumpDecompiled = dumpDecompiled;
+        // Create folders
+        File folders = new File(foldersPath);
+        if (!folders.exists()) {
+            folders.mkdirs();
         }
 
-        @Override
-        public List<SinkClass> getSupportedSinks(SinkType sinkType, Collection<SinkClass> available) {
-            return Collections.singletonList(SinkClass.DECOMPILED);
+        // Create text file
+        File filer = new File(foldersPath, fileName + ".class");
+        if(!filer.exists()) {
+            FileOutputStream fos = new FileOutputStream(filer);
+            fos.write(data);
+            fos.close();
+            System.out.println("Wrote to: "+filer.getAbsolutePath());
+        } else {
+            System.out.println("File already exists: " + filer.getAbsolutePath());
         }
 
-        @Override
-        public <T> Sink<T> getSink(SinkType sinkType, SinkClass sinkClass) {
-            if (sinkType == SinkType.JAVA && sinkClass == SinkClass.DECOMPILED) {
-                return x -> dumpDecompiled.accept((SinkReturns.Decompiled) x);
+    }
+
+    @FXML
+    private void dumpSouce() throws IOException {
+
+        JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+        // Set the file chooser to select directories only
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        // Show the dialog and capture the user's choice
+        int returnValue = fileChooser.showDialog(null, "Select Folder for source code");
+
+        // If the user selects a folder
+        String selectedFolderPath;
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            // Get the selected folder
+            selectedFolderPath = fileChooser.getSelectedFile().getPath();
+            System.out.println("Selected folder: " + selectedFolderPath);
+        } else {
+            System.out.println("No folder selected.");
+            return;
+        }
+        //Look like: C:\Users\aaron\OneDrive\Documents\NewFileTime
+
+        String[] ClassFileNames = JReverseBridge.CallCoreFunction("getClassFileNames", JReverseBridge.NoneArg);
+        System.out.println("Got Class File Names");
+        int i = 0;
+        for(String ClassName : ClassFileNames){
+            if(ClassName.equals("unknown")){
+                System.out.println("Class unknown. Skipping");
+            } else {
+                System.out.println("Getting Bytecodes of: "+ClassName);
+                String[] ByteArgs = {ClassName};
+                String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
+                byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase());
+                createFoldersAndFile(ClassName, selectedFolderPath, bytesofclass);
+                System.out.println("Wrote Bytecodes of: "+ClassName);
             }
-            return ignore -> {
-            };
+            i++;
+            System.out.println("Dump is "+ Math.round(((double) i/ClassFileNames.length)*10));
         }
+
 
     }
 }
