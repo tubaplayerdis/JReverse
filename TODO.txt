@@ -1,3 +1,4 @@
+#Only allow reload of already modified class files into program.
 Todo:
 
 1. Fix Scripting inconsistencies with getting class instances.
