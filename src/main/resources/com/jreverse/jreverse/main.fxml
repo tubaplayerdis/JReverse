@@ -66,7 +66,7 @@
                </font>
             </Button>
             <Separator layoutX="472.0" layoutY="10.0" orientation="VERTICAL" prefHeight="30.0" prefWidth="15.0" />
-            <Button fx:id="ClassEditorButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Class Editor">
+            <Button fx:id="ClassEditorButton" mnemonicParsing="false" onMouseClicked="#OpenClassEditor" prefHeight="30.0" prefWidth="150.0" text="Class Editor">
                <font>
                   <Font size="14.0" />
                </font>

@@ -52,7 +52,7 @@ public class MainController {
         if (App.isOnStartup == true) {
             ClassEditorButton.setDisable(false);
         } else {
-            ClassEditorButton.setDisable(true);
+            ClassEditorButton.setDisable(false);//CHANGE IF NEEDED
         }
     }
 
@@ -293,7 +293,7 @@ public class MainController {
          * if "fx:controller" is not set in fxml
          * fxmlLoader.setController(NewWindowController);
          */
-        Scene scene = new Scene(fxmlLoader.load(), 720, 480);
+        Scene scene = new Scene(fxmlLoader.load(), 950, 700);
         Stage stage = new Stage();
         Image image = new Image(usePath+"/icon/JReverseIcon.png");
         stage.setResizable(false);
@@ -424,5 +424,28 @@ public class MainController {
         }
 
 
+    }
+
+    @FXML
+    private void OpenSettings(){
+
+    }
+
+    @FXML
+    private void OpenClassEditor() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("ClassEditorView.fxml"));
+        /*
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+         */
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+        Stage stage = new Stage();
+        Image image = new Image(usePath+"/icon/JReverseIcon.png");
+        stage.setResizable(false);
+        stage.getIcons().add(image);
+        stage.setTitle("JReverse Class Editor");
+        stage.setScene(scene);
+        stage.show();
     }
 }
