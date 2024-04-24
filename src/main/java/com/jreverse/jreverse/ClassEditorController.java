@@ -8,6 +8,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javassist.bytecode.ClassFile;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,7 +25,12 @@ public class ClassEditorController {
     @FXML
     private TextArea ClassDecompArea;
 
+    @FXML
+    private TextArea EditPreviewArea;
+
     private final TreeItem<String> emptyitem = new TreeItem<String>("");
+
+    private String reDefdata;
 
     private void addClass(TreeItem<String> parent, String className) {
         String[] parts = className.split("/");
@@ -182,5 +189,79 @@ public class ClassEditorController {
         }
 
         ClassDecompArea.setText("Original Decomp of " + ClassByteCodes[0] + ":\n\n" + decompiledString);
+    }
+
+    @FXML
+    private void GetFileBytecodes() throws IOException {
+        JFileChooser j = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Class Files", "class");
+        j.setFileFilter(filter);
+        j.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+
+        if(j.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            //Get Text of file
+            File file = j.getSelectedFile();
+            FileInputStream fis = new FileInputStream(file);
+            StringBuilder hexBuilder = new StringBuilder();
+
+            int data;
+            while ((data = fis.read()) != -1) {
+                // Convert each byte to hexadecimal representation
+                String hex = Integer.toHexString(data);
+
+                // Append leading zero if necessary
+                if (hex.length() == 1) {
+                    hexBuilder.append('0');
+                }
+
+                hexBuilder.append(hex);
+            }
+
+            fis.close();
+
+            String hexString = hexBuilder.toString().toUpperCase();
+
+            byte[] bytesofclass = HexFormat.of().parseHex(hexString);
+            writeByteArrayToTempClassFile(bytesofclass);
+
+            System.out.println("Hex Data from File: "+hexString);
+            EditPreviewArea.setText("Decompiling: "+hexString);
+
+            reDefdata = hexString;
+            EditPreviewArea.setText("Set data and decompiling: "+hexString);
+
+            //Decompile Bytes
+            String decompiledString = "Failed Decompilation!";
+            final String usePath = System.getProperty("user.dir");
+            ProcessBuilder builder = new ProcessBuilder("java", "-jar", usePath+"\\libs\\cfr-0.152.jar", usePath+"\\temp.class");
+            Process process = builder.start();
+
+            // Read the output of the command
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if(decompiledString.equals("Failed Decompilation!")) decompiledString="";
+                decompiledString = decompiledString+line+"\n";
+            }
+
+            EditPreviewArea.setWrapText(false);
+            EditPreviewArea.setText(decompiledString);
+            System.out.println("Set Data in preview");
+        }
+    }
+
+    @FXML
+    private void RedefineClass(){
+        if(reDefdata.isEmpty() || reDefdata.isBlank() || CurrentClassTextField.getText().isEmpty() || CurrentClassTextField.getText().isBlank()){
+            System.out.println("Redefinition Data is EMPTY");
+            return;
+        }
+
+        String[] args = {CurrentClassTextField.getText(), reDefdata};
+        String[] res = JReverseBridge.CallCoreFunction("redefineClass", args);
+
+        System.out.println(res[0]);
     }
 }

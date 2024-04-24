@@ -36,13 +36,13 @@
             <Font size="16.0" />
          </font>
       </TextField>
-      <TextArea editable="false" layoutX="688.0" layoutY="87.0" prefHeight="561.0" prefWidth="298.0" promptText="Select a class from bytecoded classes" />
+      <TextArea fx:id="EditPreviewArea" editable="false" layoutX="688.0" layoutY="87.0" prefHeight="561.0" prefWidth="298.0" promptText="Select a class from bytecoded classes" />
       <Button layoutX="14.0" layoutY="618.0" mnemonicParsing="false" onMouseClicked="#RefreshClasses" prefHeight="30.0" prefWidth="284.0" text="Refresh">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="688.0" layoutY="656.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="298.0" text="Redefine Class">
+      <Button layoutX="688.0" layoutY="656.0" mnemonicParsing="false" onMouseClicked="#RedefineClass" prefHeight="30.0" prefWidth="145.0" text="Redefine Class">
          <font>
             <Font size="14.0" />
          </font>
@@ -52,11 +52,16 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="305.0" layoutY="656.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="375.0" text="Upload Replace File">
+      <Button layoutX="305.0" layoutY="656.0" mnemonicParsing="false" onMouseClicked="#GetFileBytecodes" prefHeight="30.0" prefWidth="375.0" text="Upload Replace File">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
       <TreeView fx:id="ByteCodedClassesTreeView" layoutX="15.0" layoutY="83.0" onMouseClicked="#SelectClass" prefHeight="526.0" prefWidth="284.0" />
+      <Button layoutX="841.0" layoutY="656.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" text="Retransform Class">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
