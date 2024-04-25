@@ -41,7 +41,7 @@ public class SettingsViewController {
         InitLevelList.add("HIGH");
         InitLevelList.add("ALL");
         InitLevelList.add("NONE");
-        LoggingLevChoiceBox.setItems(InitOptionsList);
+        LoggingLevChoiceBox.setItems(InitLevelList);
 
         //Load From Settings File
 

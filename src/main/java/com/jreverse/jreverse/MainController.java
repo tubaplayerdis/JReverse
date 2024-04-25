@@ -427,8 +427,21 @@ public class MainController {
     }
 
     @FXML
-    private void OpenSettings(){
-
+    private void OpenSettings() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("SettingsView.fxml"));
+        /*
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+         */
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Stage stage = new Stage();
+        Image image = new Image(usePath+"/icon/JReverseIcon.png");
+        stage.setResizable(false);
+        stage.getIcons().add(image);
+        stage.setTitle("JReverse Settings");
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
