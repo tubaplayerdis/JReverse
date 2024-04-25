@@ -16,6 +16,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class ClassEditorController {
+    public static Boolean isAdvancedMode = false;
+
     @FXML
     private TreeView<String> ByteCodedClassesTreeView;
 

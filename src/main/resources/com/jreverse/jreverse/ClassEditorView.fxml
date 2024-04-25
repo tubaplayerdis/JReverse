@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -46,6 +47,9 @@
          <font>
             <Font size="14.0" />
          </font>
+         <tooltip>
+            <Tooltip text="All current and future instacnes will be affected by changes" />
+         </tooltip>
       </Button>
       <Button accessibleText="Resolves classes with bytecodes present, but not class names" layoutX="14.0" layoutY="656.0" mnemonicParsing="false" onMouseClicked="#ResolveClasses" prefHeight="30.0" prefWidth="284.0" text="Resolve Unknowns">
          <font>
@@ -57,11 +61,14 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <TreeView fx:id="ByteCodedClassesTreeView" layoutX="15.0" layoutY="83.0" onMouseClicked="#SelectClass" prefHeight="526.0" prefWidth="284.0" />
+      <TreeView fx:id="ByteCodedClassesTreeView" layoutX="14.0" layoutY="87.0" onMouseClicked="#SelectClass" prefHeight="525.0" prefWidth="284.0" />
       <Button layoutX="841.0" layoutY="656.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" text="Retransform Class">
          <font>
             <Font size="14.0" />
          </font>
+         <tooltip>
+            <Tooltip text="Only future instacnes will be affected by changes" />
+         </tooltip>
       </Button>
    </children>
 </AnchorPane>
