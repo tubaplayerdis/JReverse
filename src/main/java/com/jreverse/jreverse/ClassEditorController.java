@@ -202,7 +202,7 @@ public class ClassEditorController {
 
 
         if(j.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-            //Get Text of file
+            //Get Data of file
             File file = j.getSelectedFile();
             FileInputStream fis = new FileInputStream(file);
             StringBuilder hexBuilder = new StringBuilder();

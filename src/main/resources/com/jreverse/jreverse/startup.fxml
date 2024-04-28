@@ -44,5 +44,6 @@
             <Font size="16.0" />
          </font>
       </CheckBox>
+      <Button layoutX="502.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#OpenStartupRules" text="Startup Rules" />
     </children>
 </Pane>

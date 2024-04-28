@@ -7,12 +7,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,6 +47,25 @@ public class startupController {
     public static String procpath = "";
 
     int injectionreturn;
+
+    @FXML
+    private void OpenStartupRules() throws IOException {
+        final String usePath = System.getProperty("user.dir");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("StartupRules.fxml"));
+        /*
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+         */
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Stage stage = new Stage();
+        Image image = new Image(usePath+"/icon/JReverseIcon.png");
+        stage.setResizable(false);
+        stage.getIcons().add(image);
+        stage.setTitle("JReverse Startup Rules");
+        stage.setScene(scene);
+        stage.show();
+    }
 
     @FXML
     private void injectClick() throws IOException {
