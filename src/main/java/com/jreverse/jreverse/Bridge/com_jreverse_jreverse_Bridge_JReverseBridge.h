@@ -41,6 +41,14 @@ JNIEXPORT jint JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_InjectDL
 
 /*
  * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
+ * Method:    WriteStartupPipe
+ * Signature: ([Lcom/jreverse/jreverse/StartupRule;)I
+ */
+JNIEXPORT jint JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_WriteStartupPipe
+  (JNIEnv *, jclass, jobjectArray);
+
+/*
+ * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
  * Method:    SetupPipe
  * Signature: ()V
  */

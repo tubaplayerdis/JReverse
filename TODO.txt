@@ -4,7 +4,7 @@ Todo:
 1. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc.
 2. Finish Settings IMPL
 3. Fix Resolve Bytecodes Crash
-4. IMPL Startup rules in Core.
+4. Work on Rules. Current hypo is tisnpire app is blocking due to class verification. Make another dummy app to test
 2. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
 7. Implement Custom UI Elements with a darker theme.
 

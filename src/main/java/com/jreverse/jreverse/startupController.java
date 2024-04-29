@@ -78,6 +78,8 @@ public class startupController {
             return;
         }
         JReverseBridge.testMethod();
+        int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules());
+        System.out.println("Wrote Startup: "+resf);
         PipeManager.InitAPI();
         injectionreturn = JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
@@ -251,6 +253,8 @@ public class startupController {
         //Auto Start
         if(AutoStartCheckBox.isSelected()){
             final String usePath = System.getProperty("user.dir");
+            int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules());
+            System.out.println("Wrote Startup: "+resf);
             JReverseBridge.StartAndInjectDLL("C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll", procpath);
             Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
             File style = new File(usePath+"/stylesheets/style.css");

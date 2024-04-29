@@ -12,9 +12,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class StartupRulesController {
     //New Rules
@@ -34,9 +32,12 @@ public class StartupRulesController {
     private TextField OldRuleNameField;
 
     //Important
-    public static List<StartupRule> rulesList = new ArrayList<StartupRule>();
+    public static List<StartupRule> rulesList = new ArrayList<>();
 
-
+    public static StartupRule[] getRules(){
+        StartupRule[] returnlist = rulesList.toArray(new StartupRule[0]);
+        return  returnlist;
+    }
 
 
     //Old Rule Methods
