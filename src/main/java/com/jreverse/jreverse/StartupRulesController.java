@@ -3,9 +3,7 @@ package com.jreverse.jreverse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -30,6 +28,12 @@ public class StartupRulesController {
 
     @FXML
     private TextField OldRuleNameField;
+
+    @FXML
+    private CheckBox NewRuleBypassCheckBox;
+
+    @FXML
+    private Label OldRuleBypassLabel;
 
     //Important
     public static List<StartupRule> rulesList = new ArrayList<>();
@@ -70,6 +74,7 @@ public class StartupRulesController {
         String res = JReverseDecompiler.DecompileBytecodes(currentRule.ByteCodes);
         OldRulePreviewBox.setWrapText(false);
         OldRulePreviewBox.setText(res);
+        OldRuleBypassLabel.setText("is bypass: "+currentRule.isBypass.toString());
 
     }
 
@@ -116,7 +121,7 @@ public class StartupRulesController {
     private void CreateRule() {
         StartupRule create = new StartupRule();
         create.ClassName = NewRuleNameField.getText();
-
+        create.isBypass = NewRuleBypassCheckBox.isSelected();
 
         create.ByteCodes = TempBytecodes;
         TempBytecodes = "";

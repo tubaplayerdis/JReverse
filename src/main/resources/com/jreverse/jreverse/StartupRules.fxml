@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -22,7 +24,7 @@
          </font>
       </Label>
       <TextField fx:id="NewRuleNameField" layoutX="347.0" layoutY="38.0" prefHeight="25.0" prefWidth="231.0" promptText="JNI Class Name" />
-      <Button layoutX="347.0" layoutY="71.0" mnemonicParsing="false" onMouseClicked="#UploadBytecodes" prefHeight="25.0" prefWidth="231.0" text="Upload new bytecodes" />
+      <Button layoutX="347.0" layoutY="71.0" mnemonicParsing="false" onMouseClicked="#UploadBytecodes" prefHeight="25.0" prefWidth="159.0" text="Upload new bytecodes" />
       <TextArea fx:id="NewRuleBytecodesPreviewBox" editable="false" layoutX="347.0" layoutY="125.0" prefHeight="228.0" prefWidth="231.0" promptText="Uploaded Bytecodes will go here'">
          <font>
             <Font size="10.0" />
@@ -40,16 +42,27 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="164.0" layoutY="74.0" text="Preview bytecodes">
+      <Label layoutX="164.0" layoutY="105.0" text="Preview bytecodes">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextArea fx:id="OldRulePreviewBox" editable="false" layoutX="164.0" layoutY="98.0" prefHeight="288.0" prefWidth="170.0" promptText="Select From Rules">
+      <TextArea fx:id="OldRulePreviewBox" editable="false" layoutX="164.0" layoutY="126.0" prefHeight="228.0" prefWidth="170.0" promptText="Select From Rules">
          <font>
             <Font size="10.0" />
          </font>
       </TextArea>
       <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#RefreshRules" prefHeight="25.0" prefWidth="143.0" text="Refresh Rules" />
+      <CheckBox fx:id="NewRuleBypassCheckBox" layoutX="520.0" layoutY="75.0" mnemonicParsing="false" text="Bypass">
+         <tooltip>
+            <Tooltip text="If selected, JReverse will redefine the class bytecodes immediately after class creation. This method might be able to bypass class bytecode verification" />
+         </tooltip>
+      </CheckBox>
+      <Button layoutX="164.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#RefreshRules" prefHeight="25.0" prefWidth="170.0" text="Delete Rule" />
+      <Label fx:id="OldRuleBypassLabel" layoutX="164.0" layoutY="74.0" text="is bypass: ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
