@@ -1,7 +1,7 @@
 package com.jreverse.jreverse;
 
 public class StartupRule {
-    String ClassName;
-    String ByteCodes;
-    Boolean isBypass;
+    public String ClassName;
+    public String ByteCodes;
+    public Boolean isBypass;
 }
