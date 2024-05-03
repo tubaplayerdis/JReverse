@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -12,12 +13,94 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <TabPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.StartupRulesController">
    <tabs>
-      <Tab text="Startup Settings">
+      <Tab closable="false" text="Startup Settings">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <CheckBox layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Inject on startup">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="JReverse will kill the selected target and wait for it to restart to inject" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Tooltip>
+                     </tooltip>
+                  </CheckBox>
+                  <CheckBox layoutX="14.0" layoutY="50.0" mnemonicParsing="false" text="Auto start">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="JReverse will start the target for you and inject" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Tooltip>
+                     </tooltip>
+                  </CheckBox>
+                  <Slider blockIncrement="1000.0" layoutX="14.0" layoutY="232.0" majorTickUnit="1000.0" max="10000.0" minorTickCount="100" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2000.0">
+                     <tooltip>
+                        <Tooltip text="Timeout to start JReverse's function loop on the target." wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Tooltip>
+                     </tooltip>
+                  </Slider>
+                  <Label layoutX="17.0" layoutY="200.0" text="Function loop timeout">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="288.0" text="JNIenv timeout">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Slider blockIncrement="1000.0" layoutX="17.0" layoutY="325.0" majorTickUnit="10.0" minorTickCount="1" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
+                     <tooltip>
+                        <Tooltip text="Time delay to get the JNIenv. This is crucial when collecting class data. lower values can cause a crash and higher there might be lost data" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Tooltip>
+                     </tooltip>
+                  </Slider>
+                  <CheckBox layoutX="14.0" layoutY="88.0" mnemonicParsing="false" selected="true" text="Class file load messages">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Whether or not class file load messages are displayed" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Tooltip>
+                     </tooltip>
+                  </CheckBox>
+                  <CheckBox layoutX="14.0" layoutY="122.0" mnemonicParsing="false" selected="true" text="Class file collection">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Whether or not class file bytecode is collected" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Tooltip>
+                     </tooltip>
+                  </CheckBox>
+                  <CheckBox layoutX="14.0" layoutY="156.0" mnemonicParsing="false" selected="true" text="Console Window">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Whether or not a console is created on injection" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Tooltip>
+                     </tooltip>
+                  </CheckBox>
+               </children></AnchorPane>
         </content>
       </Tab>
       <Tab closable="false" text="Class Rules">
@@ -65,9 +148,12 @@
                      </font>
                   </TextArea>
                   <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#RefreshRules" prefHeight="25.0" prefWidth="143.0" text="Refresh Rules" />
-                  <CheckBox fx:id="NewRuleBypassCheckBox" layoutX="520.0" layoutY="75.0" mnemonicParsing="false" text="Bypass">
+                  <CheckBox fx:id="NewRuleBypassCheckBox" layoutX="520.0" layoutY="75.0" mnemonicParsing="false" text="Bypass" wrapText="true">
                      <tooltip>
-                        <Tooltip text="If selected, JReverse will redefine the class bytecodes immediately after class creation. This method might be able to bypass class bytecode verification" />
+                        <Tooltip text="If selected, JReverse will redefine the class bytecodes immediately after class creation. This method might be able to bypass class bytecode verification" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Tooltip>
                      </tooltip>
                   </CheckBox>
                   <Button layoutX="164.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#DeleteRule" prefHeight="25.0" prefWidth="170.0" text="Delete Rule" />

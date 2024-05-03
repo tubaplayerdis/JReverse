@@ -57,7 +57,7 @@ public class startupController {
          * if "fx:controller" is not set in fxml
          * fxmlLoader.setController(NewWindowController);
          */
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 430);
         Stage stage = new Stage();
         Image image = new Image(usePath+"/icon/JReverseIcon.png");
         stage.setResizable(false);
