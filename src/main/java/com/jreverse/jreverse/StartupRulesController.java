@@ -43,6 +43,22 @@ public class StartupRulesController {
         return  returnlist;
     }
 
+    public void initialize(){
+        RefreshRules();
+    }
+
+    @FXML
+    private void DeleteRule(){
+        String CurrentRuleName = null;
+        CurrentRuleName = RulesListView.getSelectionModel().getSelectedItem();
+        if(CurrentRuleName.isBlank() || CurrentRuleName.isEmpty() || Objects.isNull(CurrentRuleName)) return;
+
+        if(rulesList.isEmpty()) return;
+
+        for(StartupRule rule : rulesList){
+            if(Objects.equals(rule.ClassName, CurrentRuleName)) rulesList.remove(rule);
+        }
+    }
 
     //Old Rule Methods
     @FXML
@@ -74,7 +90,7 @@ public class StartupRulesController {
         String res = JReverseDecompiler.DecompileBytecodes(currentRule.ByteCodes);
         OldRulePreviewBox.setWrapText(false);
         OldRulePreviewBox.setText(res);
-        OldRuleBypassLabel.setText("is bypass: "+currentRule.isBypass.toString());
+        OldRuleBypassLabel.setText("is bypass: "+currentRule.isBypass);
 
     }
 
