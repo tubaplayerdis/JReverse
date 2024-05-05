@@ -19,7 +19,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <CheckBox layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Inject on startup">
+                  <CheckBox fx:id="InjectOnStartupCheckBox" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Inject on startup">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -30,7 +30,7 @@
                            </font></Tooltip>
                      </tooltip>
                   </CheckBox>
-                  <CheckBox layoutX="14.0" layoutY="50.0" mnemonicParsing="false" text="Auto start">
+                  <CheckBox fx:id="AutoStartCheckBox" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" text="Auto start">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -41,7 +41,7 @@
                            </font></Tooltip>
                      </tooltip>
                   </CheckBox>
-                  <Slider blockIncrement="1000.0" layoutX="14.0" layoutY="232.0" majorTickUnit="1000.0" max="10000.0" minorTickCount="100" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2000.0">
+                  <Slider fx:id="FuncLoopTimeoutSlider" blockIncrement="1000.0" layoutX="14.0" layoutY="232.0" majorTickUnit="1000.0" max="10000.0" minorTickCount="100" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2000.0">
                      <tooltip>
                         <Tooltip text="Timeout to start JReverse's function loop on the target." wrapText="true">
                            <font>
@@ -59,7 +59,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Slider blockIncrement="1000.0" layoutX="17.0" layoutY="325.0" majorTickUnit="10.0" minorTickCount="1" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
+                  <Slider fx:id="JNIENVTimeoutSlider" blockIncrement="1000.0" layoutX="14.0" layoutY="313.0" majorTickUnit="10.0" minorTickCount="1" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
                      <tooltip>
                         <Tooltip text="Time delay to get the JNIenv. This is crucial when collecting class data. lower values can cause a crash and higher there might be lost data" wrapText="true">
                            <font>
@@ -67,7 +67,7 @@
                            </font></Tooltip>
                      </tooltip>
                   </Slider>
-                  <CheckBox layoutX="14.0" layoutY="88.0" mnemonicParsing="false" selected="true" text="Class file load messages">
+                  <CheckBox fx:id="ClassFileLoadMessagesCheckBox" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" selected="true" text="Class file load messages">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -100,6 +100,7 @@
                            </font></Tooltip>
                      </tooltip>
                   </CheckBox>
+                  <Button layoutX="15.0" layoutY="363.0" mnemonicParsing="false" onMouseClicked="#SaveSettings" prefHeight="25.0" prefWidth="571.0" text="Save Settings" />
                </children></AnchorPane>
         </content>
       </Tab>

@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -20,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -33,9 +33,6 @@ public class startupController {
 
     @FXML
     private TextArea targetField;
-
-    @FXML
-    private CheckBox StartupInjectCheckBox;
 
     ObservableList<String> procStringList = FXCollections.observableArrayList();
 
@@ -72,6 +69,9 @@ public class startupController {
         //Use this for relative DLL when going to publish
         final String usePath = System.getProperty("user.dir");
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
+        StartupSettings settings = StartupSettingsHelper.CheckAndLoadFile();
+        if(Objects.isNull(settings)) {System.out.println("Startup Settings NULL"); return;}
+        if(settings.IsAutoStart) {WaitAndInject(true); return;}
 
         currentPID = GetPid(procName);
         if(currentPID == -1){
@@ -219,11 +219,7 @@ public class startupController {
     }
 
     @FXML
-    private CheckBox AutoStartCheckBox;
-
-    @FXML
-    private void WaitAndInject() throws IOException, InterruptedException {
-        if(!StartupInjectCheckBox.isSelected()) return;;
+    private void WaitAndInject(boolean isAutoStart) {
 
         if(startupController.procName.isEmpty()){
             System.out.println("procname is empty!");
@@ -251,20 +247,24 @@ public class startupController {
 
 
         //Auto Start
-        if(AutoStartCheckBox.isSelected()){
-            final String usePath = System.getProperty("user.dir");
-            int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules());
-            System.out.println("Wrote Startup: "+resf);
-            JReverseBridge.StartAndInjectDLL("C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll", procpath);
-            Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
-            File style = new File(usePath+"/stylesheets/style.css");
-            //scene.getStylesheets().add(style.toURI().toURL().toExternalForm());
-            App.thestage.setResizable(false);
-            App.thestage.setTitle("JReverse");
-            Image image = new Image(usePath+"/icon/JReverseIcon.png");
-            App.thestage.getIcons().add(image);
-            App.thestage.setScene(scene);
-            App.thestage.show();
+        if(isAutoStart){
+            try {
+                final String usePath = System.getProperty("user.dir");
+                int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules());
+                System.out.println("Wrote Startup: " + resf);
+                JReverseBridge.StartAndInjectDLL("C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll", procpath);
+                Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
+                File style = new File(usePath + "/stylesheets/style.css");
+                //scene.getStylesheets().add(style.toURI().toURL().toExternalForm());
+                App.thestage.setResizable(false);
+                App.thestage.setTitle("JReverse");
+                Image image = new Image(usePath + "/icon/JReverseIcon.png");
+                App.thestage.getIcons().add(image);
+                App.thestage.setScene(scene);
+                App.thestage.show();
+            } catch (IOException e){
+                System.out.println("Error with FXML: "+e.getMessage());
+            }
         }
 
         //Wait for restart

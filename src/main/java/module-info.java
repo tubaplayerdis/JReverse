@@ -8,6 +8,7 @@ module com.jreverse.jreverse {
     requires java.scripting;
     requires static jython.standalone;
     requires atlantafx.base;
+    requires java.xml.bind;
 
 
     opens com.jreverse.jreverse to javafx.fxml;

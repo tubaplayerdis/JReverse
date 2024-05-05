@@ -10,7 +10,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class StartupRulesController {
     //New Rules
@@ -45,6 +49,11 @@ public class StartupRulesController {
 
     public void initialize(){
         RefreshRules();
+        try {
+            LoadSettings();
+        } catch (IOException e) {
+            System.out.println("Failed to load Settings");
+        }
     }
 
     @FXML
@@ -162,4 +171,52 @@ public class StartupRulesController {
         }
         RulesListView.setItems(names);
     }
+
+    //Settings
+
+    //FXML stuff
+    @FXML
+    public CheckBox InjectOnStartupCheckBox;
+    @FXML
+    public CheckBox AutoStartCheckBox;
+    @FXML
+    public CheckBox ClassFileLoadMessagesCheckBox;
+    @FXML
+    public CheckBox ClassFileCollectionCheckBox;
+    @FXML
+    public CheckBox ConsoleWindowCheckBox;
+    @FXML
+    public Slider FuncLoopTimeoutSlider;
+    @FXML
+    public Slider JNIENVTimeoutSlider;
+
+    public static StartupSettings settings;
+
+    public static final Path SettingsPath = Paths.get(System.getProperty("user.dir")+"/settings.xml");
+
+    @FXML
+    public void LoadSettings() throws IOException {
+        settings = StartupSettingsHelper.CheckAndLoadFile();
+        if(Objects.isNull(settings)) return;
+        InjectOnStartupCheckBox.setSelected(settings.IsInjectOnStartup);
+        AutoStartCheckBox.setSelected(settings.IsAutoStart);
+        ClassFileLoadMessagesCheckBox.setSelected(settings.IsClassFileLoadMessages);
+        ClassFileCollectionCheckBox.setSelected(settings.IsClassFileCollection);
+        ConsoleWindowCheckBox.setSelected(settings.IsConsoleWindow);
+        FuncLoopTimeoutSlider.setValue(settings.FuncLoopTimeout);
+        JNIENVTimeoutSlider.setValue(settings.JNIEnvTimeout);
+    }
+    @FXML
+    public void SaveSettings() {
+        StartupSettings startupSettings = new StartupSettings();
+        startupSettings.IsAutoStart = AutoStartCheckBox.isSelected();
+        startupSettings.IsInjectOnStartup = InjectOnStartupCheckBox.isSelected();
+        startupSettings.IsConsoleWindow = ConsoleWindowCheckBox.isSelected();
+        startupSettings.IsClassFileLoadMessages = ClassFileLoadMessagesCheckBox.isSelected();
+        startupSettings.IsClassFileCollection = ClassFileCollectionCheckBox.isSelected();
+        startupSettings.FuncLoopTimeout = (int)FuncLoopTimeoutSlider.getValue();
+        startupSettings.JNIEnvTimeout = (int)JNIENVTimeoutSlider.getValue();
+        StartupSettingsHelper.WriteSettingsFile(startupSettings);
+    }
+
 }
