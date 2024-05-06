@@ -78,7 +78,7 @@ public class startupController {
             return;
         }
         JReverseBridge.testMethod();
-        int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules());
+        int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules(), settings);
         System.out.println("Wrote Startup: "+resf);
         PipeManager.InitAPI();
         injectionreturn = JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
@@ -250,7 +250,12 @@ public class startupController {
         if(isAutoStart){
             try {
                 final String usePath = System.getProperty("user.dir");
-                int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules());
+
+                StartupSettings settings = StartupSettingsHelper.CheckAndLoadFile();
+                if(Objects.isNull(settings)) {System.out.println("Startup Settings NULL"); return;}
+                if(settings.IsAutoStart) {WaitAndInject(true); return;}
+
+                int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules(), settings);
                 System.out.println("Wrote Startup: " + resf);
                 JReverseBridge.StartAndInjectDLL("C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll", procpath);
                 Scene scene = new Scene(App.loadFXML("main"), 1280, 720);

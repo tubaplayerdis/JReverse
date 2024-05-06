@@ -1,7 +1,5 @@
 package com.jreverse.jreverse.Bridge;
 
-import com.jreverse.jreverse.StartupRule;
-
 public class JReverseBridge {
     public static final String[] NoneArg = {"NONE"};
     public static native boolean testMethod();
@@ -11,7 +9,7 @@ public class JReverseBridge {
     public static native int StartAndInjectDLL(String path, String app);
     public static native int InjectDLL(int PID, String path);
 
-    public static native int WriteStartupPipe(StartupRule[] rules);
+    public static native int WriteStartupPipe(Object[] rules, Object settings);
 
     public static native void SetupPipe();
 

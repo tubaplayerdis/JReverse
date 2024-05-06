@@ -1,9 +1,15 @@
 package com.jreverse.jreverse;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,56 +31,57 @@ public class StartupSettingsHelper {
             System.out.println("Failed to create settings file!: "+e.getMessage());
             return false;
         }
-        //Create Default Settings
-        StartupSettings settings = new StartupSettings();
-        settings.IsAutoStart = false;
-        settings.IsInjectOnStartup = false;
-        settings.IsClassFileCollection = true;
-        settings.IsClassFileLoadMessages = true;
-        settings.IsConsoleWindow = true;
 
-        //Create JAXBContext Object
-        JAXBContext jaxbContext = null;
-
-        // Create JAXB context for your classes
-        try{
-            jaxbContext = JAXBContext.newInstance(StartupSettings.class);
-        } catch (JAXBException e){
-            System.out.println("Failed to create JAXBContext: "+e.getMessage());
-            return false;
-        }
-
-        if(Objects.isNull(jaxbContext)){
-            System.out.println("JAXBContext object was null!");
-            return false;
-        }
-
-        // Create a Marshaller Object
-        Marshaller marshaller = null;
-
-        //Create Marshaller and catch
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
         try {
-            marshaller = jaxbContext.createMarshaller();
-        } catch (JAXBException e){
-            System.out.println("Failed to create marshaller: "+e.getMessage());
+            builder = factory.newDocumentBuilder();
+        } catch (javax.xml.parsers.ParserConfigurationException e){
+            System.out.println("Could not Create Parser Instance! Error: "+e.getMessage());
             return false;
         }
 
-        //Check null state
-        if(Objects.isNull(marshaller)){
-            System.out.println("Marshaller object was null!");
+        if(Objects.isNull(builder)){
+            System.out.println("Null builder");
+            return false;
+        }
+
+        // Create a new Document
+        Document document = builder.newDocument();
+        Element rootSettings = document.createElement("settings");
+        rootSettings.setAttribute("autostart", "false");
+        rootSettings.setAttribute("injectonstartup", "false");
+        rootSettings.setAttribute("classfilecollection", "true");
+        rootSettings.setAttribute("classfileloadmessages", "true");
+        rootSettings.setAttribute("consolewindow", "true");
+        rootSettings.setAttribute("funclooptimeout", "2000");
+        rootSettings.setAttribute("jnienvtimeout", "10");
+        document.appendChild(rootSettings);
+
+        // Create a Transformer
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory.newTransformer();
+        } catch (javax.xml.transform.TransformerConfigurationException e){
+            System.out.println("Error with transformer factory: "+e.getMessage());
+            return false;
+        }
+
+        if(Objects.isNull(transformer)){
+            System.out.println("Null transformer");
             return false;
         }
 
         File xmlFile = SettingsPath.toFile();
         try {
-            marshaller.marshal(settings, xmlFile);
-        } catch (JAXBException e){
-            System.out.println("Failed to marshall: "+e.getMessage());
+            transformer.transform(new DOMSource(document), new StreamResult(xmlFile));
+        } catch (TransformerException e) {
+            System.out.println("Error transforming: "+e.getMessage());
             return false;
         }
 
-        System.out.println("Marshalled settings file");
+        System.out.println("Created settings file with default values");
         return true;
 
     }
@@ -86,53 +93,58 @@ public class StartupSettingsHelper {
             }
         }
         //Load File
-        //Create JAXBContext Object
-        JAXBContext jaxbContext = null;
-
-        // Create JAXB context for your classes
-        try{
-            jaxbContext = JAXBContext.newInstance(StartupSettings.class);
-        } catch (JAXBException e){
-            System.out.println("Failed to create JAXBContext: "+e.getMessage());
-            return null;
-        }
-
-        if(Objects.isNull(jaxbContext)){
-            System.out.println("JAXBContext object was null!");
-            return null;
-        }
-
-        // Create a Marshaller Object
-        Unmarshaller unmarshaller = null;
-
-        //Create Marshaller and catch
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
         try {
-            unmarshaller = jaxbContext.createUnmarshaller();
-        } catch (JAXBException e){
-            System.out.println("Failed to create marshaller: "+e.getMessage());
+            builder = factory.newDocumentBuilder();
+        } catch (javax.xml.parsers.ParserConfigurationException e){
+            System.out.println("Could not Create Parser Instance! Error: "+e.getMessage());
             return null;
         }
 
-        //Check null state
-        if(Objects.isNull(unmarshaller)){
-            System.out.println("Marshaller object was null!");
+        if(Objects.isNull(builder)){
+            System.out.println("Null builder");
             return null;
         }
+
+        //Parse data
+        Document doc = null;
+        try {
+            doc = builder.parse(SettingsPath.toString());
+        } catch (IOException | SAXException e){
+            System.out.println("Document was null: "+e.getMessage());
+            return null;
+        }
+
+        // Step 3: Read Data
+        // For example, let's print out all the <title> elements in the XML
+        NodeList mainNodes = doc.getElementsByTagName("settings");
 
         File xmlFile = SettingsPath.toFile();
-        StartupSettings settings = null;
-        try {
-            settings = (StartupSettings) unmarshaller.unmarshal(xmlFile);
-        } catch (JAXBException e){
-            System.out.println("Failed to marshall: "+e.getMessage());
+        StartupSettings settings = new StartupSettings();
+
+        //Check null of first element
+        Node settingsnode = mainNodes.item(0);
+        if(Objects.isNull(settingsnode)){
+            System.out.println("Settings node is empty!");
             return null;
         }
+        NamedNodeMap attributes = settingsnode.getAttributes();
+        Node a = attributes.getNamedItem("autostart");
+        Node b = attributes.getNamedItem("injectonstartup");
+        Node c = attributes.getNamedItem("classfilecollection");
+        Node d = attributes.getNamedItem("classfileloadmessages");
+        Node e = attributes.getNamedItem("consolewindow");
+        Node f = attributes.getNamedItem("funclooptimeout");
+        Node g = attributes.getNamedItem("jnienvtimeout");
 
-        if(Objects.isNull(settings)){
-            System.out.println("Startup settings null!");
-            return null;
-        }
-
+        settings.IsAutoStart = Boolean.parseBoolean(a.getNodeValue());
+        settings.IsInjectOnStartup = Boolean.parseBoolean(b.getNodeValue());
+        settings.IsClassFileCollection = Boolean.parseBoolean(c.getNodeValue());
+        settings.IsClassFileLoadMessages = Boolean.parseBoolean(d.getNodeValue());
+        settings.IsConsoleWindow = Boolean.parseBoolean(e.getNodeValue());
+        settings.FuncLoopTimeout = Integer.parseInt(f.getNodeValue());
+        settings.JNIEnvTimeout = Integer.parseInt(g.getNodeValue());
         return settings;
     }
 
@@ -143,47 +155,55 @@ public class StartupSettingsHelper {
             }
         }
 
-        //Create JAXBContext Object
-        JAXBContext jaxbContext = null;
-
-        // Create JAXB context for your classes
-        try{
-            jaxbContext = JAXBContext.newInstance(StartupSettings.class);
-        } catch (JAXBException e){
-            System.out.println("Failed to create JAXBContext: "+e.getMessage());
-            return;
-        }
-
-        if(Objects.isNull(jaxbContext)){
-            System.out.println("JAXBContext object was null!");
-            return;
-        }
-
-        // Create a Marshaller Object
-        Marshaller marshaller = null;
-
-        //Create Marshaller and catch
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
         try {
-            marshaller = jaxbContext.createMarshaller();
-        } catch (JAXBException e){
-            System.out.println("Failed to create marshaller: "+e.getMessage());
+            builder = factory.newDocumentBuilder();
+        } catch (javax.xml.parsers.ParserConfigurationException e){
+            System.out.println("Could not Create Parser Instance! Error: "+e.getMessage());
             return;
         }
 
-        //Check null state
-        if(Objects.isNull(marshaller)){
-            System.out.println("Marshaller object was null!");
+        if(Objects.isNull(builder)){
+            System.out.println("Null builder");
+            return;
+        }
+
+        // Create a new Document
+        Document document = builder.newDocument();
+        Element rootSettings = document.createElement("settings");
+        rootSettings.setAttribute("autostart", Boolean.toString(settings.IsAutoStart));
+        rootSettings.setAttribute("injectonstartup", Boolean.toString(settings.IsInjectOnStartup));
+        rootSettings.setAttribute("classfilecollection", Boolean.toString(settings.IsClassFileCollection));
+        rootSettings.setAttribute("classfileloadmessages", Boolean.toString(settings.IsClassFileLoadMessages));
+        rootSettings.setAttribute("consolewindow", Boolean.toString(settings.IsConsoleWindow));
+        rootSettings.setAttribute("funclooptimeout", Integer.toString(settings.FuncLoopTimeout));
+        rootSettings.setAttribute("jnienvtimeout", Integer.toString(settings.JNIEnvTimeout));
+        document.appendChild(rootSettings);
+
+        // Create a Transformer
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory.newTransformer();
+        } catch (javax.xml.transform.TransformerConfigurationException e){
+            System.out.println("Error with transformer factory: "+e.getMessage());
+            return;
+        }
+
+        if(Objects.isNull(transformer)){
+            System.out.println("Null transformer");
             return;
         }
 
         File xmlFile = SettingsPath.toFile();
         try {
-            marshaller.marshal(settings, xmlFile);
-        } catch (JAXBException e){
-            System.out.println("Failed to marshall: "+e.getMessage());
+            transformer.transform(new DOMSource(document), new StreamResult(xmlFile));
+        } catch (TransformerException e) {
+            System.out.println("Error transforming: "+e.getMessage());
             return;
         }
 
-        System.out.println("Marshalled settings file");
+        System.out.println("Wrote new settings values!");
     }
 }

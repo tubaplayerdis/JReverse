@@ -198,13 +198,15 @@ public class StartupRulesController {
     public void LoadSettings() throws IOException {
         settings = StartupSettingsHelper.CheckAndLoadFile();
         if(Objects.isNull(settings)) return;
-        InjectOnStartupCheckBox.setSelected(settings.IsInjectOnStartup);
-        AutoStartCheckBox.setSelected(settings.IsAutoStart);
-        ClassFileLoadMessagesCheckBox.setSelected(settings.IsClassFileLoadMessages);
-        ClassFileCollectionCheckBox.setSelected(settings.IsClassFileCollection);
-        ConsoleWindowCheckBox.setSelected(settings.IsConsoleWindow);
-        FuncLoopTimeoutSlider.setValue(settings.FuncLoopTimeout);
-        JNIENVTimeoutSlider.setValue(settings.JNIEnvTimeout);
+        InjectOnStartupCheckBox.setOnAction(event -> {
+            InjectOnStartupCheckBox.setSelected(settings.IsInjectOnStartup);
+            AutoStartCheckBox.setSelected(settings.IsAutoStart);
+            ClassFileLoadMessagesCheckBox.setSelected(settings.IsClassFileLoadMessages);
+            ClassFileCollectionCheckBox.setSelected(settings.IsClassFileCollection);
+            ConsoleWindowCheckBox.setSelected(settings.IsConsoleWindow);
+            FuncLoopTimeoutSlider.setValue(settings.FuncLoopTimeout);
+            JNIENVTimeoutSlider.setValue(settings.JNIEnvTimeout);
+        });
     }
     @FXML
     public void SaveSettings() {
