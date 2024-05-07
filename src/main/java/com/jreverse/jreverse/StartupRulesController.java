@@ -198,6 +198,9 @@ public class StartupRulesController {
     public void LoadSettings() throws IOException {
         settings = StartupSettingsHelper.CheckAndLoadFile();
         if(Objects.isNull(settings)) return;
+        //---------------------------------------------------
+        //This is causing a bug. Change to another object not interacted with much
+        //---------------------------------------------------
         InjectOnStartupCheckBox.setOnAction(event -> {
             InjectOnStartupCheckBox.setSelected(settings.IsInjectOnStartup);
             AutoStartCheckBox.setSelected(settings.IsAutoStart);
