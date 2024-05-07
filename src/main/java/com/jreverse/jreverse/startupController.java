@@ -241,6 +241,8 @@ public class startupController {
                 System.out.println("Waiting for process kill");
             }
 
+
+
         } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
         }
@@ -248,15 +250,17 @@ public class startupController {
 
         //Auto Start
         if(isAutoStart){
+            System.out.println("Auto Start True!");
             try {
                 final String usePath = System.getProperty("user.dir");
 
                 StartupSettings settings = StartupSettingsHelper.CheckAndLoadFile();
                 if(Objects.isNull(settings)) {System.out.println("Startup Settings NULL"); return;}
-                if(settings.IsAutoStart) {WaitAndInject(true); return;}
+
 
                 int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules(), settings);
-                System.out.println("Wrote Startup: " + resf);
+                PipeManager.InitAPI();
+                System.out.println("Wrote Startup Code: " + resf);
                 JReverseBridge.StartAndInjectDLL("C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll", procpath);
                 Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
                 File style = new File(usePath + "/stylesheets/style.css");
@@ -267,6 +271,7 @@ public class startupController {
                 App.thestage.getIcons().add(image);
                 App.thestage.setScene(scene);
                 App.thestage.show();
+                return;
             } catch (IOException e){
                 System.out.println("Error with FXML: "+e.getMessage());
             }

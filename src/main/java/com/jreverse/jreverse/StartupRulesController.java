@@ -1,5 +1,6 @@
 package com.jreverse.jreverse;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -172,7 +173,9 @@ public class StartupRulesController {
         RulesListView.setItems(names);
     }
 
-    //Settings
+    //Important
+    @FXML
+    private TabPane MainPane;
 
     //FXML stuff
     @FXML
@@ -201,7 +204,7 @@ public class StartupRulesController {
         //---------------------------------------------------
         //This is causing a bug. Change to another object not interacted with much
         //---------------------------------------------------
-        InjectOnStartupCheckBox.setOnAction(event -> {
+        Platform.runLater(() -> {
             InjectOnStartupCheckBox.setSelected(settings.IsInjectOnStartup);
             AutoStartCheckBox.setSelected(settings.IsAutoStart);
             ClassFileLoadMessagesCheckBox.setSelected(settings.IsClassFileLoadMessages);
