@@ -41,9 +41,9 @@
                            </font></Tooltip>
                      </tooltip>
                   </CheckBox>
-                  <Slider fx:id="FuncLoopTimeoutSlider" blockIncrement="1000.0" layoutX="14.0" layoutY="232.0" majorTickUnit="1000.0" max="10000.0" minorTickCount="100" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2000.0">
+                  <Slider fx:id="FuncLoopTimeoutSlider" layoutX="14.0" layoutY="232.0" majorTickUnit="10.0" minorTickCount="1" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
                      <tooltip>
-                        <Tooltip text="Timeout to start JReverse's function loop on the target." wrapText="true">
+                        <Tooltip text="Timeout to start JReverse's function loop on the target. The function loop also includes the bypass rules so its best to keep this low" wrapText="true">
                            <font>
                               <Font size="14.0" />
                            </font></Tooltip>
@@ -59,7 +59,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Slider fx:id="JNIENVTimeoutSlider" blockIncrement="1000.0" layoutX="14.0" layoutY="313.0" majorTickUnit="10.0" minorTickCount="1" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
+                  <Slider fx:id="JNIENVTimeoutSlider" blockIncrement="1000.0" layoutX="14.0" layoutY="313.0" majorTickUnit="100.0" max="500.0" minorTickCount="10" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0">
                      <tooltip>
                         <Tooltip text="Time delay to get the JNIenv. This is crucial when collecting class data. lower values can cause a crash and higher there might be lost data" wrapText="true">
                            <font>

@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><settings autostart="true" classfilecollection="true" classfileloadmessages="true" consolewindow="true" funclooptimeout="2000" injectonstartup="true" jnienvtimeout="10"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><settings autostart="true" classfilecollection="true" classfileloadmessages="true" consolewindow="true" funclooptimeout="10" injectonstartup="true" jnienvtimeout="100"/>
