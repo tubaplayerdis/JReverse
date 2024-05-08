@@ -1,12 +1,12 @@
-#Only allow reload of already modified class files into program (ALLOW USER TO OVERLOAD THIS VIA SETTINGS).
 Todo:
 
-1. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc.
-2. Finish Settings IMPL
-3. Fix Resolve Bytecodes Crash
-4. Work on Rules. Current hypo is tisnpire app is blocking due to class verification. Make another dummy app to test
-2. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
-7. Implement Custom UI Elements with a darker theme.
+1. Finish settings impl on core
+2. Finish class file editor. Allow modification of classes that have not had bytecodes recorded
+3. Add ability to write class byteocdes to a folder as they are loaded. This would be done in Core
+4. Add other decompiler option IMPL
+5. Fix UI
+5. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc.
+6. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
 
 Features to impl:
 
