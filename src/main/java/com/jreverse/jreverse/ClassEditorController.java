@@ -1,11 +1,9 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javassist.bytecode.ClassFile;
 
 import javax.swing.*;
@@ -30,9 +28,24 @@ public class ClassEditorController {
     @FXML
     private TextArea EditPreviewArea;
 
+    @FXML
+    private Label BClassLabel;
+
+    @FXML
+    private Label AvdmodewarnLabel;
+
     private final TreeItem<String> emptyitem = new TreeItem<String>("");
 
     private String reDefdata;
+
+    public void initialize(){
+        Platform.runLater(() -> {
+            if(!SettingsViewController.AVDMODE) return;
+            AvdmodewarnLabel.setVisible(true);
+            BClassLabel.setText("All Classes");
+            isAdvancedMode = true;
+        });
+    }
 
     private void addClass(TreeItem<String> parent, String className) {
         String[] parts = className.split("/");
@@ -60,10 +73,22 @@ public class ClassEditorController {
     private void RefreshClasses(){
         ByteCodedClassesTreeView.setRoot(emptyitem);
         TreeItem<String> rootItem = new TreeItem<String>("Bytecoded Classes");
-        String[] loadedclasses = JReverseBridge.CallCoreFunction("getClassFileNames", JReverseBridge.NoneArg);
-        Arrays.sort(loadedclasses);
-        for (String str : loadedclasses) {
-            if (str.length() != 1) addClass(rootItem, str);
+        if (isAdvancedMode) {
+            rootItem.setValue("All Classes");
+            String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
+            Arrays.sort(loadedclasses);
+            for (String str : loadedclasses) {
+                if (str.contains("[")) str = str.replace("[", "");
+                if (str.contains(";")) str = str.replace(";", "");
+                str = str.replaceFirst("L", "");
+                if (str.length() != 1) addClass(rootItem, str);
+            }
+        } else {
+            String[] loadedclasses = JReverseBridge.CallCoreFunction("getClassFileNames", JReverseBridge.NoneArg);
+            Arrays.sort(loadedclasses);
+            for (String str : loadedclasses) {
+                if (str.length() != 1) addClass(rootItem, str);
+            }
         }
         ByteCodedClassesTreeView.setRoot(rootItem);
     }
@@ -152,6 +177,10 @@ public class ClassEditorController {
         //Decompile Class
         String[] ByteArgs = {classname};
         String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
+        if(Objects.equals(ClassByteCodes[0], "NOT FOUND")){
+            ClassDecompArea.setText("Bytecodes not found!");
+            return;
+        }
         ClassDecompArea.setWrapText(false);
 
         System.out.println(ClassByteCodes[1]);

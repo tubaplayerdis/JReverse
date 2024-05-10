@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.ClassEditorController">
    <children>
-      <Label layoutX="15.0" layoutY="58.0" text="Bytecoded Classes:">
+      <Label fx:id="BClassLabel" layoutX="15.0" layoutY="58.0" text="Bytecoded Classes:">
          <font>
             <Font size="16.0" />
          </font>
@@ -21,7 +21,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <TextArea fx:id="ClassDecompArea" editable="false" layoutX="305.0" layoutY="87.0" prefHeight="561.0" prefWidth="375.0" promptText="Select a class from bytecoded classes" />
+      <TextArea fx:id="ClassDecompArea" editable="false" layoutX="305.0" layoutY="87.0" prefHeight="561.0" prefWidth="375.0" promptText="Select a class from classes" />
       <Label layoutX="688.0" layoutY="58.0" text="Edit Preview">
          <font>
             <Font size="16.0" />
@@ -32,12 +32,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="CurrentClassTextField" layoutX="196.0" layoutY="14.0" prefHeight="35.0" prefWidth="791.0" promptText="Select a class from bytecoded classes">
+      <TextField fx:id="CurrentClassTextField" layoutX="196.0" layoutY="14.0" prefHeight="35.0" prefWidth="791.0" promptText="Select a class from classes">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <TextArea fx:id="EditPreviewArea" editable="false" layoutX="688.0" layoutY="87.0" prefHeight="561.0" prefWidth="298.0" promptText="Select a class from bytecoded classes" />
+      <TextArea fx:id="EditPreviewArea" editable="false" layoutX="688.0" layoutY="87.0" prefHeight="561.0" prefWidth="298.0" promptText="Select a class from classes" />
       <Button layoutX="14.0" layoutY="618.0" mnemonicParsing="false" onMouseClicked="#RefreshClasses" prefHeight="30.0" prefWidth="284.0" text="Refresh">
          <font>
             <Font size="14.0" />
@@ -48,7 +48,10 @@
             <Font size="14.0" />
          </font>
          <tooltip>
-            <Tooltip text="All current and future instacnes will be affected by changes" />
+            <Tooltip text="All current and future instacnes will be affected by changes">
+               <font>
+                  <Font size="14.0" />
+               </font></Tooltip>
          </tooltip>
       </Button>
       <Button accessibleText="Resolves classes with bytecodes present, but not class names" layoutX="14.0" layoutY="656.0" mnemonicParsing="false" onMouseClicked="#ResolveClasses" prefHeight="30.0" prefWidth="284.0" text="Resolve Unknowns">
@@ -67,8 +70,16 @@
             <Font size="14.0" />
          </font>
          <tooltip>
-            <Tooltip text="Only future instacnes will be affected by changes" />
+            <Tooltip text="Only future instacnes will be affected by changes">
+               <font>
+                  <Font size="14.0" />
+               </font></Tooltip>
          </tooltip>
       </Button>
+      <Label fx:id="AvdmodewarnLabel" text="ADVANCED MODE" textFill="RED" visible="false">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.SettingsViewController">
    <children>
       <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
@@ -29,8 +28,8 @@
                               <Tooltip text="Changes the amount of time to wait for a response from the application. 0 = disabeled" />
                            </tooltip>
                         </Label>
-                        <Slider fx:id="CallbackLimitSlider" blockIncrement="1000.0" layoutX="43.0" layoutY="55.0" majorTickUnit="1000.0" max="10000.0" minorTickCount="100" orientation="VERTICAL" prefHeight="292.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2000.0" />
-                        <Button layoutX="123.0" layoutY="328.0" mnemonicParsing="false" onMouseClicked="#ApplySettings" prefHeight="25.0" prefWidth="132.0" text="Apply Settings" />
+                        <Slider fx:id="CallbackLimitSlider" blockIncrement="1000.0" layoutX="43.0" layoutY="40.0" majorTickUnit="1000.0" max="10000.0" minorTickCount="100" orientation="VERTICAL" prefHeight="285.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2000.0" />
+                        <Button layoutX="12.0" layoutY="334.0" mnemonicParsing="false" onMouseClicked="#ApplySettings" prefHeight="23.0" prefWidth="576.0" text="Apply Settings" />
                         <Label layoutX="127.0" layoutY="14.0" text="Decompiler">
                            <font>
                               <Font size="14.0" />
@@ -57,16 +56,8 @@
                               <Tooltip text="Decompiler used to decompile bytecode of classes" />
                            </tooltip>
                         </Label>
-                        <TextArea editable="false" layoutX="269.0" layoutY="40.0" prefHeight="313.0" prefWidth="315.0" text="Developed by (Insert) on Github.                                     JReverse is an injectable client for applications using the JVM(Java Virtual Machine). The goal of JReverse was to develop a way to aid in the development of other injectable clients. JReverse's UI is written in Java, and the injectable/core is written in C++. JReverse uses IPC(Inter Proccess Communication) to communicate with the injected Application" wrapText="true" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="Advanced">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox layoutX="12.0" layoutY="11.0" mnemonicParsing="false" text="Enable all classes in the Class Editor">
+                        <TextArea editable="false" layoutX="268.0" layoutY="40.0" prefHeight="282.0" prefWidth="316.0" text="Developed by (Insert) on Github.                                     JReverse is an injectable client for applications using the JVM(Java Virtual Machine). The goal of JReverse was to develop a way to aid in the development of other injectable clients. JReverse's UI is written in Java, and the injectable/core is written in C++. JReverse uses IPC(Inter Proccess Communication) to communicate with the injected Application" wrapText="true" />
+                        <CheckBox fx:id="AVDModeCheckBox" layoutX="126.0" layoutY="302.0" mnemonicParsing="false" text="Advanced Mode">
                            <font>
                               <Font size="14.0" />
                            </font>

@@ -8,4 +8,6 @@ public class StartupSettings {
     public boolean IsConsoleWindow;
     public int FuncLoopTimeout;
     public int JNIEnvTimeout;
+    public boolean IsDynamicClassFileCollection;
+    public String DynamicClassFileCollectionPath;
 }

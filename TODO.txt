@@ -1,8 +1,8 @@
 Todo:
 
-1. Finish settings impl on core
-2. Finish class file editor. Allow modification of classes that have not had bytecodes recorded
-3. Add ability to write class byteocdes to a folder as they are loaded. This would be done in Core
+1. Retransform Classes? for Class editor.
+2. Save runtime settings.
+3. Add ability to write class byteocdes to a folder as they are loaded. This would be done in Core - Startup Settings IMPL done
 4. Add other decompiler option IMPL
 5. Add ability to load jars/classes
 5. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc.

@@ -24,8 +24,71 @@ public class StartupSettingsHelper {
         return Files.exists(SettingsPath);
     }
 
+    private static void VerifySettings() {
+        System.out.println("Verifying Settings File!");
+        if(!CheckSettingsFile()){
+            if(!CreateSettingsFile()){
+                System.out.println("Failed to create settings file!");
+            }
+        }
+        //Load File
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (javax.xml.parsers.ParserConfigurationException e){
+            System.out.println("Could not Create Parser Instance! Error: "+e.getMessage());
+            return;
+        }
+
+        if(Objects.isNull(builder)){
+            System.out.println("Null builder");
+            return;
+        }
+
+        //Parse data
+        Document doc = null;
+        try {
+            doc = builder.parse(SettingsPath.toString());
+        } catch (IOException | SAXException e){
+            System.out.println("Document was null: "+e.getMessage());
+            return;
+        }
+
+        // Step 3: Read Data
+        // For example, let's print out all the <title> elements in the XML
+        NodeList mainNodes = doc.getElementsByTagName("settings");
+
+        File xmlFile = SettingsPath.toFile();
+        StartupSettings settings = new StartupSettings();
+
+        //Check null of first element
+        Node settingsnode = mainNodes.item(0);
+        if(Objects.isNull(settingsnode)){
+            System.out.println("Settings node is empty!");
+            return;
+        }
+        NamedNodeMap attributes = settingsnode.getAttributes();
+        Node a = attributes.getNamedItem("autostart");
+        Node b = attributes.getNamedItem("injectonstartup");
+        Node c = attributes.getNamedItem("classfilecollection");
+        Node d = attributes.getNamedItem("classfileloadmessages");
+        Node e = attributes.getNamedItem("consolewindow");
+        Node f = attributes.getNamedItem("funclooptimeout");
+        Node g = attributes.getNamedItem("jnienvtimeout");
+        Node h = attributes.getNamedItem("dymanicclassfilecollection");
+        Node i = attributes.getNamedItem("dymanicclassfilecollectionpath");
+
+        if (Objects.isNull(a) || Objects.isNull(b) || Objects.isNull(c) || Objects.isNull(d) || Objects.isNull(e) || Objects.isNull(f) || Objects.isNull(g) || Objects.isNull(h) || Objects.isNull(i)){
+            //Not my proudest if
+            System.out.println("Settings Invalid! Making new file with defaults!");
+            CreateSettingsFile();
+        }
+    }
+
     public static boolean CreateSettingsFile() {
         try{
+            Files.deleteIfExists(SettingsPath);
             Files.createFile(SettingsPath);
         } catch (IOException e){
             System.out.println("Failed to create settings file!: "+e.getMessage());
@@ -54,8 +117,10 @@ public class StartupSettingsHelper {
         rootSettings.setAttribute("classfilecollection", "true");
         rootSettings.setAttribute("classfileloadmessages", "true");
         rootSettings.setAttribute("consolewindow", "true");
-        rootSettings.setAttribute("funclooptimeout", "2000");
-        rootSettings.setAttribute("jnienvtimeout", "10");
+        rootSettings.setAttribute("funclooptimeout", "10");
+        rootSettings.setAttribute("jnienvtimeout", "100");
+        rootSettings.setAttribute("dymanicclassfilecollection", "false");
+        rootSettings.setAttribute("dymanicclassfilecollectionpath", "None");
         document.appendChild(rootSettings);
 
         // Create a Transformer
@@ -92,6 +157,8 @@ public class StartupSettingsHelper {
                 System.out.println("Failed to create settings file!");
             }
         }
+        VerifySettings();
+
         //Load File
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
@@ -129,6 +196,8 @@ public class StartupSettingsHelper {
             System.out.println("Settings node is empty!");
             return null;
         }
+
+
         NamedNodeMap attributes = settingsnode.getAttributes();
         Node a = attributes.getNamedItem("autostart");
         Node b = attributes.getNamedItem("injectonstartup");
@@ -137,6 +206,8 @@ public class StartupSettingsHelper {
         Node e = attributes.getNamedItem("consolewindow");
         Node f = attributes.getNamedItem("funclooptimeout");
         Node g = attributes.getNamedItem("jnienvtimeout");
+        Node h = attributes.getNamedItem("dymanicclassfilecollection");
+        Node i = attributes.getNamedItem("dymanicclassfilecollectionpath");
 
         settings.IsAutoStart = Boolean.parseBoolean(a.getNodeValue());
         settings.IsInjectOnStartup = Boolean.parseBoolean(b.getNodeValue());
@@ -145,6 +216,8 @@ public class StartupSettingsHelper {
         settings.IsConsoleWindow = Boolean.parseBoolean(e.getNodeValue());
         settings.FuncLoopTimeout = Integer.parseInt(f.getNodeValue());
         settings.JNIEnvTimeout = Integer.parseInt(g.getNodeValue());
+        settings.IsDynamicClassFileCollection = Boolean.parseBoolean(h.getNodeValue());
+        settings.DynamicClassFileCollectionPath = i.getNodeValue();
         return settings;
     }
 
@@ -179,6 +252,8 @@ public class StartupSettingsHelper {
         rootSettings.setAttribute("consolewindow", Boolean.toString(settings.IsConsoleWindow));
         rootSettings.setAttribute("funclooptimeout", Integer.toString(settings.FuncLoopTimeout));
         rootSettings.setAttribute("jnienvtimeout", Integer.toString(settings.JNIEnvTimeout));
+        rootSettings.setAttribute("dymanicclassfilecollection", Boolean.toString(settings.IsDynamicClassFileCollection));
+        rootSettings.setAttribute("dymanicclassfilecollection", settings.DynamicClassFileCollectionPath);
         document.appendChild(rootSettings);
 
         // Create a Transformer
