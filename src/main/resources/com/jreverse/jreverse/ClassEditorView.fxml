@@ -43,7 +43,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="688.0" layoutY="656.0" mnemonicParsing="false" onMouseClicked="#RedefineClass" prefHeight="30.0" prefWidth="145.0" text="Redefine Class">
+      <Button layoutX="688.0" layoutY="656.0" mnemonicParsing="false" onMouseClicked="#RedefineClass" prefHeight="30.0" prefWidth="298.0" text="Redefine Class">
          <font>
             <Font size="14.0" />
          </font>
@@ -65,17 +65,6 @@
          </font>
       </Button>
       <TreeView fx:id="ByteCodedClassesTreeView" layoutX="14.0" layoutY="87.0" onMouseClicked="#SelectClass" prefHeight="525.0" prefWidth="284.0" />
-      <Button layoutX="841.0" layoutY="656.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" text="Retransform Class">
-         <font>
-            <Font size="14.0" />
-         </font>
-         <tooltip>
-            <Tooltip text="Only future instacnes will be affected by changes">
-               <font>
-                  <Font size="14.0" />
-               </font></Tooltip>
-         </tooltip>
-      </Button>
       <Label fx:id="AvdmodewarnLabel" text="ADVANCED MODE" textFill="RED" visible="false">
          <font>
             <Font name="Consolas" size="12.0" />

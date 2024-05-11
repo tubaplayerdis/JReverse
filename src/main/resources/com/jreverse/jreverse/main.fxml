@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
@@ -41,12 +42,12 @@
                 <Font size="25.0" />
             </font>
         </Label>
-      <Label layoutX="466.0" layoutY="625.0" text="Instances:">
+      <Label layoutX="579.0" layoutY="625.0" text="Instances:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="InstacneInfoBox" editable="false" layoutX="542.0" layoutY="625.0" prefHeight="25.0" prefWidth="170.0" />
+      <TextField fx:id="InstacneInfoBox" editable="false" layoutX="659.0" layoutY="625.0" prefHeight="25.0" prefWidth="53.0" />
       <TextArea fx:id="MethodDecompArea" editable="false" layoutX="975.0" layoutY="62.0" prefHeight="553.0" prefWidth="298.0" promptText="Select A Method To Decompile">
          <font>
             <Font size="10.0" />
@@ -84,12 +85,23 @@
             </TextField>
          </items>
       </ToolBar>
-      <Label layoutX="723.0" layoutY="625.0" text="Utlilities:">
+      <Label layoutX="1027.0" layoutY="625.0" text="Utlilities:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Button layoutX="800.0" layoutY="625.0" mnemonicParsing="false" onMouseClicked="#dumpClass" prefHeight="25.0" prefWidth="170.0" text="Dump Current Class" />
-      <Button layoutX="800.0" layoutY="655.0" mnemonicParsing="false" onMouseClicked="#dumpSouce" prefHeight="25.0" prefWidth="170.0" text="Dump Souce Code" />
+      <Button layoutX="1096.0" layoutY="625.0" mnemonicParsing="false" onMouseClicked="#dumpClass" prefHeight="25.0" prefWidth="170.0" text="Dump Current Class" />
+      <Button layoutX="1096.0" layoutY="655.0" mnemonicParsing="false" onMouseClicked="#dumpSouce" prefHeight="25.0" prefWidth="170.0" text="Dump Souce Code" />
+      <CheckBox fx:id="IsInterfaceCheckBox" layoutX="466.0" layoutY="625.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="Interface?">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <Label layoutX="723.0" layoutY="625.0" text="Version: ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="ClassVersionInfoBox" editable="false" layoutX="784.0" layoutY="625.0" prefHeight="25.0" prefWidth="53.0" />
     </children>
 </Pane>

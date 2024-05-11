@@ -43,6 +43,12 @@ public class MainController {
     @FXML
     private Button ClassEditorButton;
 
+    @FXML
+    private CheckBox IsInterfaceCheckBox;
+
+    @FXML
+    private TextField ClassVersionInfoBox;
+
     public static String CurrentClassName = "";
 
     public final String usePath = System.getProperty("user.dir");
@@ -178,7 +184,12 @@ public class MainController {
         InstanceList.addAll(Instances);
         //Add to info
         InstacneInfoBox.setText(Instances[0]);
-        System.out.println(Instances[0]);
+
+        System.out.println("Extra data on class: "+ClassArgs[0]);
+        String[] ExtraData = JReverseBridge.CallCoreFunction("getClassExtraData", ClassArgs);
+        for(String str : ExtraData){
+            System.out.println(str);
+        }
 
         String[] ByteArgs = {MainController.CurrentClassName};
         String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
