@@ -1,6 +1,9 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import com.tbdis.sstf.Parser;
+import com.tbdis.sstf.ParserException;
+import com.tbdis.sstf.Setting;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -60,6 +63,27 @@ public class MainController {
         } else {
             ClassEditorButton.setDisable(false);//CHANGE IF NEEDED
         }
+
+        Setting[] settings = new Setting[2];
+        settings[0] = new Setting("Sigma", "Sigma");
+        settings[1] = new Setting("Sigma", "Sigma");
+        File file = new File("settings.txt");
+        System.out.println("made file");
+
+        //Writer.WriteSettings(file, settings);
+
+        Setting[] goters = null;
+        try {
+            goters = Parser.ParseSettings(file);
+        } catch (ParserException e) {
+            System.out.println(e.getMessage());
+        }
+        assert goters != null;
+        System.out.println("len goters: "+goters.length);
+        for(Setting setting : goters){
+            System.out.println("Name: "+setting.Name+" Data: "+setting.Data);
+        }
+
     }
 
     @FXML

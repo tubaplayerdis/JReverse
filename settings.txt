@@ -1,0 +1,3 @@
+Name│Jimmy
+Age│18
+Location│Chicago
