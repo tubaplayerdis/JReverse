@@ -1,3 +1,2 @@
-Name│Jimmy
-Age│18
-Location│Chicago
+Sigma│Sigma
+Sigma│Sigma

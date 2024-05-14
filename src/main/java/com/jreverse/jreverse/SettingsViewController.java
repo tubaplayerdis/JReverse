@@ -45,7 +45,24 @@ public class SettingsViewController {
         LoggingLevChoiceBox.setItems(InitLevelList);
 
         //Load From Settings File
+        /*
+        Platform.runLater(() -> {
+            Setting[] settings = null;
+            try {
+                settings = Parser.ParseSettings("runtimesettings");
+            } catch (ParserException e) {
+                //Assume defaults by doing nothing
+            }
+            for(Setting setting : settings){
+                switch (setting.Name){
+                    case "decompop":
 
+                    default:
+                        continue;
+                }
+            }
+        });
+         */
     }
 
     public static DecompilerOption DecompOption = DecompilerOption.CFR;
@@ -121,5 +138,9 @@ public class SettingsViewController {
         AVDMODE = AVDModeCheckBox.isSelected();
 
         System.out.println("Set the Logging Level");
+    }
+
+    private void SetOptionsByString(String level, String decompop, String loggingop) {
+
     }
 }

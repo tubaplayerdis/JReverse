@@ -1,6 +1,7 @@
 Todo:
 
-1. Retransform Classes? for Class editor.
+0. Tooltips and Collected Class File Selector as JReverse Stores multiple copies of bytecodes
+1. Retransform Classes? for Class editor. - IMPL on main page
 2. Save runtime settings.
 3. Add ability to write class byteocdes to a folder as they are loaded. This would be done in Core - Startup Settings IMPL done
 4. Add other decompiler option IMPL

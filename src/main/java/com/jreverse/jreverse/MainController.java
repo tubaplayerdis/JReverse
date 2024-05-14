@@ -1,9 +1,8 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
-import com.tbdis.sstf.Parser;
-import com.tbdis.sstf.ParserException;
-import com.tbdis.sstf.Setting;
+import com.tbdis.sstf.*;
+import com.tbdis.sstf.Writer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -44,33 +43,33 @@ public class MainController {
     private TextArea MethodDecompArea;
 
     @FXML
-    private Button ClassEditorButton;
-
-    @FXML
     private CheckBox IsInterfaceCheckBox;
 
     @FXML
     private TextField ClassVersionInfoBox;
+
+    @FXML
+    private CheckBox IsModifyableCheckBox;
+    @FXML
+    private CheckBox IsArrayClassCheckBox;
+    @FXML
+    private TextField AccessInfoBox;
+    @FXML
+    private TextField StatusInfoBox;
 
     public static String CurrentClassName = "";
 
     public final String usePath = System.getProperty("user.dir");
 
 
-    public void initialize() {
-        if (App.isOnStartup == true) {
-            ClassEditorButton.setDisable(false);
-        } else {
-            ClassEditorButton.setDisable(false);//CHANGE IF NEEDED
-        }
-
+    public void initialize() throws WriterException {
         Setting[] settings = new Setting[2];
         settings[0] = new Setting("Sigma", "Sigma");
         settings[1] = new Setting("Sigma", "Sigma");
         File file = new File("settings.txt");
-        System.out.println("made file");
+        System.out.println("Testing Settings System");
 
-        //Writer.WriteSettings(file, settings);
+        Writer.WriteSettings(file, settings);
 
         Setting[] goters = null;
         try {
@@ -211,8 +210,22 @@ public class MainController {
 
         System.out.println("Extra data on class: "+ClassArgs[0]);
         String[] ExtraData = JReverseBridge.CallCoreFunction("getClassExtraData", ClassArgs);
-        for(String str : ExtraData){
-            System.out.println(str);
+        /*
+         * IsInterface
+         * Version
+         * IsModifyable
+         * IsArrayClass
+         * Access Flags - https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html - These are already interpreted by the core
+         * Status Int - https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#GetClassStatus  - These are already interpreted by the core
+         */
+        if(ExtraData.length >= 6)
+        {
+            IsInterfaceCheckBox.setSelected(Boolean.parseBoolean(ExtraData[0]));
+            ClassVersionInfoBox.setText(ExtraData[1]);
+            IsModifyableCheckBox.setSelected(Boolean.parseBoolean(ExtraData[2]));
+            IsArrayClassCheckBox.setSelected(Boolean.parseBoolean(ExtraData[3]));
+            AccessInfoBox.setText(ExtraData[4]);
+            StatusInfoBox.setText(ExtraData[5]);
         }
 
         String[] ByteArgs = {MainController.CurrentClassName};
@@ -336,6 +349,22 @@ public class MainController {
         stage.setTitle("JReverse Scripting Interface");
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    private void RetransformClass(){
+        if(CurrentClassName.isEmpty() || CurrentClassName.isBlank())
+        {
+            System.out.println("Class Name Empty for Retransform!");
+            return;
+        }
+        String[] args = {CurrentClassName};
+        JReverseBridge.CallCoreFunction("retransformClass", args);
+    }
+    @FXML
+    private void KillJReverseSafe()
+    {
+
     }
 
     @FXML
