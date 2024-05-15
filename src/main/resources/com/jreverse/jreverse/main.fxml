@@ -7,10 +7,8 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -40,9 +38,9 @@
                 <Font size="30.0" />
             </font>
         </Label>
-        <Label layoutX="975.0" layoutY="37.0" prefHeight="45.0" prefWidth="105.0" text="Decomp:">
+        <Label layoutX="973.0" layoutY="37.0" prefHeight="45.0" prefWidth="124.0" text="Decomp:">
             <font>
-                <Font size="25.0" />
+                <Font size="30.0" />
             </font>
         </Label>
       <Label layoutX="719.0" layoutY="677.0" text="Instances:">
@@ -113,19 +111,5 @@
          </font>
       </Label>
       <TextField fx:id="StatusInfoBox" editable="false" layoutX="1038.0" layoutY="677.0" prefHeight="25.0" prefWidth="235.0" />
-      <Spinner layoutX="1117.0" layoutY="50.0">
-         <tooltip>
-            <Tooltip text="JReverse collects bytecodes every time they are loaded by the jvm and stores them. This causes multiple versions to be present in the database. select one manually, if not it is assumed as 0 ">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Tooltip>
-         </tooltip>
-      </Spinner>
-      <Label layoutX="1117.0" layoutY="25.0" prefHeight="25.0" prefWidth="132.0" text="Collected Version">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
     </children>
 </Pane>

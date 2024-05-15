@@ -170,7 +170,7 @@ public class MainController {
     }
 
     @FXML
-    private void populateClassInfo() throws IOException, InterruptedException {
+    private void populateClassInfo() throws IOException {
         //Deconstuct Tree into String
         StringBuilder classpath = new StringBuilder();
         TreeItem<String> selected = loadedClasTree.getSelectionModel().getSelectedItem();
@@ -352,7 +352,7 @@ public class MainController {
     }
 
     @FXML
-    private void RetransformClass(){
+    private void RetransformClass() throws IOException {
         if(CurrentClassName.isEmpty() || CurrentClassName.isBlank())
         {
             System.out.println("Class Name Empty for Retransform!");
@@ -360,6 +360,12 @@ public class MainController {
         }
         String[] args = {CurrentClassName};
         JReverseBridge.CallCoreFunction("retransformClass", args);
+        String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", args);
+        if (ClassByteCodes[1].equals("Class File Not Found")) {
+            MethodDecompArea.setText("Class File for: "+MainController.CurrentClassName+" was not found!");
+            return;
+        }
+        MethodDecompArea.setText(JReverseDecompiler.DecompileBytecodes(ClassByteCodes[1]));
     }
     @FXML
     private void KillJReverseSafe()

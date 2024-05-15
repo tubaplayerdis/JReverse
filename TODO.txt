@@ -1,12 +1,12 @@
 Todo:
 
-0. Tooltips and Collected Class File Selector as JReverse Stores multiple copies of bytecodes
-1. Retransform Classes? for Class editor. - IMPL on main page
+1. Fix access and status flag string issues.
+1.5 Source Code Dump option using retransform classes to get everything
 2. Save runtime settings.
 3. Add ability to write class byteocdes to a folder as they are loaded. This would be done in Core - Startup Settings IMPL done
 4. Add other decompiler option IMPL
 5. Add ability to load jars/classes
-5. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc.
+5. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc. Just dump System out
 6. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
 
 Features to impl:
