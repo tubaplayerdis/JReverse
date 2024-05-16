@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.SourceCodeDumpViewController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Exclusions">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <VBox layoutX="14.0" layoutY="39.0" prefHeight="159.0" prefWidth="206.0" spacing="5.0">
+         <children>
+            <Label text="Standard Exclusions:">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="SunMicrosystemsExclusionCheckBox" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" selected="true" text="Sun Microsystems Classes">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+            <CheckBox fx:id="JavaLanguagesExclusionCheckBox" mnemonicParsing="false" selected="true" text="Java Language Classes">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+            <CheckBox fx:id="JavafxExclusionCheckBox" layoutX="10.0" layoutY="40.0" mnemonicParsing="false" selected="true" text="Javafx Classes">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+            <CheckBox fx:id="JavaxExclusionCheckBox" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" selected="true" text="Javax Classes">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+            <CheckBox fx:id="JDKExclusionCheckBox" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" selected="true" text="JDK Classes">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+         </children>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </VBox>
+      <ListView fx:id="CustomExclusionsListView" layoutX="17.0" layoutY="227.0" prefHeight="129.0" prefWidth="294.0" />
+      <Label layoutX="17.0" layoutY="200.0" text="Custom Exclusions:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="17.0" layoutY="361.0" onKeyReleased="#AddCustomExclusionKeyRelease" prefHeight="25.0" prefWidth="185.0" promptText="JNI class name and press enter" />
+      <Button layoutX="205.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#DeleteSelectedCustomExclusion" prefHeight="25.0" prefWidth="106.0" text="Delete Selected" />
+      <Label layoutX="341.0" layoutY="14.0" text="Options">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <VBox layoutX="341.0" layoutY="39.0" prefHeight="176.0" prefWidth="237.0" spacing="5.0">
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+         <children>
+            <Separator prefWidth="200.0" />
+            <Button mnemonicParsing="false" onMouseClicked="#SelectOutputDirectory" prefHeight="25.0" prefWidth="238.0" text="Select Output Directory" />
+            <TextField fx:id="OutputDirectoryField" promptText="Select an output directory" />
+            <Separator prefWidth="200.0" />
+            <CheckBox mnemonicParsing="false" text="Refactor Missing Class Bytecodes">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+            <CheckBox layoutX="10.0" layoutY="91.0" mnemonicParsing="false" text="Resolve Unknown Classes">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+            <Separator layoutX="10.0" layoutY="83.0" prefWidth="200.0" />
+         </children>
+      </VBox>
+      <ProgressBar fx:id="SouceCodeDumpProgressBar" layoutX="341.0" layoutY="345.0" prefHeight="33.0" prefWidth="237.0" progress="0.0" />
+      <Button layoutX="341.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#DumpSourceCodeClick" prefHeight="81.0" prefWidth="237.0" text="Dump Souce Code!">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="341.0" layoutY="313.0" text="Progress:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -48,7 +48,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="InstacneInfoBox" editable="false" layoutX="792.0" layoutY="677.0" prefHeight="25.0" prefWidth="176.0" />
+      <TextField fx:id="InstacneInfoBox" editable="false" layoutX="792.0" layoutY="677.0" prefHeight="25.0" prefWidth="115.0" />
       <TextArea fx:id="MethodDecompArea" editable="false" layoutX="975.0" layoutY="84.0" prefHeight="553.0" prefWidth="298.0" promptText="Select A Method To Decompile">
          <font>
             <Font size="10.0" />
@@ -63,7 +63,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="ClassVersionInfoBox" editable="false" layoutX="792.0" layoutY="642.0" prefHeight="25.0" prefWidth="176.0" />
+      <TextField fx:id="ClassVersionInfoBox" editable="false" layoutX="792.0" layoutY="642.0" prefHeight="25.0" prefWidth="115.0" />
       <MenuBar prefHeight="25.0" prefWidth="1280.0">
         <menus>
           <Menu mnemonicParsing="false" text="JReverse">
@@ -99,17 +99,17 @@
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <Label layoutX="975.0" layoutY="642.0" text="Access:">
+      <Label layoutX="918.0" layoutY="642.0" text="Access Flags:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="AccessInfoBox" editable="false" layoutX="1038.0" layoutY="642.0" prefHeight="25.0" prefWidth="235.0" />
-      <Label layoutX="977.0" layoutY="677.0" text="Status:">
+      <TextField fx:id="AccessInfoBox" editable="false" layoutX="1015.0" layoutY="642.0" prefHeight="25.0" prefWidth="258.0" />
+      <Label layoutX="920.0" layoutY="677.0" text="Status Flags:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="StatusInfoBox" editable="false" layoutX="1038.0" layoutY="677.0" prefHeight="25.0" prefWidth="235.0" />
+      <TextField fx:id="StatusInfoBox" editable="false" layoutX="1015.0" layoutY="677.0" prefHeight="25.0" prefWidth="258.0" />
     </children>
 </Pane>
