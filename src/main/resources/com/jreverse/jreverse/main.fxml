@@ -84,7 +84,7 @@
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#RetransformClass" text="Retransform Class" />
               <MenuItem mnemonicParsing="false" onAction="#dumpClass" text="Class Dump" />
-                  <MenuItem mnemonicParsing="false" onAction="#dumpSouce" text="Source Dump" />
+                  <MenuItem mnemonicParsing="false" onAction="#OpenSourceCodeDumpView" text="Source Dump" />
             </items>
           </Menu>
         </menus>

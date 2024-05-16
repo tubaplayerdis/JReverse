@@ -383,6 +383,23 @@ public class MainController {
 
     }
 
+    @FXML
+    private void OpenSourceCodeDumpView() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("SouceCodeDumpView.fxml"));
+        /*
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+         */
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Stage stage = new Stage();
+        Image image = new Image(usePath+"/icon/JReverseIcon.png");
+        stage.getIcons().add(image);
+        stage.setTitle("JReverse Source Code Dump");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     private static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
