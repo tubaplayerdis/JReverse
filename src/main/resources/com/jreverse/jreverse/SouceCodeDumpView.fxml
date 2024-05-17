@@ -51,25 +51,30 @@
                   <Font size="14.0" />
                </font>
             </CheckBox>
+            <CheckBox fx:id="LambdaExclusionCheckBox" layoutX="10.0" layoutY="141.0" mnemonicParsing="false" selected="true" text="Lambdas">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
          </children>
          <padding>
             <Insets top="5.0" />
          </padding>
       </VBox>
-      <ListView fx:id="CustomExclusionsListView" layoutX="17.0" layoutY="227.0" prefHeight="129.0" prefWidth="294.0" />
-      <Label layoutX="17.0" layoutY="200.0" text="Custom Exclusions:">
+      <ListView fx:id="CustomExclusionsListView" layoutX="17.0" layoutY="248.0" prefHeight="108.0" prefWidth="294.0" />
+      <Label layoutX="17.0" layoutY="222.0" text="Custom Exclusions:">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="17.0" layoutY="361.0" onKeyReleased="#AddCustomExclusionKeyRelease" prefHeight="25.0" prefWidth="185.0" promptText="JNI class name and press enter" />
+      <TextField fx:id="CustomExclusionTextField" layoutX="17.0" layoutY="361.0" onKeyReleased="#AddCustomExclusionKeyRelease" prefHeight="25.0" prefWidth="185.0" promptText="JNI class name and press enter" />
       <Button layoutX="205.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#DeleteSelectedCustomExclusion" prefHeight="25.0" prefWidth="106.0" text="Delete Selected" />
       <Label layoutX="341.0" layoutY="14.0" text="Options">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <VBox layoutX="341.0" layoutY="39.0" prefHeight="176.0" prefWidth="237.0" spacing="5.0">
+      <VBox layoutX="341.0" layoutY="39.0" prefHeight="142.0" prefWidth="237.0" spacing="5.0">
          <padding>
             <Insets top="5.0" />
          </padding>
@@ -78,12 +83,12 @@
             <Button mnemonicParsing="false" onMouseClicked="#SelectOutputDirectory" prefHeight="25.0" prefWidth="238.0" text="Select Output Directory" />
             <TextField fx:id="OutputDirectoryField" promptText="Select an output directory" />
             <Separator prefWidth="200.0" />
-            <CheckBox mnemonicParsing="false" text="Refactor Missing Class Bytecodes">
+            <CheckBox fx:id="RefactorMissingClassBytecodesCheckBox" mnemonicParsing="false" selected="true" text="Refactor Missing Class Bytecodes">
                <font>
                   <Font size="14.0" />
                </font>
             </CheckBox>
-            <CheckBox layoutX="10.0" layoutY="91.0" mnemonicParsing="false" text="Resolve Unknown Classes">
+            <CheckBox fx:id="ResolveAllUnknownBytecodes" layoutX="10.0" layoutY="91.0" mnemonicParsing="false" selected="true" text="Resolve Unknown Classes">
                <font>
                   <Font size="14.0" />
                </font>
@@ -92,14 +97,24 @@
          </children>
       </VBox>
       <ProgressBar fx:id="SouceCodeDumpProgressBar" layoutX="341.0" layoutY="345.0" prefHeight="33.0" prefWidth="237.0" progress="0.0" />
-      <Button layoutX="341.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#DumpSourceCodeClick" prefHeight="81.0" prefWidth="237.0" text="Dump Souce Code!">
+      <Button layoutX="341.0" layoutY="242.0" mnemonicParsing="false" onMouseClicked="#DumpSourceCodeClick" prefHeight="56.0" prefWidth="237.0" text="Dump Souce Code!">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="341.0" layoutY="313.0" text="Progress:">
+      <Label fx:id="ProgressLabel" layoutX="341.0" layoutY="313.0" text="Progress:">
          <font>
             <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="WarningLabel" layoutX="341.0" layoutY="169.0" text="Warning!" textFill="RED" visible="false">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <Label fx:id="WarningMessageLabel" layoutX="341.0" layoutY="205.0" prefHeight="33.0" prefWidth="237.0" text="Using other JReverse functions might corrupt the souce code dump!" textFill="RED" visible="false" wrapText="true">
+         <font>
+            <Font size="11.0" />
          </font>
       </Label>
    </children>
