@@ -102,11 +102,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label fx:id="ProgressLabel" layoutX="341.0" layoutY="313.0" text="Progress:">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
+      <Label fx:id="ProgressLabel" layoutX="341.0" layoutY="319.0" text="Progress:" />
       <Label fx:id="WarningLabel" layoutX="341.0" layoutY="169.0" text="Warning!" textFill="RED" visible="false">
          <font>
             <Font size="21.0" />

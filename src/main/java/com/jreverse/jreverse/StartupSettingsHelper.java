@@ -21,15 +21,14 @@ public class StartupSettingsHelper {
     private static final Path SettingsPath = Paths.get(System.getProperty("user.dir")+"/settings.xml");
 
     public static boolean CheckSettingsFile() {
+        System.out.println("Settings File Existence: "+Files.exists(SettingsPath));
         return Files.exists(SettingsPath);
     }
 
     private static void VerifySettings() {
         System.out.println("Verifying Settings File!");
         if(!CheckSettingsFile()){
-            if(!CreateSettingsFile()){
-                System.out.println("Failed to create settings file!");
-            }
+            CreateSettingsFile();
         }
         //Load File
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -77,7 +76,7 @@ public class StartupSettingsHelper {
         Node f = attributes.getNamedItem("funclooptimeout");
         Node g = attributes.getNamedItem("jnienvtimeout");
         Node h = attributes.getNamedItem("dymanicclassfilecollection");
-        Node i = attributes.getNamedItem("dymanicclassfilecollectionpath");
+        Node i = attributes.getNamedItem("dymanicclassfilecp");
 
         if (Objects.isNull(a) || Objects.isNull(b) || Objects.isNull(c) || Objects.isNull(d) || Objects.isNull(e) || Objects.isNull(f) || Objects.isNull(g) || Objects.isNull(h) || Objects.isNull(i)){
             //Not my proudest if
@@ -120,7 +119,7 @@ public class StartupSettingsHelper {
         rootSettings.setAttribute("funclooptimeout", "10");
         rootSettings.setAttribute("jnienvtimeout", "100");
         rootSettings.setAttribute("dymanicclassfilecollection", "false");
-        rootSettings.setAttribute("dymanicclassfilecollectionpath", "None");
+        rootSettings.setAttribute("dymanicclassfilecp", "None");
         document.appendChild(rootSettings);
 
         // Create a Transformer
@@ -207,7 +206,7 @@ public class StartupSettingsHelper {
         Node f = attributes.getNamedItem("funclooptimeout");
         Node g = attributes.getNamedItem("jnienvtimeout");
         Node h = attributes.getNamedItem("dymanicclassfilecollection");
-        Node i = attributes.getNamedItem("dymanicclassfilecollectionpath");
+        Node i = attributes.getNamedItem("dymanicclassfilecp");
 
         settings.IsAutoStart = Boolean.parseBoolean(a.getNodeValue());
         settings.IsInjectOnStartup = Boolean.parseBoolean(b.getNodeValue());
@@ -253,7 +252,7 @@ public class StartupSettingsHelper {
         rootSettings.setAttribute("funclooptimeout", Integer.toString(settings.FuncLoopTimeout));
         rootSettings.setAttribute("jnienvtimeout", Integer.toString(settings.JNIEnvTimeout));
         rootSettings.setAttribute("dymanicclassfilecollection", Boolean.toString(settings.IsDynamicClassFileCollection));
-        rootSettings.setAttribute("dymanicclassfilecollection", settings.DynamicClassFileCollectionPath);
+        rootSettings.setAttribute("dymanicclassfilecp", settings.DynamicClassFileCollectionPath);
         document.appendChild(rootSettings);
 
         // Create a Transformer

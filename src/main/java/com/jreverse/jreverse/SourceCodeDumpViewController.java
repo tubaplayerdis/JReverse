@@ -1,6 +1,7 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import com.jreverse.jreverse.Bridge.JReverseLogger;
 import com.jreverse.jreverse.Runtime.JReverseClassFile;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -105,7 +106,9 @@ public class SourceCodeDumpViewController {
 
     private String[] FilterClasses() {
         String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
+        //String[] bytecodedclasses = JReverseBridge.CallCoreFunction("getClassFileNames", JReverseBridge.NoneArg);
         ArrayList<String> JNINamedClasses = new ArrayList<>();
+        //ArrayList<String> BYTECodedClasses = new ArrayList<>(Arrays.asList(bytecodedclasses));
         ArrayList<String> ReturnList = new ArrayList<>();
         Arrays.sort(loadedclasses);
         for (String str : loadedclasses) {
@@ -114,6 +117,11 @@ public class SourceCodeDumpViewController {
             str = str.replaceFirst("L", "");
             if (str.length() != 1) JNINamedClasses.add(str);
         }
+
+        //JNINamedClasses.addAll(BYTECodedClasses);
+        //Set<String> uniqueSet = new HashSet<>(BYTECodedClasses);
+        //JNINamedClasses = Arrays.asList(uniqueSet.toArray(new String[0]));
+
         for(int i = 0; i < JNINamedClasses.size(); i++)
         {
             if(SunMicrosystemsExclusionCheckBox.isSelected() && JNINamedClasses.get(i).startsWith("sun")) { continue; }
@@ -237,6 +245,7 @@ public class SourceCodeDumpViewController {
 
             ArrayList<JReverseClassFile> preindexedclassfiles = new ArrayList<>();
             if (isretrans) {
+                JReverseLogger.PipeCallBackLimit = 100;
                 for(int i = 0; i < filteredclasses.length; i++) {
                     float finalI = i;
                     Platform.runLater(() -> {
@@ -260,9 +269,10 @@ public class SourceCodeDumpViewController {
                     if (!ClassByteCoders[1].equals("Class File Not Found")) {
                         preindexedclassfiles.add(new JReverseClassFile(filteredclasses[i],ClassByteCoders[1]));
                     }
-                }
-            }
 
+                }
+
+            }
             //Main Work.
             if (isretrans) {
                 int i = 0;
@@ -296,7 +306,7 @@ public class SourceCodeDumpViewController {
                     Platform.runLater(() -> {
                         double prog = (((finalI/filteredclasses.length)*100)*0.50)+50;
                         String currentprogess = df2.format(prog);
-                        ProgressLabel.setText("Progress: "+currentprogess+"% - Retransforming Classes");
+                        ProgressLabel.setText("Progress: "+currentprogess+"% - Writing Class Files");
                     });
                     if(ClassName.equals("unknown")){
                         System.out.println("Class unknown. Skipping");

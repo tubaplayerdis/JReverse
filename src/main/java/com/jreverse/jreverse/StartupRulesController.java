@@ -201,9 +201,6 @@ public class StartupRulesController {
     public void LoadSettings() throws IOException {
         settings = StartupSettingsHelper.CheckAndLoadFile();
         if(Objects.isNull(settings)) return;
-        //---------------------------------------------------
-        //This is causing a bug. Change to another object not interacted with much
-        //---------------------------------------------------
         Platform.runLater(() -> {
             InjectOnStartupCheckBox.setSelected(settings.IsInjectOnStartup);
             AutoStartCheckBox.setSelected(settings.IsAutoStart);
@@ -215,7 +212,7 @@ public class StartupRulesController {
         });
     }
     @FXML
-    public void SaveSettings() {
+    public void SaveSettings() throws IOException {
         StartupSettings startupSettings = new StartupSettings();
         startupSettings.IsAutoStart = AutoStartCheckBox.isSelected();
         startupSettings.IsInjectOnStartup = InjectOnStartupCheckBox.isSelected();
@@ -225,6 +222,7 @@ public class StartupRulesController {
         startupSettings.FuncLoopTimeout = (int)FuncLoopTimeoutSlider.getValue();
         startupSettings.JNIEnvTimeout = (int)JNIENVTimeoutSlider.getValue();
         StartupSettingsHelper.WriteSettingsFile(startupSettings);
+        LoadSettings();
     }
 
 }
