@@ -2,7 +2,6 @@ package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Bridge.JReverseLogger;
-import com.jreverse.jreverse.Runtime.JReverseClassFile;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,7 +16,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HexFormat;
+import java.util.List;
 
 public class SourceCodeDumpViewController {
     //Standard Exclusions
@@ -48,12 +50,16 @@ public class SourceCodeDumpViewController {
     private CheckBox RefactorMissingClassBytecodesCheckBox;
     @FXML
     private CheckBox ResolveAllUnknownBytecodes;
+    @FXML
+    private Slider SkipTimeSlider;
 
     //Progress
     @FXML
     private ProgressBar SouceCodeDumpProgressBar;
     @FXML
     private Label ProgressLabel;
+    @FXML
+    private Label ProgressLabel1;
 
     //Warning Messages
     @FXML
@@ -106,9 +112,7 @@ public class SourceCodeDumpViewController {
 
     private String[] FilterClasses() {
         String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
-        //String[] bytecodedclasses = JReverseBridge.CallCoreFunction("getClassFileNames", JReverseBridge.NoneArg);
         ArrayList<String> JNINamedClasses = new ArrayList<>();
-        //ArrayList<String> BYTECodedClasses = new ArrayList<>(Arrays.asList(bytecodedclasses));
         ArrayList<String> ReturnList = new ArrayList<>();
         Arrays.sort(loadedclasses);
         for (String str : loadedclasses) {
@@ -118,26 +122,39 @@ public class SourceCodeDumpViewController {
             if (str.length() != 1) JNINamedClasses.add(str);
         }
 
-        //JNINamedClasses.addAll(BYTECodedClasses);
-        //Set<String> uniqueSet = new HashSet<>(BYTECodedClasses);
-        //JNINamedClasses = Arrays.asList(uniqueSet.toArray(new String[0]));
-
-        for(int i = 0; i < JNINamedClasses.size(); i++)
-        {
-            if(SunMicrosystemsExclusionCheckBox.isSelected() && JNINamedClasses.get(i).startsWith("sun")) { continue; }
-            if(SunMicrosystemsExclusionCheckBox.isSelected() && JNINamedClasses.get(i).startsWith("com/sun")) { continue; }
-            if(JavaLanguagesExclusionCheckBox.isSelected() && JNINamedClasses.get(i).startsWith("java")) { continue; }
-            if(JavafxExclusionCheckBox.isSelected() && JNINamedClasses.get(i).startsWith("javafx")) { continue; }
-            if(JavaxExclusionCheckBox.isSelected() && JNINamedClasses.get(i).startsWith("javax")) { continue; }
-            if(JDKExclusionCheckBox.isSelected() && JNINamedClasses.get(i).startsWith("jdk")) {  continue; }
-            if(LambdaExclusionCheckBox.isSelected() && JNINamedClasses.get(i).contains("$Lambda$")) { continue; }
-
-
-            for(String exclude : CustomExclusionsListView.getItems()) {
-                if(JNINamedClasses.get(i).contains(exclude)) { continue; }
+        for (String jniNamedClass : JNINamedClasses) {
+            if (SunMicrosystemsExclusionCheckBox.isSelected() && jniNamedClass.startsWith("sun")) {
+                continue;
+            }
+            if (SunMicrosystemsExclusionCheckBox.isSelected() && jniNamedClass.startsWith("com/sun")) {
+                continue;
+            }
+            if (JavaLanguagesExclusionCheckBox.isSelected() && jniNamedClass.startsWith("java")) {
+                continue;
+            }
+            if (JavafxExclusionCheckBox.isSelected() && jniNamedClass.startsWith("javafx")) {
+                continue;
+            }
+            if (JavaxExclusionCheckBox.isSelected() && jniNamedClass.startsWith("javax")) {
+                continue;
+            }
+            if (JDKExclusionCheckBox.isSelected() && jniNamedClass.startsWith("jdk")) {
+                continue;
+            }
+            if (LambdaExclusionCheckBox.isSelected() && jniNamedClass.contains("$Lambda$")) {
+                continue;
             }
 
-            ReturnList.add(JNINamedClasses.get(i));
+            boolean isbroken = false;
+            //This does not work.
+            for (String exclude : CustomExclusionsListView.getItems()) {
+                if (jniNamedClass.contains(exclude)) {
+                    isbroken = true;
+                    break;
+                }
+            }
+
+            if(!isbroken) ReturnList.add(jniNamedClass);
         }
         return ReturnList.toArray(new String[0]);
     }
@@ -146,6 +163,7 @@ public class SourceCodeDumpViewController {
     private static boolean isretrans = false;
     private static boolean isresolve = false;
     private static String outputpath = null;
+    private static int skiptime = 100;
 
     private static DecimalFormat df2 = new DecimalFormat("#.00");
     @FXML
@@ -187,11 +205,13 @@ public class SourceCodeDumpViewController {
 
         outputpath = OutputDirectoryField.getText();
 
+        skiptime = (int)SkipTimeSlider.getValue();
+
         if(outputpath.isEmpty() || outputpath.isBlank() || !Files.exists(Path.of(outputpath))) return;
 
         Runnable runnable = () -> {
             Platform.runLater(() -> {
-                ProgressLabel.setText("Progress: 5% - Setup");
+                ProgressLabel1.setText("Progress: 5% - Setup");
             });
 
 
@@ -243,92 +263,53 @@ public class SourceCodeDumpViewController {
             }
 
 
-            ArrayList<JReverseClassFile> preindexedclassfiles = new ArrayList<>();
-            if (isretrans) {
-                JReverseLogger.PipeCallBackLimit = 100;
-                for(int i = 0; i < filteredclasses.length; i++) {
-                    float finalI = i;
-                    Platform.runLater(() -> {
-                        double prog = ((((finalI/filteredclasses.length)*100)*0.45)+5);;
-                        String currentprogess = df2.format(prog);
-                        ProgressLabel.setText("Progress: "+currentprogess+"% - Retransforming Classes");
-                    });
-                    if(filteredclasses[i].isEmpty() || filteredclasses[i].isBlank())
-                    {
-                        System.out.println("Class Name Empty for Retransform!");
-                        continue;
+
+            JReverseLogger.PipeCallBackLimit = skiptime;
+            for(int i = 0; i < filteredclasses.length; i++) {
+                float finalI = i;
+                Platform.runLater(() -> {
+                    double prog = ((((finalI / filteredclasses.length) * 100) * 0.95) + 5);
+                    String currentprogess = df2.format(prog);
+                    ProgressLabel1.setText("Progress: " + currentprogess + "%");
+                    SouceCodeDumpProgressBar.setProgress(prog/100);
+                    ProgressLabel.setText("Dumping: "+filteredclasses[(int)finalI]);
+                });
+                if (filteredclasses[i].isEmpty() || filteredclasses[i].isBlank()) {
+                    System.out.println("Class Name Empty for Retransform!");
+                    continue;
+                }
+                String[] args = {filteredclasses[i]};
+                String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", args);
+                if (!ClassByteCodes[1].equals("Class File Not Found")) {
+                    byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase());
+                    try {
+                        createFoldersAndFile(filteredclasses[i], outputpath, bytesofclass);
+                    } catch (IOException e) {
+                        System.out.println("Error dumping: " + filteredclasses[i]);
                     }
-                    String[] args = {filteredclasses[i]};
-                    String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", args);
-                    if (!ClassByteCodes[1].equals("Class File Not Found")) {
-                        preindexedclassfiles.add(new JReverseClassFile(filteredclasses[i],ClassByteCodes[1]));
-                        continue;
-                    }
-                    JReverseBridge.CallCoreFunction("retransformClass", args);
+                    continue;
+                }
+                if (isretrans) {
+                    System.out.println("Retransforming: " + filteredclasses[i]);
+                    String[] callback = JReverseBridge.CallCoreFunction("retransformClass", args);
+                    System.out.println("Result of retransform class" + filteredclasses[i] + ": " + callback[1]);
                     String[] ClassByteCoders = JReverseBridge.CallCoreFunction("getClassBytecodes", args);
                     if (!ClassByteCoders[1].equals("Class File Not Found")) {
-                        preindexedclassfiles.add(new JReverseClassFile(filteredclasses[i],ClassByteCoders[1]));
-                    }
-
-                }
-
-            }
-            //Main Work.
-            if (isretrans) {
-                int i = 0;
-                for(JReverseClassFile ClassFile : preindexedclassfiles){
-                    float finalI = i;
-                    Platform.runLater(() -> {
-                        double prog = ((((finalI/filteredclasses.length)*100)*0.50)+50);
-                        String currentprogess = df2.format(prog);
-                        ProgressLabel.setText("Progress: "+currentprogess+"% - Retransforming Classes");
-                    });
-                    if(ClassFile.Name.equals("unknown")){
-                        System.out.println("Class unknown. Skipping");
-                    } else {
-                        byte[] bytesofclass = HexFormat.of().parseHex(ClassFile.Bytecodes);
+                        byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCoders[1].toUpperCase());
                         try {
-                            createFoldersAndFile(ClassFile.Name, outputpath, bytesofclass);
+                            createFoldersAndFile(filteredclasses[i], outputpath, bytesofclass);
                         } catch (IOException e) {
-                            System.out.println("Error with dump! aborting!");
-                            return;
+                            System.out.println("Error dumping: " + filteredclasses[i]);
                         }
                     }
-                    i++;
-                }
-            }
-            else {
-                String[] ClassFileNames = JReverseBridge.CallCoreFunction("getClassFileNames", JReverseBridge.NoneArg);
-                System.out.println("Got Class File Names");
-                int i = 0;
-                for(String ClassName : ClassFileNames){
-                    float finalI = i;
-                    Platform.runLater(() -> {
-                        double prog = (((finalI/filteredclasses.length)*100)*0.50)+50;
-                        String currentprogess = df2.format(prog);
-                        ProgressLabel.setText("Progress: "+currentprogess+"% - Writing Class Files");
-                    });
-                    if(ClassName.equals("unknown")){
-                        System.out.println("Class unknown. Skipping");
-                    } else {
-                        System.out.println("Getting Bytecodes of: "+ClassName);
-                        String[] ByteArgs = {ClassName};
-                        String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
-                        byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase());
-                        try {
-                            createFoldersAndFile(ClassName, outputpath, bytesofclass);
-                        } catch (IOException e) {
-                            System.out.println("Error with dump! aborting!");
-                            return;
-                        }
-                        System.out.println("Wrote Bytecodes of: "+ClassName);
-                    }
-                    i++;
                 }
             }
             Platform.runLater(() -> {
                 WarningLabel.setVisible(false);
                 WarningMessageLabel.setVisible(false);
+                SouceCodeDumpProgressBar.setProgress(1);
+                ProgressLabel.setText("Complete!");
+                ProgressLabel1.setText("Complete!");
             });
 
         };

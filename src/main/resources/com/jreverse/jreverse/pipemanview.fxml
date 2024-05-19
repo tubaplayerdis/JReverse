@@ -25,19 +25,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <ListView fx:id="loadedPipeView" layoutX="14.0" layoutY="70.0" prefHeight="289.0" prefWidth="149.0" />
-      <TextField fx:id="getinfoField" layoutX="195.0" layoutY="131.0" prefHeight="25.0" prefWidth="149.0" promptText="Enter Pipe Name" />
-      <Button fx:id="getInfoButton" layoutX="195.0" layoutY="168.0" mnemonicParsing="false" onMouseClicked="#getPipeInfo" prefHeight="25.0" prefWidth="149.0" text="Get Info" />
-      <Label layoutX="195.0" layoutY="68.0" text="Get Pipe Info">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="195.0" layoutY="109.0" text="Name">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
+      <ListView fx:id="loadedPipeView" layoutX="14.0" layoutY="70.0" onMouseClicked="#getPipeInfo" prefHeight="289.0" prefWidth="149.0" />
       <Button fx:id="refreshButton" layoutX="14.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#refreshPipes" prefHeight="25.0" prefWidth="149.0" text="Refresh" />
       <Button fx:id="tesbutt" layoutX="361.0" layoutY="202.0" mnemonicParsing="false" onMouseClicked="#testfunp" prefHeight="25.0" prefWidth="225.0" text="Test Function and Return Pipe" />
       <Label layoutX="361.0" layoutY="68.0" text="Function and Return Pipe Settings">
@@ -52,11 +40,18 @@
          </font>
       </Label>
       <Button layoutX="361.0" layoutY="168.0" mnemonicParsing="false" onMouseClicked="#setReturnThreshold" prefHeight="25.0" prefWidth="225.0" text="Set Threshold" />
-      <ListView fx:id="pipeInfoBox" layoutX="195.0" layoutY="225.0" prefHeight="162.0" prefWidth="149.0" />
-      <Label layoutX="195.0" layoutY="205.0" text="Info:">
+      <ListView fx:id="pipeInfoBox" layoutX="193.0" layoutY="89.0" prefHeight="162.0" prefWidth="149.0" />
+      <Label layoutX="195.0" layoutY="69.0" text="Info:">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
+      <TextField layoutX="193.0" layoutY="291.0" promptText="Enter New Size (bytes)" />
+      <Label layoutX="194.0" layoutY="266.0" text="Change Size">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Button layoutX="193.0" layoutY="322.0" mnemonicParsing="false" onMouseClicked="#changePipeSize" prefHeight="25.0" prefWidth="149.0" text="Change Size" />
    </children>
 </AnchorPane>

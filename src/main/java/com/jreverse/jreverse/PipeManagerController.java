@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 
 public class PipeManagerController {
     @FXML
-    private ListView loadedPipeView;
+    private ListView<String> loadedPipeView;
 
     @FXML
     private Button refreshButton;
@@ -52,19 +52,32 @@ public class PipeManagerController {
         System.out.println("Set the Return Pipe Threshold to: "+(int)returnThreshSlider.getValue());
     }
 
-    @FXML
-    private TextField getinfoField;
 
     @FXML
     private ListView<String> pipeInfoBox;
 
     @FXML
-    private void getPipeInfo(){
-        String[] pipinfo = PipeManager.GetPipeInfo(getinfoField.getText());
+    private void getPipeInfo() {
+        String[] pipinfo = PipeManager.GetPipeInfo(loadedPipeView.getSelectionModel().getSelectedItem().toString());
         ObservableList<String> list = FXCollections.observableArrayList();
         list.add("Mode: "+pipinfo[0]);
         list.add("Name: "+pipinfo[1]);
         list.add("Size: "+pipinfo[2]);
         pipeInfoBox.setItems(list);
+    }
+
+    @FXML
+    private TextField NewPipeSizeField;
+    @FXML
+    private void changePipeSize() {
+        int newSize = 50000;
+        try {
+            newSize = Integer.parseInt(NewPipeSizeField.getText());
+        } catch (NumberFormatException e){
+            NewPipeSizeField.setText("Enter a valid number!");
+            return;
+        }
+
+
     }
 }

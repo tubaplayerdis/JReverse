@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -93,25 +94,35 @@
                   <Font size="14.0" />
                </font>
             </CheckBox>
+            <Label text="Skip Time">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Slider fx:id="SkipTimeSlider" majorTickUnit="500.0" max="2000.0" minorTickCount="100" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
             <Separator layoutX="10.0" layoutY="83.0" prefWidth="200.0" />
          </children>
       </VBox>
-      <ProgressBar fx:id="SouceCodeDumpProgressBar" layoutX="341.0" layoutY="345.0" prefHeight="33.0" prefWidth="237.0" progress="0.0" />
-      <Button layoutX="341.0" layoutY="242.0" mnemonicParsing="false" onMouseClicked="#DumpSourceCodeClick" prefHeight="56.0" prefWidth="237.0" text="Dump Souce Code!">
+      <ProgressBar fx:id="SouceCodeDumpProgressBar" layoutX="341.0" layoutY="339.0" prefHeight="31.0" prefWidth="237.0" progress="0.0" />
+      <Button layoutX="341.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#DumpSourceCodeClick" prefHeight="38.0" prefWidth="237.0" text="Dump Souce Code!">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Label fx:id="ProgressLabel" layoutX="341.0" layoutY="319.0" text="Progress:" />
-      <Label fx:id="WarningLabel" layoutX="341.0" layoutY="169.0" text="Warning!" textFill="RED" visible="false">
+      <Label fx:id="ProgressLabel" layoutX="341.0" layoutY="320.0" text="Dumping:">
+         <font>
+            <Font size="8.0" />
+         </font></Label>
+      <Label fx:id="WarningLabel" layoutX="226.0" layoutY="39.0" text="Warning!" textFill="RED" visible="false">
          <font>
             <Font size="21.0" />
          </font>
       </Label>
-      <Label fx:id="WarningMessageLabel" layoutX="341.0" layoutY="205.0" prefHeight="33.0" prefWidth="237.0" text="Using other JReverse functions might corrupt the souce code dump!" textFill="RED" visible="false" wrapText="true">
+      <Label fx:id="WarningMessageLabel" layoutX="95.0" layoutY="10.0" prefHeight="33.0" prefWidth="237.0" text="Using other JReverse functions might corrupt the souce code dump!" textFill="RED" visible="false" wrapText="true">
          <font>
             <Font size="11.0" />
          </font>
       </Label>
+      <Label fx:id="ProgressLabel1" layoutX="341.0" layoutY="370.0" text="Progress:" />
    </children>
 </AnchorPane>

@@ -1,7 +1,7 @@
 Todo:
 
-1. Fix access and status flag string issues.
-1.5 Source Code Dump option using retransform classes to get everything
+1. Resizeable Pipes
+2. Source Code Dump option load exclusions and settings by file.
 2. Save runtime settings.
 3. Add ability to write class byteocdes to a folder as they are loaded. This would be done in Core - Startup Settings IMPL done
 4. Add other decompiler option IMPL
@@ -10,10 +10,6 @@ Todo:
 6. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
 
 Features to impl:
-
-1. Better Class Hooking. Possibly Start process with dll. (Already Implemented on JReverseBridge)
-2. Class Editor.
-3. Better UI
 
 Notes:
 
