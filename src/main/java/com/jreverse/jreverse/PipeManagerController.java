@@ -58,12 +58,14 @@ public class PipeManagerController {
 
     @FXML
     private void getPipeInfo() {
-        String[] pipinfo = PipeManager.GetPipeInfo(loadedPipeView.getSelectionModel().getSelectedItem().toString());
+        System.out.println("Getting Pipe Data: "+loadedPipeView.getSelectionModel().getSelectedItem().toString().substring(0, loadedPipeView.getSelectionModel().getSelectedItem().toString().indexOf(":")));
+        String[] pipinfo = PipeManager.GetPipeInfo(loadedPipeView.getSelectionModel().getSelectedItem().toString().substring(0, loadedPipeView.getSelectionModel().getSelectedItem().toString().indexOf(":")));
         ObservableList<String> list = FXCollections.observableArrayList();
         list.add("Mode: "+pipinfo[0]);
         list.add("Name: "+pipinfo[1]);
         list.add("Size: "+pipinfo[2]);
         pipeInfoBox.setItems(list);
+        pipeInfoBox.refresh();
     }
 
     @FXML
@@ -77,7 +79,7 @@ public class PipeManagerController {
             NewPipeSizeField.setText("Enter a valid number!");
             return;
         }
-
+        PipeManager.ResizeAndReconnectPipe(loadedPipeView.getSelectionModel().getSelectedItem().toString().substring(0, loadedPipeView.getSelectionModel().getSelectedItem().toString().indexOf(":")), newSize);
 
     }
 }

@@ -46,7 +46,7 @@
             <Font size="13.0" />
          </font>
       </Label>
-      <TextField layoutX="193.0" layoutY="291.0" promptText="Enter New Size (bytes)" />
+      <TextField fx:id="NewPipeSizeField" layoutX="193.0" layoutY="291.0" promptText="Enter New Size (bytes)" />
       <Label layoutX="194.0" layoutY="266.0" text="Change Size">
          <font>
             <Font size="13.0" />

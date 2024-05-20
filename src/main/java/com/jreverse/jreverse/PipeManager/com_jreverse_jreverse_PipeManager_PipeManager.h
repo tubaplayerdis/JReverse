@@ -47,6 +47,14 @@ JNIEXPORT void JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_AddPip
 JNIEXPORT void JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_RemovePipe
   (JNIEnv *, jclass, jstring);
 
+/*
+ * Class:     com_jreverse_jreverse_PipeManager_PipeManager
+ * Method:    ResizeAndReconnectPipe
+ * Signature: (Ljava/lang/String;I)V
+ */
+JNIEXPORT void JNICALL Java_com_jreverse_jreverse_PipeManager_PipeManager_ResizeAndReconnectPipe
+  (JNIEnv *, jclass, jstring, jint);
+
 #ifdef __cplusplus
 }
 #endif
