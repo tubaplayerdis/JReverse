@@ -81,6 +81,7 @@ public class startupController {
         int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules(), settings);
         System.out.println("Wrote Startup: "+resf);
         PipeManager.InitAPI();
+        System.out.println("Injecting!");
         injectionreturn = JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
         File style = new File(usePath+"/stylesheets/style.css");

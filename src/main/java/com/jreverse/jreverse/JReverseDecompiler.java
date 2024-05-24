@@ -48,7 +48,19 @@ public class JReverseDecompiler {
                 }
                 break;
             case FERN_FLOWER:
-                decompiledString = "FERN_FLOWER Decompiler not supported yet!";
+                try{
+                    ProcessBuilder builder = new ProcessBuilder("java", "-jar", usePath+"\\libs\\fernflower-2.5.0.Final.jar", usePath+"\\temp.class", "-");
+                    Process process = builder.start();
+                    //Read Data
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        if(decompiledString == "Failed Decompilation!") decompiledString="";
+                        decompiledString = decompiledString+line+"\n";
+                    }
+                } catch (IOException e){
+                    decompiledString = "Failed to read BufferedReader!";
+                }
                 break;
             case PROCYON:
                 decompiledString = "PROCYON Decompiler not supported yet!";
