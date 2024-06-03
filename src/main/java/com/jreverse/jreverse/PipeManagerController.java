@@ -19,6 +19,9 @@ public class PipeManagerController {
     private Button refreshButton;
 
     @FXML
+    private TextField GrowSizeTextField;
+
+    @FXML
     private void refreshPipes(){
         ObservableList<String> pipeStringList = FXCollections.observableArrayList();
         try{
@@ -61,9 +64,9 @@ public class PipeManagerController {
         System.out.println("Getting Pipe Data: "+loadedPipeView.getSelectionModel().getSelectedItem().toString().substring(0, loadedPipeView.getSelectionModel().getSelectedItem().toString().indexOf(":")));
         String[] pipinfo = PipeManager.GetPipeInfo(loadedPipeView.getSelectionModel().getSelectedItem().toString().substring(0, loadedPipeView.getSelectionModel().getSelectedItem().toString().indexOf(":")));
         ObservableList<String> list = FXCollections.observableArrayList();
-        list.add("Mode: "+pipinfo[0]);
-        list.add("Name: "+pipinfo[1]);
-        list.add("Size: "+pipinfo[2]);
+        list.add("Name: "+pipinfo[0]);
+        list.add("Size: "+pipinfo[1]);
+        list.add("Free Bytes: "+pipinfo[2]);
         pipeInfoBox.setItems(list);
         pipeInfoBox.refresh();
     }
@@ -81,5 +84,17 @@ public class PipeManagerController {
         }
         PipeManager.ResizeAndReconnectPipe(loadedPipeView.getSelectionModel().getSelectedItem().toString().substring(0, loadedPipeView.getSelectionModel().getSelectedItem().toString().indexOf(":")), newSize);
 
+    }
+
+    @FXML
+    private void GrowPipe() {
+        int growsize = 1000;
+        try {
+            growsize = Integer.parseInt(GrowSizeTextField.getText());
+        } catch (NumberFormatException e){
+            GrowSizeTextField.setText("Enter a valid number!");
+            return;
+        }
+        PipeManager.GrowPipe(loadedPipeView.getSelectionModel().getSelectedItem().toString().substring(0, loadedPipeView.getSelectionModel().getSelectedItem().toString().indexOf(":")), growsize);
     }
 }

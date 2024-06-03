@@ -10,5 +10,7 @@ public class PipeManager {
 
     public static native void RemovePipe(String name);
 
-    public static native void ResizeAndReconnectPipe(String name, int Size);
+    //Called Reload Now
+    public static native void ResizeAndReconnectPipe(String name, long Size);
+    public static native void GrowPipe(String name, long size);
 }

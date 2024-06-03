@@ -3,9 +3,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.PipeManagerController">
@@ -27,31 +27,39 @@
       </Label>
       <ListView fx:id="loadedPipeView" layoutX="14.0" layoutY="70.0" onMouseClicked="#getPipeInfo" prefHeight="289.0" prefWidth="149.0" />
       <Button fx:id="refreshButton" layoutX="14.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#refreshPipes" prefHeight="25.0" prefWidth="149.0" text="Refresh" />
-      <Button fx:id="tesbutt" layoutX="361.0" layoutY="202.0" mnemonicParsing="false" onMouseClicked="#testfunp" prefHeight="25.0" prefWidth="225.0" text="Test Function and Return Pipe" />
-      <Label layoutX="361.0" layoutY="68.0" text="Function and Return Pipe Settings">
+      <Button fx:id="tesbutt" layoutX="361.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#testfunp" prefHeight="25.0" prefWidth="225.0" text="Test Function and Return Pipe" />
+      <Label layoutX="361.0" layoutY="68.0" text="Tests">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Slider fx:id="returnThreshSlider" layoutX="363.0" layoutY="125.0" majorTickUnit="2000.0" max="10000.0" min="1000.0" minorTickCount="100" prefHeight="38.0" prefWidth="225.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2000.0" />
-      <Label layoutX="361.0" layoutY="100.0" text="Return Pipe Callback Threshold">
+      <ListView fx:id="pipeInfoBox" layoutX="193.0" layoutY="80.0" prefHeight="114.0" prefWidth="149.0" />
+      <Label layoutX="193.0" layoutY="61.0" text="Info:">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
-      <Button layoutX="361.0" layoutY="168.0" mnemonicParsing="false" onMouseClicked="#setReturnThreshold" prefHeight="25.0" prefWidth="225.0" text="Set Threshold" />
-      <ListView fx:id="pipeInfoBox" layoutX="193.0" layoutY="89.0" prefHeight="162.0" prefWidth="149.0" />
-      <Label layoutX="195.0" layoutY="69.0" text="Info:">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <TextField fx:id="NewPipeSizeField" layoutX="193.0" layoutY="291.0" promptText="Enter New Size (bytes)" />
-      <Label layoutX="194.0" layoutY="266.0" text="Change Size">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <Button layoutX="193.0" layoutY="322.0" mnemonicParsing="false" onMouseClicked="#changePipeSize" prefHeight="25.0" prefWidth="149.0" text="Change Size" />
+      <VBox layoutX="193.0" layoutY="200.0" prefHeight="95.0" prefWidth="149.0" spacing="5.0">
+         <children>
+            <Label text="Reload">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="NewPipeSizeField" promptText="Enter New Size (bytes)" />
+            <Button mnemonicParsing="false" onMouseClicked="#changePipeSize" prefHeight="25.0" prefWidth="149.0" text="Reload" />
+         </children>
+      </VBox>
+      <VBox layoutX="193.0" layoutY="291.0" prefHeight="95.0" prefWidth="149.0" spacing="5.0">
+         <children>
+            <Label text="Grow">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="GrowSizeTextField" promptText="Enter Grow Size (Bytes)" />
+            <Button mnemonicParsing="false" onMouseClicked="#GrowPipe" prefHeight="25.0" prefWidth="149.0" text="Grow" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
