@@ -379,8 +379,21 @@ public class MainController {
     }
 
     @FXML
-    private void dumpClass() {
-
+    private void dumpClass() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("ClassDumpDialog.fxml"));
+        /*
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+         */
+        Scene scene = new Scene(fxmlLoader.load(), 489, 246);
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        Image image = new Image(usePath+"/icon/JReverseIcon.png");
+        stage.getIcons().add(image);
+        stage.setTitle("JReverse Class Dump");
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
