@@ -1,7 +1,7 @@
 Todo:
 
-1. Resizeable Pipes
-2. Source Code Dump option load exclusions and settings by file.
+1. Dynamic Class Collection
+1. Source Code Dump option load exclusions and settings by file.
 2. Save runtime settings.
 3. Add ability to write class byteocdes to a folder as they are loaded. This would be done in Core - Startup Settings IMPL done
 4. Add other decompiler option IMPL

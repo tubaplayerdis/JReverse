@@ -155,7 +155,7 @@ public class ClassDumpDialogController {
         writer.write(System.lineSeparator());
 
         System.out.println("Extra data on class: "+ClassArgs[0]);
-        writer.write("EXTRA DATA: "+System.lineSeparator()+System.lineSeparator());
+        writer.write("EXTRA DATA: "+System.lineSeparator());
         String[] ExtraData = JReverseBridge.CallCoreFunction("getClassExtraData", ClassArgs);
         /*
          * IsInterface
@@ -167,19 +167,25 @@ public class ClassDumpDialogController {
          */
         if(ExtraData.length >= 6)
         {
-            writer.write("IsInterface: "+ExtraData[0]);
-            writer.write("Version: "+ExtraData[1]);
-            writer.write("IsModifiable: "+ExtraData[2]);
-            writer.write("IsInterface: "+ExtraData[3]);
-            writer.write("Access Flags: "+ExtraData[4]);
-            writer.write("Status Flags: "+ExtraData[5]);
+            writer.write("IsInterface: "+ExtraData[0]+System.lineSeparator());
+            writer.write("Version: "+ExtraData[1]+System.lineSeparator());
+            writer.write("IsModifiable: "+ExtraData[2]+System.lineSeparator());
+            writer.write("IsInterface: "+ExtraData[3]+System.lineSeparator());
+            writer.write("Access Flags: "+ExtraData[4]+System.lineSeparator());
+            writer.write("Status Flags: "+ExtraData[5]+System.lineSeparator());
         }
 
         writer.write("SOURCE CODE: "+System.lineSeparator()+System.lineSeparator());
-        if(SourceChoiceBox.getSelectionModel().getSelectedItem().equals("source as text")) {
-            String source = JReverseDecompiler.DecompileBytecodes(bytecodes.toUpperCase());
-            writer.write(source);
+        if(SourceChoiceBox.getSelectionModel().getSelectedItem().equals("source in text")) {
+            String[] ClassByteCodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ClassArgs);
+            if (ClassByteCodes[1].equals("Class File Not Found")) {
+                writer.write("Refactor was not attempted or failed");
+            } else {
+                writer.write(JReverseDecompiler.DecompileBytecodes(ClassByteCodes[1]));
+            }
         }
+
+        writer.close();
 
     }
 
@@ -202,7 +208,7 @@ public class ClassDumpDialogController {
         }
         for(String str : array){
             try {
-                writer.write(str+System.lineSeparator());
+                writer.write("  "+str+System.lineSeparator());
             } catch (IOException e) {
                 System.out.println("Error writing array: " + e.getMessage());
                 System.out.println("Continuing...");

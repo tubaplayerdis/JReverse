@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -19,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,6 +46,8 @@ public class startupController {
     public static String procpath = "";
 
     int injectionreturn;
+
+    boolean filtermode = true;
 
     @FXML
     private void OpenStartupRules() throws IOException {
@@ -170,6 +174,32 @@ public class startupController {
     private void refreshProgList() throws IOException {
         procStringList.clear();
         RefreshList();
+        //Get java vm's
+        if(filtermode) {
+            ProcessBuilder lipbuilder = new ProcessBuilder("jps");
+            Process procesr = lipbuilder.start();
+            // Read the output of the command
+            BufferedReader reada = new BufferedReader(new InputStreamReader(procesr.getInputStream()));
+            String lina;
+            ArrayList<String> PIDList = new ArrayList<>();
+            while ((lina = reada.readLine()) != null) {
+                PIDList.add(lina.substring(0, lina.indexOf(" ")));
+            }
+            for(String pid : PIDList) {
+                Optional<ProcessHandle> prochan = ProcessHandle.of(Integer.parseInt(pid));
+                if(prochan.isEmpty()){
+                    continue;
+                }
+                ProcessHandle processHandle = prochan.get();
+                ProcessHandle.Info procinfo = processHandle.info();
+                String name = procinfo.command().get().substring(procinfo.command().get().lastIndexOf("\\")+1);
+                if(name.contains(filterte)) {
+                 procStringList.add(name);
+                }
+            }
+            return;
+        }
+
         ProcessBuilder builder = new ProcessBuilder("tasklist", "/fo", "csv");
         Process process = builder.start();
 
@@ -300,6 +330,24 @@ public class startupController {
         run.start();
         System.out.println(injectionreturn);
 
+    }
+
+    @FXML
+    private Label ProcListLabel;
+
+    @FXML
+    private void SwitchFilterMode() {
+        filtermode = !filtermode;
+        if(filtermode){
+            ProcListLabel.setText("Running JavaVM's:");
+        } else {
+            ProcListLabel.setText("Running Processes:");
+        }
+        try {
+            refreshProgList();
+        } catch (IOException e) {
+            System.out.println("Error with refreshing list.");
+        }
     }
 
 

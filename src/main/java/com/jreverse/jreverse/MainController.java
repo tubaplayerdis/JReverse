@@ -153,18 +153,36 @@ public class MainController {
         return null;
     }
 
-
+    private String[] FastclassList;
     @FXML
     private void refreshClasses() {
         loadedClasTree.setRoot(emptyitem);
         TreeItem<String> rootItem = new TreeItem<String>(startupController.procName);
         String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
+        FastclassList = loadedclasses;
         Arrays.sort(loadedclasses);
         for (String str : loadedclasses) {
             if (str.contains("[")) str = str.replace("[", "");
             if (str.contains(";")) str = str.replace(";", "");
             str = str.replaceFirst("L", "");
             if (str.length() != 1) addClass(rootItem, str);
+        }
+        loadedClasTree.setRoot(rootItem);
+    }
+
+    @FXML
+    private TextField ClassNameFilterTextField;
+    @FXML
+    private void FilterClasses() {
+        loadedClasTree.setRoot(emptyitem);
+        TreeItem<String> rootItem = new TreeItem<String>(startupController.procName);
+        String[] loadedclasses = FastclassList;
+        Arrays.sort(loadedclasses);
+        for (String str : loadedclasses) {
+            if (str.contains("[")) str = str.replace("[", "");
+            if (str.contains(";")) str = str.replace(";", "");
+            str = str.replaceFirst("L", "");
+            if (str.length() != 1 && str.contains(ClassNameFilterTextField.getText())) addClass(rootItem, str);
         }
         loadedClasTree.setRoot(rootItem);
     }
