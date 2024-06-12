@@ -63,7 +63,7 @@ dependencies {
     implementation 'org.openjdk.nashorn:nashorn-core:15.0'
     implementation 'io.github.mkpaz:atlantafx-base:2.0.1'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-    implementation 'com.tbdis:sstf:1.0-SNAPSHOT'
+    implementation 'com.tbdis:sstf:0.1-SNAPSHOT'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }

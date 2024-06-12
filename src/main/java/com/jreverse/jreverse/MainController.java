@@ -1,8 +1,10 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
-import com.tbdis.sstf.*;
-import com.tbdis.sstf.Writer;
+import com.tbdis.sstf.Member;
+import com.tbdis.sstf.Parser;
+import com.tbdis.sstf.ParserException;
+import com.tbdis.sstf.WriterException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -62,27 +64,20 @@ public class MainController {
     public final String usePath = System.getProperty("user.dir");
 
 
-    public void initialize() throws WriterException {
-        Setting[] settings = new Setting[2];
-        settings[0] = new Setting("Sigma", "Sigma");
-        settings[1] = new Setting("Sigma", "Sigma");
+    public void initialize() throws WriterException, ParserException {
+
         File file = new File("settings.txt");
-        System.out.println("Testing Settings System");
-
-        Writer.WriteSettings(file, settings);
-
-        Setting[] goters = null;
-        try {
-            goters = Parser.ParseSettings(file);
-        } catch (ParserException e) {
-            System.out.println(e.getMessage());
-        }
-        assert goters != null;
-        System.out.println("len goters: "+goters.length);
-        for(Setting setting : goters){
-            System.out.println("Name: "+setting.Name+" Data: "+setting.Data);
+        System.out.println("Getting Settings!");
+        //Get Settings
+        Member[] settings = Parser.ParseFile(file);
+        if(settings.length < 3) {
+            System.out.println("Invalid File!");
+            return;
         }
 
+        for(Member setting : settings) {
+            //Callback limit is in the PipeManager Class
+        }
     }
 
     @FXML

@@ -27,6 +27,49 @@ public class SettingsViewController {
         BYTECODE_VIEWER
     }
 
+    public static DecompilerOption getDecompilerOption(String value) {
+        return switch (value) {
+            case "CFR" -> DecompilerOption.CFR;
+            case "JD_CORE" -> DecompilerOption.JD_CORE;
+            case "FERN_FLOWER" -> DecompilerOption.FERN_FLOWER;
+            case "PROCYON" -> DecompilerOption.PROCYON;
+            case "BYTECODE_VIEWER" -> DecompilerOption.BYTECODE_VIEWER;
+            default -> DecompilerOption.CFR;
+        };
+    }
+
+    public static String getDecompilerOptionString(DecompilerOption option) {
+        return switch (option) {
+            case CFR -> "CFR";
+            case JD_CORE -> "JD_CORE";
+            case FERN_FLOWER -> "FERN_FLOWER";
+            case PROCYON -> "PROCYON";
+            case BYTECODE_VIEWER -> "BYTECODE_VIEWER";
+        };
+    }
+
+    public static LoggingLevel getLoggingLevel(String value) {
+        return switch (value) {
+            case "LOW" -> LoggingLevel.LOW;
+            case "MEDIUM" -> LoggingLevel.MEDIUM;
+            case "HIGH" -> LoggingLevel.HIGH;
+            case "ALL" -> LoggingLevel.ALL;
+            case "NONE" -> LoggingLevel.NONE;
+            default -> LoggingLevel.ALL;
+        };
+    }
+
+    public static String getLoggingOptionString(LoggingLevel level) {
+        return switch (level) {
+            case ALL -> "ALL";
+            case LOW -> "LOW";
+            case MEDIUM -> "MEDIUM";
+            case HIGH -> "HIGH";
+            case NONE -> "NONE";
+        };
+    }
+
+
     public void initialize() {
         ObservableList<String> InitOptionsList = FXCollections.observableArrayList();
         InitOptionsList.add("CFR");
@@ -70,6 +113,7 @@ public class SettingsViewController {
     public static LoggingLevel LoggingOption = LoggingLevel.ALL;//TMI?
 
     public static boolean AVDMODE = false;
+
 
     @FXML
     private Slider CallbackLimitSlider;
@@ -140,7 +184,7 @@ public class SettingsViewController {
         System.out.println("Set the Logging Level");
     }
 
-    private void SetOptionsByString(String level, String decompop, String loggingop) {
+    private void saveSettings() {
 
     }
 }

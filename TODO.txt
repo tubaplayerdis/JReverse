@@ -1,13 +1,13 @@
 Todo:
-
-1. Dynamic Class Collection
 1. Source Code Dump option load exclusions and settings by file.
 2. Save runtime settings.
-3. Add ability to write class byteocdes to a folder as they are loaded. This would be done in Core - Startup Settings IMPL done
-4. Add other decompiler option IMPL
-5. Add ability to load jars/classes
-5. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc. Just dump System out
-6. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
+3. DebugConsole - todo#8 impl
+4. Dynamic Class Collection
+5. Factor out abosolute paths and be able to resolve dependecies. Decompilers, Core DLL path, etc
+6. Add other decompiler option IMPL
+7. Add ability to load jars/classes
+8. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc. Just dump System out
+9. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
 
 Features to impl:
 
