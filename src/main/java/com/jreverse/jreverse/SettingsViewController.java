@@ -1,6 +1,7 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseLogger;
+import com.tbdis.sstf.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,8 +9,22 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 
+import java.io.File;
+
 
 public class SettingsViewController {
+
+    @FXML
+    private Slider CallbackLimitSlider;
+
+    @FXML
+    private ChoiceBox<String> DecompilerChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> LoggingLevChoiceBox;
+
+    @FXML
+    private CheckBox AVDModeCheckBox;
 
     public enum LoggingLevel {
         LOW,
@@ -25,6 +40,95 @@ public class SettingsViewController {
         FERN_FLOWER,
         PROCYON,
         BYTECODE_VIEWER
+    }
+
+    public void setSettings() {
+        File file = new File("settings.txt");
+        System.out.println("Getting Settings!");
+        //Get Settings
+        Member[] settings = new Member[0];
+        try {
+            settings = Parser.ParseFile(file);
+        } catch (ParserException e) {
+            System.out.println("Error Parsing File!: "+e.getMessage());
+        }
+        if(settings.length < 4) {
+            System.out.println("Invalid File! Creating Defaults");
+            defaultSettingsFile();
+            return;
+        }
+
+        /*
+        0. CallBack
+        1. Decompiler
+        2. LoggingOptions
+        3. Advanced Mode
+         */
+        JReverseLogger.PipeCallBackLimit = Integer.parseInt(settings[0].Data);
+        SettingsViewController.DecompOption = SettingsViewController.getDecompilerOption(settings[1].Data);
+        SettingsViewController.LoggingOption = SettingsViewController.getLoggingLevel(settings[2].Data);
+        SettingsViewController.AVDMODE = Boolean.parseBoolean(settings[3].Data);
+        System.out.println("setting gui changed to reflect settings");
+        CallbackLimitSlider.setValue(JReverseLogger.PipeCallBackLimit);
+        DecompilerChoiceBox.getSelectionModel().select(getDecompilerOptionString(DecompOption));
+        LoggingLevChoiceBox.getSelectionModel().select(getLoggingOptionString(LoggingOption));
+        AVDModeCheckBox.setSelected(AVDMODE);
+    }
+
+    public static void defaultSettingsFile() {
+        File file = new File("settings.txt");
+        Member[] members = new Member[4];
+        members[0] = new Member("PCL","2000");
+        members[1] = new Member("DCO","CFR");
+        members[2] = new Member("LLO","ALL");
+        members[3] = new Member("AVD","false");
+        try {
+            Writer.WriteFile(file, members);
+        } catch (WriterException e) {
+            System.out.println("Failed to write settings file!"+e.getMessage());
+        }
+    }
+
+    public static void saveSettingsFile() {
+        File file = new File("settings.txt");
+        Member[] members = new Member[4];
+        members[0] = new Member("PCL",String.valueOf(JReverseLogger.PipeCallBackLimit));
+        members[1] = new Member("DCO",getDecompilerOptionString(DecompOption));
+        members[2] = new Member("LLO",getLoggingOptionString(LoggingOption));
+        members[3] = new Member("AVD",String.valueOf(AVDMODE));
+        try {
+            Writer.WriteFile(file, members);
+        } catch (WriterException e) {
+            System.out.println("Failed to write settings file!"+e.getMessage());
+        }
+    }
+
+    public static void verifySettingsFile() {
+        File file = new File("settings.txt");
+        Member[] settings = new Member[0];
+        try {
+            settings = Parser.ParseFile(file);
+        } catch (ParserException e) {
+            System.out.println("Error Validating File: "+e.getMessage());
+        }
+        if(settings.length < 4) {
+            System.out.println("Invalid File! Creating Defaults");
+            //Create Defaults
+            defaultSettingsFile();
+            return;
+        }
+
+        /*
+        0. CallBack
+        1. Decompiler
+        2. LoggingOptions
+        3. Advanced Mode
+         */
+        try {
+            Integer.parseInt(settings[0].Data);
+        } catch (NumberFormatException e){
+            defaultSettingsFile();
+        }
     }
 
     public static DecompilerOption getDecompilerOption(String value) {
@@ -87,25 +191,8 @@ public class SettingsViewController {
         InitLevelList.add("NONE");
         LoggingLevChoiceBox.setItems(InitLevelList);
 
-        //Load From Settings File
-        /*
-        Platform.runLater(() -> {
-            Setting[] settings = null;
-            try {
-                settings = Parser.ParseSettings("runtimesettings");
-            } catch (ParserException e) {
-                //Assume defaults by doing nothing
-            }
-            for(Setting setting : settings){
-                switch (setting.Name){
-                    case "decompop":
-
-                    default:
-                        continue;
-                }
-            }
-        });
-         */
+        verifySettingsFile();
+        setSettings();
     }
 
     public static DecompilerOption DecompOption = DecompilerOption.CFR;
@@ -114,18 +201,6 @@ public class SettingsViewController {
 
     public static boolean AVDMODE = false;
 
-
-    @FXML
-    private Slider CallbackLimitSlider;
-
-    @FXML
-    private ChoiceBox<String> DecompilerChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> LoggingLevChoiceBox;
-
-    @FXML
-    private CheckBox AVDModeCheckBox;
 
     @FXML
     private void ApplySettings(){
@@ -182,6 +257,9 @@ public class SettingsViewController {
         AVDMODE = AVDModeCheckBox.isSelected();
 
         System.out.println("Set the Logging Level");
+
+        //Save Settings
+        saveSettingsFile();
     }
 
     private void saveSettings() {

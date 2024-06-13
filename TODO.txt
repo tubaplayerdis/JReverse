@@ -1,5 +1,6 @@
 Todo:
-1. Source Code Dump option load exclusions and settings by file.
+Immediate - Fix settings menu gui not reflecting setting on load
+1. Source Code Dump option load exclusions and settings by file. Also fix UI for pipe manager
 2. Save runtime settings.
 3. DebugConsole - todo#8 impl
 4. Dynamic Class Collection

@@ -49,6 +49,16 @@ public class startupController {
 
     boolean filtermode = true;
 
+
+    public void initialize() {
+        Platform.runLater(() -> {
+            try {
+                refreshProgList();
+            } catch (IOException ignored) {
+
+            }
+        });
+    }
     @FXML
     private void OpenStartupRules() throws IOException {
         final String usePath = System.getProperty("user.dir");

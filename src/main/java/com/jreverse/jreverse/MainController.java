@@ -1,6 +1,7 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import com.jreverse.jreverse.Bridge.JReverseLogger;
 import com.tbdis.sstf.Member;
 import com.tbdis.sstf.Parser;
 import com.tbdis.sstf.ParserException;
@@ -70,14 +71,24 @@ public class MainController {
         System.out.println("Getting Settings!");
         //Get Settings
         Member[] settings = Parser.ParseFile(file);
-        if(settings.length < 3) {
-            System.out.println("Invalid File!");
+        if(settings.length < 4) {
+            System.out.println("Invalid File! Creating Defaults");
+            SettingsViewController.defaultSettingsFile();
             return;
         }
 
-        for(Member setting : settings) {
-            //Callback limit is in the PipeManager Class
-        }
+        /*
+        0. CallBack
+        1. Decompiler
+        2. LoggingOptions
+        3. Advanced Mode
+         */
+        JReverseLogger.PipeCallBackLimit = Integer.parseInt(settings[0].Data);
+        SettingsViewController.DecompOption = SettingsViewController.getDecompilerOption(settings[1].Data);
+        SettingsViewController.LoggingOption = SettingsViewController.getLoggingLevel(settings[2].Data);
+        SettingsViewController.AVDMODE = Boolean.parseBoolean(settings[3].Data);
+
+
     }
 
     @FXML

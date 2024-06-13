@@ -1,2 +1,4 @@
-Sigma│Sigma
-Sigma│Sigma
+PCL│2000
+DCO│CFR
+LLO│ALL
+AVD│true
