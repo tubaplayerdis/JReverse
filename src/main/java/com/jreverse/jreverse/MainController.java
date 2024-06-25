@@ -2,6 +2,7 @@ package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Bridge.JReverseLogger;
+import com.jreverse.jreverse.Debug.DebugConsoleViewController;
 import com.tbdis.sstf.Member;
 import com.tbdis.sstf.Parser;
 import com.tbdis.sstf.ParserException;
@@ -89,6 +90,28 @@ public class MainController {
         SettingsViewController.AVDMODE = Boolean.parseBoolean(settings[3].Data);
 
 
+    }
+
+    @FXML
+    private void createAndOpenDebugConsoleView() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("Defunct/DebugConsoleView.fxml"));
+
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            DebugConsoleViewController controller = fxmlLoader.getController();
+            Image image = new Image(usePath+"/icon/JReverseIcon.png");
+            stage.getIcons().add(image);
+            stage.setTitle("JReverse Debug Console");
+            stage.setOnCloseRequest(e -> {
+                controller.shutdown();
+            });
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML

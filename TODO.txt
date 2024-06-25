@@ -1,13 +1,10 @@
 Todo:
-Immediate - Fix settings menu gui not reflecting setting on load
 1. Source Code Dump option load exclusions and settings by file. Also fix UI for pipe manager
 2. Save runtime settings.
-3. DebugConsole - todo#8 impl
 4. Dynamic Class Collection
 5. Factor out abosolute paths and be able to resolve dependecies. Decompilers, Core DLL path, etc
 6. Add other decompiler option IMPL
 7. Add ability to load jars/classes
-8. Implement General Communication channel to allow users to see what is "happening". Function calls and callback waits etc. Just dump System out
 9. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
 
 Features to impl:

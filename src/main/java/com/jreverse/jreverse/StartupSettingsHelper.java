@@ -216,7 +216,11 @@ public class StartupSettingsHelper {
         settings.FuncLoopTimeout = Integer.parseInt(f.getNodeValue());
         settings.JNIEnvTimeout = Integer.parseInt(g.getNodeValue());
         settings.IsDynamicClassFileCollection = Boolean.parseBoolean(h.getNodeValue());
-        settings.DynamicClassFileCollectionPath = i.getNodeValue();
+        if(i.getNodeValue().isEmpty() || i.getNodeValue().isBlank()) {
+            settings.DynamicClassFileCollectionPath = "None";
+        } else {
+            settings.DynamicClassFileCollectionPath = i.getNodeValue();
+        }
         return settings;
     }
 

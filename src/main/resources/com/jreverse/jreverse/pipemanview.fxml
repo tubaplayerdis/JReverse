@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -61,5 +62,11 @@
             <Button mnemonicParsing="false" onMouseClicked="#GrowPipe" prefHeight="25.0" prefWidth="149.0" text="Grow" />
          </children>
       </VBox>
+      <Label layoutX="364.0" layoutY="154.0" text="Disclaimer:" textFill="RED">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextArea editable="false" layoutX="364.0" layoutY="179.0" prefHeight="159.0" prefWidth="200.0" text="Do not use the reload or grow functions unless you know what you are doing. Growing excessively uses memory you might not have. Reloading to a smaller size might cause a memory leak." wrapText="true" />
    </children>
 </AnchorPane>

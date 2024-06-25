@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -193,6 +194,11 @@ public class StartupRulesController {
     @FXML
     public Slider JNIENVTimeoutSlider;
 
+    @FXML
+    public CheckBox DynamicClassFileCollectionCheckBox;
+    @FXML
+    public TextField DynamicClassFileCollectionPathTextArea;
+
     public static StartupSettings settings;
 
     public static final Path SettingsPath = Paths.get(System.getProperty("user.dir")+"/settings.xml");
@@ -209,6 +215,9 @@ public class StartupRulesController {
             ConsoleWindowCheckBox.setSelected(settings.IsConsoleWindow);
             FuncLoopTimeoutSlider.setValue(settings.FuncLoopTimeout);
             JNIENVTimeoutSlider.setValue(settings.JNIEnvTimeout);
+            DynamicClassFileCollectionCheckBox.setSelected(settings.IsDynamicClassFileCollection);
+            DynamicClassFileCollectionPathTextArea.setText(settings.DynamicClassFileCollectionPath);
+            DCFCCheckBoxToggle();
         });
     }
     @FXML
@@ -221,8 +230,44 @@ public class StartupRulesController {
         startupSettings.IsClassFileCollection = ClassFileCollectionCheckBox.isSelected();
         startupSettings.FuncLoopTimeout = (int)FuncLoopTimeoutSlider.getValue();
         startupSettings.JNIEnvTimeout = (int)JNIENVTimeoutSlider.getValue();
+        startupSettings.IsDynamicClassFileCollection = DynamicClassFileCollectionCheckBox.isSelected();
+        startupSettings.DynamicClassFileCollectionPath = DynamicClassFileCollectionPathTextArea.getText();
         StartupSettingsHelper.WriteSettingsFile(startupSettings);
         LoadSettings();
+    }
+
+    @FXML
+    private Button DCFCButton;
+    @FXML
+    private Label DCFCLabel;
+    @FXML
+    public void DCFCCheckBoxToggle() {
+        DCFCButton.setDisable(!DynamicClassFileCollectionCheckBox.isSelected());
+        DCFCLabel.setDisable(!DynamicClassFileCollectionCheckBox.isSelected());
+        DynamicClassFileCollectionPathTextArea.setDisable(!DynamicClassFileCollectionCheckBox.isSelected());
+    }
+
+    @FXML
+    public void SelectDCFCPath() {
+        JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+        // Set the file chooser to select directories only
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        // Show the dialog and capture the user's choice
+        int returnValue = fileChooser.showDialog(null, "Select output directory");
+
+        // If the user selects a folder
+        String selectedFolderPath;
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            // Get the selected folder
+            selectedFolderPath = fileChooser.getSelectedFile().getPath();
+            System.out.println("Selected folder: " + selectedFolderPath);
+            DynamicClassFileCollectionPathTextArea.setText(selectedFolderPath);
+        } else {
+            System.out.println("No folder selected.");
+            return;
+        }
     }
 
 }

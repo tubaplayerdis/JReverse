@@ -3,6 +3,7 @@ package com.jreverse.jreverse;
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Bridge.JReverseLogger;
 import com.jreverse.jreverse.PipeManager.PipeManager;
+import com.jreverse.jreverse.Utils.JReverseUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,6 +44,7 @@ public class PipeManagerController {
     private void testfunp(){
         String[] what = JReverseBridge.CallCoreFunction("TESTFUNC", JReverseBridge.NoneArg);
         System.out.println(what[0] + " " + what[1]);
+        JReverseUtils.infoBox(what[0] + "\n" + what[1], "Function and Return Pipe Test");
         //Add box to display this output
     }
 

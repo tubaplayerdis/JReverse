@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <TabPane fx:id="MainPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.StartupRulesController">
@@ -19,88 +20,122 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <CheckBox fx:id="InjectOnStartupCheckBox" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Inject on startup">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="JReverse will kill the selected target and wait for it to restart to inject" wrapText="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Tooltip>
-                     </tooltip>
-                  </CheckBox>
-                  <CheckBox fx:id="AutoStartCheckBox" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" text="Auto start">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="JReverse will start the target for you and inject" wrapText="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Tooltip>
-                     </tooltip>
-                  </CheckBox>
-                  <Slider fx:id="FuncLoopTimeoutSlider" layoutX="14.0" layoutY="232.0" majorTickUnit="10.0" minorTickCount="1" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
-                     <tooltip>
-                        <Tooltip text="Timeout to start JReverse's function loop on the target. The function loop also includes the bypass rules so its best to keep this low" wrapText="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Tooltip>
-                     </tooltip>
-                  </Slider>
-                  <Label layoutX="17.0" layoutY="200.0" text="Function loop timeout (ms)">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="17.0" layoutY="288.0" text="JNI timeout (ms)">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Slider fx:id="JNIENVTimeoutSlider" blockIncrement="1000.0" layoutX="14.0" layoutY="313.0" majorTickUnit="100.0" max="500.0" minorTickCount="10" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0">
-                     <tooltip>
-                        <Tooltip text="Time delay to get the JNIenv. This is crucial when collecting class data. lower values can cause a crash and higher there might be lost data" wrapText="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Tooltip>
-                     </tooltip>
-                  </Slider>
-                  <CheckBox fx:id="ClassFileLoadMessagesCheckBox" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" selected="true" text="Class file load messages">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Whether or not class file load messages are displayed" wrapText="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Tooltip>
-                     </tooltip>
-                  </CheckBox>
-                  <CheckBox fx:id="ClassFileCollectionCheckBox" layoutX="14.0" layoutY="122.0" mnemonicParsing="false" selected="true" text="Class file collection">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Whether or not class file bytecode is collected" wrapText="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Tooltip>
-                     </tooltip>
-                  </CheckBox>
-                  <CheckBox fx:id="ConsoleWindowCheckBox" layoutX="14.0" layoutY="156.0" mnemonicParsing="false" selected="true" text="Console Window">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Whether or not a console is created on injection" wrapText="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Tooltip>
-                     </tooltip>
-                  </CheckBox>
                   <Button layoutX="15.0" layoutY="363.0" mnemonicParsing="false" onMouseClicked="#SaveSettings" prefHeight="25.0" prefWidth="571.0" text="Save Settings" />
+                  <VBox layoutX="328.0" layoutY="22.0" prefHeight="200.0" prefWidth="254.0" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="DynamicClassFileCollectionCheckBox" mnemonicParsing="false" onMouseClicked="#DCFCCheckBoxToggle" selected="true" text="Dynamic class file collection">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Whether or not a console is created on injection" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </CheckBox>
+                        <Label fx:id="DCFCLabel" text="Dynamic class file collection path">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="DynamicClassFileCollectionPathTextArea" editable="false" />
+                        <Button fx:id="DCFCButton" mnemonicParsing="false" onMouseClicked="#SelectDCFCPath" prefHeight="25.0" prefWidth="254.0" text="Select Path" />
+                     </children>
+                  </VBox>
+                  <VBox layoutX="15.0" layoutY="22.0" prefHeight="332.0" prefWidth="275.0" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="InjectOnStartupCheckBox" mnemonicParsing="false" text="Inject on startup">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="JReverse will kill the selected target and wait for it to restart to inject" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </CheckBox>
+                        <CheckBox fx:id="AutoStartCheckBox" mnemonicParsing="false" text="Auto start">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="JReverse will start the target for you and inject" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </CheckBox>
+                        <CheckBox fx:id="ClassFileLoadMessagesCheckBox" mnemonicParsing="false" selected="true" text="Class file load messages">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Whether or not class file load messages are displayed" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </CheckBox>
+                        <CheckBox fx:id="ClassFileCollectionCheckBox" mnemonicParsing="false" selected="true" text="Class file collection">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Whether or not class file bytecode is collected" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </CheckBox>
+                        <CheckBox fx:id="ConsoleWindowCheckBox" mnemonicParsing="false" selected="true" text="Console Window">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Whether or not a console is created on injection" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </CheckBox>
+                        <Label text="Function loop timeout (ms)">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Slider fx:id="FuncLoopTimeoutSlider" majorTickUnit="10.0" minorTickCount="1" prefHeight="38.0" prefWidth="242.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
+                           <tooltip>
+                              <Tooltip text="Timeout to start JReverse's function loop on the target. The function loop also includes the bypass rules so its best to keep this low" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </Slider>
+                        <Label text="JNI timeout (ms)">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Slider fx:id="JNIENVTimeoutSlider" blockIncrement="1000.0" majorTickUnit="100.0" max="500.0" minorTickCount="10" prefHeight="21.0" prefWidth="275.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0">
+                           <tooltip>
+                              <Tooltip text="Time delay to get the JNIenv. This is crucial when collecting class data. lower values can cause a crash and higher there might be lost data" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </Slider>
+                     </children>
+                  </VBox>
                </children></AnchorPane>
         </content>
       </Tab>
