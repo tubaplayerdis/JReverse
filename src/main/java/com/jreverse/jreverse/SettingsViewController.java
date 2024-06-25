@@ -1,13 +1,12 @@
 package com.jreverse.jreverse;
 
+import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Bridge.JReverseLogger;
 import com.tbdis.sstf.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 
 import java.io.File;
 
@@ -193,6 +192,15 @@ public class SettingsViewController {
 
         verifySettingsFile();
         setSettings();
+
+        //Init options for DCFC Type
+        ObservableList<String> InitExclusionTypesList = FXCollections.observableArrayList();
+        InitExclusionTypesList.add("StartsWith");
+        InitExclusionTypesList.add("Contains");
+        InitExclusionTypesList.add("Both");
+        DCFCTypeChoiceBox.setItems(InitExclusionTypesList);
+        //Get Exclusions
+        updateExclusionsFromCore();
     }
 
     public static DecompilerOption DecompOption = DecompilerOption.CFR;
@@ -264,5 +272,76 @@ public class SettingsViewController {
 
     private void saveSettings() {
 
+    }
+
+    //DCFC exclusions
+    @FXML
+    private ChoiceBox<String> DCFCTypeChoiceBox;
+    @FXML
+    private Label FeedbackLabel;
+    @FXML
+    private TextField ExclusionNameTextField;
+    @FXML
+    private ListView<String> ExclusionsListView;
+
+
+    private int ChangeTypeToInt(String sus) {
+        switch (sus) {
+            case "StartsWith":
+                return 0;
+            case "Contains":
+                return 1;
+            case "Both":
+                return 2;
+            default:
+                return 0;
+        }
+    }
+
+    @FXML
+    private void updateExclusionsFromButton() {
+        updateExclusionsFromCore();
+    }
+    private void updateExclusionsFromCore() {
+        String[] exs = JReverseBridge.CallCoreFunction("getExclusionNames", JReverseBridge.NoneArg);
+        ObservableList<String> ExclusionList = FXCollections.observableArrayList();
+        ExclusionList.addAll(exs);
+        ExclusionsListView.setItems(ExclusionList);
+    }
+    @FXML
+    private void removeSelected() {
+        String[] args = {ExclusionsListView.getSelectionModel().getSelectedItem()};
+        JReverseBridge.CallCoreFunction("removeExclusion", args);
+        updateExclusionsFromCore();
+    }
+    @FXML
+    private void modifySelected() {
+        FeedbackLabel.setVisible(false);
+        String[] args = {ExclusionNameTextField.getText(), String.valueOf(ChangeTypeToInt(DCFCTypeChoiceBox.getValue()))};
+        String[] ret = JReverseBridge.CallCoreFunction("modifyExclusion", args);
+        if(!ret[0].equals("Sucsessfully Modified Exclusion")) {
+            FeedbackLabel.setVisible(true);
+            FeedbackLabel.setText(ret[0]);
+        }
+        updateExclusionsFromCore();
+    }
+    @FXML
+    private void addSelected() {
+        FeedbackLabel.setVisible(false);
+        String[] args = {ExclusionNameTextField.getText(), String.valueOf(ChangeTypeToInt(DCFCTypeChoiceBox.getValue()))};
+        String[] ret = JReverseBridge.CallCoreFunction("addExclusion", args);
+        if(!ret[0].equals("Sucsessfully Added Exclusion")) {
+            FeedbackLabel.setVisible(true);
+            FeedbackLabel.setText(ret[0]);
+        }
+        updateExclusionsFromCore();
+    }
+
+    @FXML
+    private void selectExclusion() {
+        String[] args = {ExclusionsListView.getSelectionModel().getSelectedItem()};
+        String[] ret = JReverseBridge.CallCoreFunction("getExclusionInfo", args);
+        ExclusionNameTextField.setText(ret[0]);
+        DCFCTypeChoiceBox.getSelectionModel().select(Integer.parseInt(ret[1]));
     }
 }

@@ -1,11 +1,12 @@
 Todo:
-1. Source Code Dump option load exclusions and settings by file. Also fix UI for pipe manager
-2. Save runtime settings.
-4. Dynamic Class Collection
-5. Factor out abosolute paths and be able to resolve dependecies. Decompilers, Core DLL path, etc
-6. Add other decompiler option IMPL
-7. Add ability to load jars/classes
-9. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
+1. Add console commands to modify Dynamic Class File Collection System Exclusions
+2. Version Identifiers
+2. Source Code Dump option load exclusions and settings by file. Also fix UI for pipe manager
+3. Save runtime settings.
+4. Factor out abosolute paths and be able to resolve dependecies. Decompilers, Core DLL path, etc
+5. Add other decompiler option IMPL
+6. Add ability to load jars/classes
+7. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
 
 Features to impl:
 
