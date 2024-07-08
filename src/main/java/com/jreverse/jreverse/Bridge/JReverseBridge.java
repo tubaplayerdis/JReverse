@@ -22,6 +22,8 @@ public class JReverseBridge {
 
     public static native String[] CallCoreFunction(String name, String[] args);
 
+    public static native float GetVersion();
+
     // Load the native library
     static {
         System.loadLibrary("JReverseBridge");

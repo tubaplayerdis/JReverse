@@ -3,10 +3,12 @@ package com.jreverse.jreverse;
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Bridge.JReverseLogger;
 import com.jreverse.jreverse.Debug.DebugConsoleViewController;
+import com.jreverse.jreverse.Utils.JReverseUtils;
 import com.tbdis.sstf.Member;
 import com.tbdis.sstf.Parser;
 import com.tbdis.sstf.ParserException;
 import com.tbdis.sstf.WriterException;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -89,7 +91,12 @@ public class MainController {
         SettingsViewController.LoggingOption = SettingsViewController.getLoggingLevel(settings[2].Data);
         SettingsViewController.AVDMODE = Boolean.parseBoolean(settings[3].Data);
 
-
+        Platform.runLater(() -> {
+            String[] ver = JReverseBridge.CallCoreFunction("getVersionCore", JReverseBridge.NoneArg);
+            if(JReverseBridge.GetVersion() != Float.parseFloat(ver[0])){
+                JReverseUtils.warningBox(String.valueOf("Bridge and Core version mismatch! Some features might not work!\nBridge Version: "+JReverseBridge.GetVersion())+"\nCore Version: "+ver[0],"Version Mismatch!");
+            }
+        });
     }
 
     @FXML

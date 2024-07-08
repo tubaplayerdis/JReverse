@@ -33,6 +33,8 @@ public class ClassEditorController {
 
     @FXML
     private Label AvdmodewarnLabel;
+    @FXML
+    private Button RetransformClassButton;
 
     private final TreeItem<String> emptyitem = new TreeItem<String>("");
 
@@ -163,6 +165,7 @@ public class ClassEditorController {
             selected = selected.getParent();
         }
         if (classpath.lastIndexOf("/") != -1) classpath.deleteCharAt(classpath.length() - 1);
+        classpath.delete(0, classpath.indexOf("/") + 1);
         if (classpath.length() < 2) return;
 
 
@@ -186,6 +189,10 @@ public class ClassEditorController {
         System.out.println(ClassByteCodes[1]);
         if (ClassByteCodes[1].equals("Class File Not Found")) {
             ClassDecompArea.setText("Class File for: "+classname+" was not found!");
+            if(isAdvancedMode) {
+                RetransformClassButton.setVisible(true);
+                RetransformClassButton.setDisable(false);
+            }
             return;
         }
 
@@ -215,11 +222,52 @@ public class ClassEditorController {
         String line;
 
         while ((line = reader.readLine()) != null) {
-            if(decompiledString == "Failed Decompilation!") decompiledString="";
+            if(decompiledString == "Failed Decompilation!") {
+                decompiledString="";
+            }
             decompiledString = decompiledString+line+"\n";
         }
 
         ClassDecompArea.setText("Original Decomp of " + ClassByteCodes[0] + ":\n\n" + decompiledString);
+    }
+
+    @FXML
+    private void RetransformClass() {
+        RetransformClassButton.setVisible(false);
+        RetransformClassButton.setDisable(true);
+        StringBuilder classpath = new StringBuilder();
+        TreeItem<String> selected = ByteCodedClassesTreeView.getSelectionModel().getSelectedItem();
+        while (selected != null) {
+            if (selected.getValue() == "Bytecoded Classes") break;
+            classpath.insert(0, selected.getValue() + "/");
+            selected = selected.getParent();
+        }
+        if (classpath.lastIndexOf("/") != -1) classpath.deleteCharAt(classpath.length() - 1);
+        classpath.delete(0, classpath.indexOf("/") + 1);
+        if (classpath.length() < 2) return;
+
+
+        String classname = classpath.toString();
+        if(Objects.isNull(classname) || classname.isEmpty() || classname.isBlank() || Objects.equals(classname, "unknown")){
+            return;
+        }
+        String[] ByteArgs = {classname};
+
+        JReverseBridge.CallCoreFunction("retransformClass", ByteArgs);
+
+        String[] Bytecodes = JReverseBridge.CallCoreFunction("getClassBytecodes", ByteArgs);
+
+        if (Bytecodes[1].equals("Class File Not Found")) {
+            ClassDecompArea.setText("Failed Retransform: "+classname);
+            if(isAdvancedMode) {
+                RetransformClassButton.setVisible(true);
+                RetransformClassButton.setDisable(false);
+            }
+            return;
+        }
+
+        String source = JReverseDecompiler.DecompileBytecodes(Bytecodes[1].toUpperCase());
+        ClassDecompArea.setText("Original Decomp of " + classname + ":\n\n" + source);
     }
 
     @FXML

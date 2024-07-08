@@ -3,6 +3,7 @@ package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.PipeManager.PipeManager;
+import com.jreverse.jreverse.Utils.JReverseUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -80,6 +81,37 @@ public class startupController {
 
     @FXML
     private void injectClick() throws IOException {
+        //Check for manual dll hotkey pressed
+        /*
+        KeyEvent event = new KeyEvent(null, 0, 0, KeyEvent.KEY_PRESSED, KeyEvent.VK_F2);
+        int keyCode = event.getKeyCode();
+        String dllpath = "NONE";
+        if(keyCode == KeyEvent.VK_F2) {
+            //Manual DLL Selection
+            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int returnValue = fileChooser.showDialog(null, "Select DLL manually");
+            // If the user selects a folder
+            String selectedFolderPath;
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                // Get the selected folder
+                selectedFolderPath = fileChooser.getSelectedFile().getPath();
+                System.out.println("Selected file: " + selectedFolderPath);
+                dllpath = selectedFolderPath;
+            } else {
+                System.out.println("No file selected. Assuming download");
+            }
+        }
+        else {
+            //Respect Download Server option
+
+            //Download latest version
+
+            //Make proper changes to path
+        }
+        */
+
+
         //Use this for relative DLL when going to publish
         final String usePath = System.getProperty("user.dir");
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
@@ -106,6 +138,9 @@ public class startupController {
         App.thestage.getIcons().add(image);
         App.thestage.setScene(scene);
         App.thestage.show();
+        if(injectionreturn == 2) {
+            JReverseUtils.infoBox("JReverse did not reinject the dll as it was already injected. startup data will be dismissed", "JReverse has already been injected");
+        }
         //System.out.println(JReverseBridge.GetStringPipe());
     }
 
@@ -293,6 +328,37 @@ public class startupController {
         if(isAutoStart){
             System.out.println("Auto Start True!");
             try {
+                //Check for manual dll hotkey pressed
+                /*
+                KeyEvent event = new KeyEvent(null, 0, 0, KeyEvent.KEY_PRESSED, KeyEvent.VK_F2);
+                int keyCode = event.getKeyCode();
+                String dllpath = "NONE";
+                if(keyCode == KeyEvent.VK_F2) {
+                    //Manual DLL Selection
+                    JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    int returnValue = fileChooser.showDialog(null, "Select DLL manually");
+                    // If the user selects a folder
+                    String selectedFolderPath;
+                    if (returnValue == JFileChooser.APPROVE_OPTION) {
+                        // Get the selected folder
+                        selectedFolderPath = fileChooser.getSelectedFile().getPath();
+                        System.out.println("Selected file: " + selectedFolderPath);
+                        dllpath = selectedFolderPath;
+                    } else {
+                        System.out.println("No file selected. Assuming download");
+                    }
+                }
+                else {
+                    //Respect Download Server option
+
+                    //Download latest version
+
+                    //Make proper changes to path
+                }
+                */
+
+
                 final String usePath = System.getProperty("user.dir");
 
                 StartupSettings settings = StartupSettingsHelper.CheckAndLoadFile();
@@ -312,6 +378,9 @@ public class startupController {
                 App.thestage.getIcons().add(image);
                 App.thestage.setScene(scene);
                 App.thestage.show();
+                if(injectionreturn == 2) {
+                    JReverseUtils.infoBox("JReverse did not reinject the dll as it was already injected. startup data will be dismissed", "JReverse has already been injected");
+                }
                 return;
             } catch (IOException e){
                 System.out.println("Error with FXML: "+e.getMessage());

@@ -95,6 +95,14 @@ JNIEXPORT void JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_WriteStr
 JNIEXPORT jobjectArray JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_CallCoreFunction
   (JNIEnv *, jclass, jstring, jobjectArray);
 
+/*
+ * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
+ * Method:    GetVersion
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_GetVersion
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

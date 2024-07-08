@@ -33,7 +33,7 @@
       </Label>
       <ListView fx:id="InterpretersListView" editable="true" layoutX="762.0" layoutY="69.0" onMouseClicked="#SelectInterpreter" prefHeight="516.0" prefWidth="174.0" />
       <Button layoutX="762.0" layoutY="627.0" mnemonicParsing="false" onMouseClicked="#DeleteInterpreter" prefHeight="25.0" prefWidth="174.0" text="Delete Interpreter" />
-      <Button layoutX="762.0" layoutY="661.0" mnemonicParsing="false" onMouseClicked="#AddInterpreter" prefHeight="25.0" prefWidth="174.0" text="Add Interpreter" />
+      <Button layoutX="762.0" layoutY="661.0" mnemonicParsing="false" onMouseClicked="#AddInterpreter" prefHeight="25.0" prefWidth="174.0" text="Create Interpreter" />
       <TextField fx:id="CurrentIDBox" editable="false" layoutX="151.0" layoutY="661.0" prefHeight="25.0" prefWidth="109.0" />
       <Button layoutX="762.0" layoutY="592.0" mnemonicParsing="false" onMouseClicked="#RefreshInterpreters" prefHeight="25.0" prefWidth="174.0" text="Refresh" />
       <Label layoutX="16.0" layoutY="663.0" text="Current Interpreter:">
