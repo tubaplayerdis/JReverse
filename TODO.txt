@@ -6,6 +6,7 @@ Todo:
 5. Add other decompiler option IMPL
 6. Add ability to load jars/classes - Class Loader
 7. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
+USE mega for file hosting and develop a static link
 
 Features to impl:
 
