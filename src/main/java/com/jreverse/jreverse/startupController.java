@@ -74,7 +74,7 @@ public class startupController {
         Image image = new Image(usePath+"/icon/JReverseIcon.png");
         stage.setResizable(false);
         stage.getIcons().add(image);
-        stage.setTitle("JReverse Startup Rules");
+        stage.setTitle("JReverse Startup Settings");
         stage.setScene(scene);
         stage.show();
     }

@@ -10,7 +10,7 @@ module com.jreverse.jreverse {
     requires atlantafx.base;
     requires java.xml.bind;
     requires sstf;
-
+    requires org.json;
 
     opens com.jreverse.jreverse to javafx.fxml;
     exports com.jreverse.jreverse;

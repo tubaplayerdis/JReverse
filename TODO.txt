@@ -1,5 +1,5 @@
 Todo:
-
+1. Finish Version Manager
 2. Source Code Dump option load exclusions and settings by file.
 3. Save runtime settings.
 4. Factor out abosolute paths and be able to resolve dependecies. Decompilers, Core DLL path, etc. Create domain and download system

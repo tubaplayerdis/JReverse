@@ -1,5 +1,7 @@
 package com.jreverse.jreverse;
 
+import com.jreverse.jreverse.Utils.JReverseVersion;
+import com.jreverse.jreverse.Utils.VersionManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,6 +46,9 @@ public class StartupRulesController {
     //Important
     public static List<StartupRule> rulesList = new ArrayList<>();
 
+    //Version System
+    VersionManager versionManager;
+
     public static StartupRule[] getRules(){
         StartupRule[] returnlist = rulesList.toArray(new StartupRule[0]);
         return  returnlist;
@@ -56,6 +61,30 @@ public class StartupRulesController {
         } catch (IOException e) {
             System.out.println("Failed to load Settings");
         }
+        Platform.runLater(() -> {
+            ObservableList<String> loadingitem = FXCollections.observableArrayList();
+            loadingitem.add("Loading...");
+            PublicVersionsListView.setItems(loadingitem);
+            DevelopmentVersionsListView.setItems(loadingitem);
+        });
+        Thread newThread = new Thread(() -> {
+            VersionManager manager = new VersionManager();
+            Platform.runLater(() -> {
+                versionManager = manager;
+                ObservableList<String> pubitems = FXCollections.observableArrayList();
+                for(JReverseVersion version : versionManager.JReversePubList) {
+                    pubitems.add(String.valueOf(version.version));
+                }
+                PublicVersionsListView.setItems(pubitems);
+
+                ObservableList<String> devitems = FXCollections.observableArrayList();
+                for(JReverseVersion version : versionManager.JReverseDevList) {
+                    devitems.add(String.valueOf(version.version));
+                }
+                DevelopmentVersionsListView.setItems(devitems);
+            });
+        });
+        newThread.start();
     }
 
     @FXML
@@ -269,5 +298,17 @@ public class StartupRulesController {
             return;
         }
     }
+
+    //Version System
+    @FXML
+    private ListView<String> PublicVersionsListView;
+    @FXML
+    private ListView<String> DevelopmentVersionsListView;
+
+    @FXML
+    private void SwitchVersion() {
+
+    }
+
 
 }
