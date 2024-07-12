@@ -8,13 +8,33 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
 public class VersionManager {
     public List<JReverseVersion> JReversePubList = new ArrayList<>();
     public List<JReverseVersion> JReverseDevList = new ArrayList<>();
+    public boolean hasInternetConnection = false;
+    public float currentVersion = -1F;//-1 is for latest
+    public static final String CoreDLLPath = System.getProperty("user.dir")+"/JReverseCore.dll";
     public VersionManager() {
+        try {
+            URL url = new URL("http://www.google.com");
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            System.out.println("Internet is connected. Continuing Version Manager");
+            hasInternetConnection = true;
+        } catch (IOException e) {
+            System.out.println("Internet is not connected");
+            JReversePubList.add(new JReverseVersion("No Internet Connection", 0.0F, "No Internet Connection", 0, "null", false));
+            JReverseDevList.add(new JReverseVersion("No Internet Connection", 0.0F, "No Internet Connection", 0, "null", false));
+            hasInternetConnection = false;
+            return;
+        }
+        //Version Stuff
         try{
             String url = "https://script.google.com/macros/s/AKfycby3Rt2cSDaKITW51GlNb-t4UZTAuzL2DllJIC4awcZVQ7kpfSp8fFObkJRlIaS9DwhA/exec";
             // Create a URL object
@@ -47,7 +67,7 @@ public class VersionManager {
             JSONArray devarray = jsonResponse.getJSONArray("dev");
             for (int i = 0; i < devarray.length(); i++) {
                 JSONObject verobj = devarray.getJSONObject(i);
-                JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"));
+                JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"), true);
                 JReverseDevList.add(version);
             }
 
@@ -55,7 +75,7 @@ public class VersionManager {
             JSONArray pubarray = jsonResponse.getJSONArray("pub");
             for (int i = 0; i < pubarray.length(); i++) {
                 JSONObject verobj = pubarray.getJSONObject(i);
-                JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"));
+                JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"), false);
                 JReversePubList.add(version);
             }
         } catch (IOException e) {
@@ -64,6 +84,16 @@ public class VersionManager {
     }
 
     public void refresh() {
+        try {
+            URL url = new URL("http://www.google.com");
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            System.out.println("Internet is connected. Continuing Version Manager");
+        } catch (IOException e) {
+            System.out.println("Internet is not connected");
+            JReversePubList.add(new JReverseVersion("No Internet Connection", 0.0F, "No Internet Connection", 0, "null", false));
+            JReverseDevList.add(new JReverseVersion("No Internet Connection", 0.0F, "No Internet Connection", 0, "null", false));
+        }
         JReverseDevList.clear();
         JReversePubList.clear();
         try{
@@ -98,7 +128,7 @@ public class VersionManager {
             JSONArray devarray = jsonResponse.getJSONArray("dev");
             for (int i = 0; i < devarray.length(); i++) {
                 JSONObject verobj = devarray.getJSONObject(i);
-                JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"));
+                JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"), true);
                 JReverseDevList.add(version);
             }
 
@@ -106,7 +136,7 @@ public class VersionManager {
             JSONArray pubarray = jsonResponse.getJSONArray("pub");
             for (int i = 0; i < pubarray.length(); i++) {
                 JSONObject verobj = pubarray.getJSONObject(i);
-                JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"));
+                JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"), false);
                 JReversePubList.add(version);
             }
         } catch (IOException e) {
@@ -114,11 +144,31 @@ public class VersionManager {
         }
     }
 
-    public void DownloadLatest() {
-
+    public JReverseVersion GetVersionInfoByNum(float Version, boolean isdev) {
+        if(isdev) {
+            for (JReverseVersion ver : JReverseDevList) {
+                if(ver.version == Version) return ver;
+            }
+            return new JReverseVersion("Version Does Not Exist!", 0.0F, "Version Does Not Exist!", 0, "null", true);
+        }
+        for(JReverseVersion ver : JReversePubList) {
+            if(ver.version == Version) return ver;
+        }
+        return new JReverseVersion("Version Does Not Exist!", 0.0F, "Version Does Not Exist!", 0, "null", false);
     }
 
-    public void DownloadVersionByVersion() {
-
+    public float GetDownloadedVersion() {
+        //File does not exist
+        if(!Files.exists(Paths.get(CoreDLLPath))) return -2F;
+        //Other cases
     }
+
+    public void SwitchVersion(float version) {
+        currentVersion = version;
+    }
+
+    public String Download() {
+        
+    }
+
 }

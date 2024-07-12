@@ -42,12 +42,14 @@ public class StartupRulesController {
 
     @FXML
     private Label OldRuleBypassLabel;
+    @FXML
+    private Label noInternetErrorLabel;
 
     //Important
     public static List<StartupRule> rulesList = new ArrayList<>();
 
     //Version System
-    VersionManager versionManager;
+    public static VersionManager versionManager;
 
     public static StartupRule[] getRules(){
         StartupRule[] returnlist = rulesList.toArray(new StartupRule[0]);
@@ -70,6 +72,10 @@ public class StartupRulesController {
         Thread newThread = new Thread(() -> {
             VersionManager manager = new VersionManager();
             Platform.runLater(() -> {
+                noInternetErrorLabel.setVisible(false);
+                if(!manager.hasInternetConnection) {
+                    noInternetErrorLabel.setVisible(true);
+                }
                 versionManager = manager;
                 ObservableList<String> pubitems = FXCollections.observableArrayList();
                 for(JReverseVersion version : versionManager.JReversePubList) {
@@ -304,6 +310,66 @@ public class StartupRulesController {
     private ListView<String> PublicVersionsListView;
     @FXML
     private ListView<String> DevelopmentVersionsListView;
+    @FXML
+    private ListView<String> selectedVersionInfoListView;
+    @FXML
+    private Label currentVersionLabel;
+
+    @FXML
+    private void refreshVersionManager() {
+        Platform.runLater(() -> {
+            ObservableList<String> loadingitem = FXCollections.observableArrayList();
+            loadingitem.add("Loading...");
+            PublicVersionsListView.setItems(loadingitem);
+            DevelopmentVersionsListView.setItems(loadingitem);
+        });
+        Thread newThread = new Thread(() -> {
+            VersionManager manager = new VersionManager();
+            Platform.runLater(() -> {
+                noInternetErrorLabel.setVisible(false);
+                if(!manager.hasInternetConnection) {
+                    noInternetErrorLabel.setVisible(true);
+                }
+                versionManager = manager;
+                ObservableList<String> pubitems = FXCollections.observableArrayList();
+                for(JReverseVersion version : versionManager.JReversePubList) {
+                    pubitems.add(String.valueOf(version.version));
+                }
+                PublicVersionsListView.setItems(pubitems);
+
+                ObservableList<String> devitems = FXCollections.observableArrayList();
+                for(JReverseVersion version : versionManager.JReverseDevList) {
+                    devitems.add(String.valueOf(version.version));
+                }
+                DevelopmentVersionsListView.setItems(devitems);
+            });
+        });
+        newThread.start();
+    }
+    @FXML
+    private void getSelectedVersionInfoPub() {
+        float versionnum = Float.parseFloat(PublicVersionsListView.getSelectionModel().getSelectedItem());
+        JReverseVersion version = versionManager.GetVersionInfoByNum(versionnum, false);
+        ObservableList<String> items = FXCollections.observableArrayList();
+        items.add("File Name: "+version.name);
+        items.add("File Size(bytes): "+version.size);
+        items.add("Date Created: "+version.date);
+        items.add("Is Development Version: "+Boolean.toString(version.isdev));
+        items.add("Download URL: "+version.downloadLink);
+        selectedVersionInfoListView.setItems(items);
+    }
+    @FXML
+    private void getSelectedVersionInfoDev() {
+        float versionnum = Float.parseFloat(DevelopmentVersionsListView.getSelectionModel().getSelectedItem());
+        JReverseVersion version = versionManager.GetVersionInfoByNum(versionnum, true);
+        ObservableList<String> items = FXCollections.observableArrayList();
+        items.add("File Name: "+version.name);
+        items.add("File Size(bytes): "+version.size);
+        items.add("Date Created: "+version.date);
+        items.add("Is Development Version: "+Boolean.toString(version.isdev));
+        items.add("Download URL: "+version.downloadLink);
+        selectedVersionInfoListView.setItems(items);
+    }
 
     @FXML
     private void SwitchVersion() {
