@@ -248,7 +248,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Label fx:id="currentVersionLabel" layoutX="382.0" layoutY="4.0" text="Current Version:" textFill="#00a7f5">
+                  <Label fx:id="currentVersionLabel" layoutX="382.0" layoutY="4.0" text="Downloaded Version:" textFill="#00a7f5">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

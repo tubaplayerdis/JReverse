@@ -64,6 +64,9 @@ public class StartupRulesController {
             System.out.println("Failed to load Settings");
         }
         Platform.runLater(() -> {
+            //Current Version Stuff
+            currentVersionLabel.setText("Downloaded Version: loading");
+            //Loading...
             ObservableList<String> loadingitem = FXCollections.observableArrayList();
             loadingitem.add("Loading...");
             PublicVersionsListView.setItems(loadingitem);
@@ -88,6 +91,18 @@ public class StartupRulesController {
                     devitems.add(String.valueOf(version.version));
                 }
                 DevelopmentVersionsListView.setItems(devitems);
+
+                //Version Stuff
+                float versiondw = manager.GetDownloadedVersion();
+                String versionstr = Float.toString(versiondw);
+                if(versiondw == -1F) {
+                    versionstr = "Latest";
+                } else if (versiondw == -2F) {
+                    versionstr = "Error!";
+                } else if (versiondw == -3F) {
+                    versionstr = "None";
+                }
+                currentVersionLabel.setText("Downloaded Version: "+versionstr);
             });
         });
         newThread.start();

@@ -24,6 +24,8 @@ public class JReverseBridge {
 
     public static native float GetVersion();
 
+    public static native float GetCoreFileVersion(String location);
+
     // Load the native library
     static {
         System.loadLibrary("JReverseBridge");

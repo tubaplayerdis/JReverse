@@ -1,5 +1,6 @@
 package com.jreverse.jreverse.Utils;
 
+import com.jreverse.jreverse.Bridge.JReverseBridge;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -118,7 +119,8 @@ public class VersionManager {
             in.close();
 
             // Print the response
-            System.out.println(response.toString());
+            // Don't! print the response twice
+            //System.out.println(response.toString());
 
             //Json the response
             JSONObject jsonResponse = new JSONObject(response.toString());
@@ -157,18 +159,30 @@ public class VersionManager {
         return new JReverseVersion("Version Does Not Exist!", 0.0F, "Version Does Not Exist!", 0, "null", false);
     }
 
+    /*
+    Returns:
+    -3 = No file
+    -2 = Corrupt?Missing Data
+    -1 = Latest
+    others = others
+     */
     public float GetDownloadedVersion() {
         //File does not exist
-        if(!Files.exists(Paths.get(CoreDLLPath))) return -2F;
-        //Other cases
+        Path corepath = Paths.get(CoreDLLPath);
+        if(!Files.exists(corepath)) return -3F;
+        //Get Version Data of file
+        float version = JReverseBridge.GetCoreFileVersion(CoreDLLPath);
+        return version;
+        //Maybe implement Latest?
     }
+
 
     public void SwitchVersion(float version) {
         currentVersion = version;
     }
 
     public String Download() {
-        
+        return "no";
     }
 
 }

@@ -98,10 +98,18 @@ JNIEXPORT jobjectArray JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_
 /*
  * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
  * Method:    GetVersion
- * Signature: ()J
+ * Signature: ()F
  */
-JNIEXPORT jlong JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_GetVersion
+JNIEXPORT jfloat JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_GetVersion
   (JNIEnv *, jclass);
+
+/*
+ * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
+ * Method:    GetCoreFileVersion
+ * Signature: (Ljava/lang/String;)F
+ */
+JNIEXPORT jfloat JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_GetCoreFileVersion
+  (JNIEnv *, jclass, jstring);
 
 #ifdef __cplusplus
 }
