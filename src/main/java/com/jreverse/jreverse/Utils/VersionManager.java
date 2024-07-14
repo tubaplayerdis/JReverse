@@ -19,7 +19,8 @@ public class VersionManager {
     public List<JReverseVersion> JReversePubList = new ArrayList<>();
     public List<JReverseVersion> JReverseDevList = new ArrayList<>();
     public boolean hasInternetConnection = false;
-    public float currentVersion = -1F;//-1 is for latest
+    public boolean isDownloadedLatest = false;
+    public float currentVersion = -2F;//-2 is for none
     public static final String CoreDLLPath = System.getProperty("user.dir")+"/JReverseCore.dll";
     public VersionManager() {
         try {
@@ -33,6 +34,7 @@ public class VersionManager {
             JReversePubList.add(new JReverseVersion("No Internet Connection", 0.0F, "No Internet Connection", 0, "null", false));
             JReverseDevList.add(new JReverseVersion("No Internet Connection", 0.0F, "No Internet Connection", 0, "null", false));
             hasInternetConnection = false;
+            isDownloadedLatest = false;
             return;
         }
         //Version Stuff
@@ -79,6 +81,19 @@ public class VersionManager {
                 JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"), false);
                 JReversePubList.add(version);
             }
+
+            float highestversion = 0.0F;
+            if(JReversePubList.isEmpty()) {
+                for(JReverseVersion version : JReverseDevList) {
+                    if(version.version > highestversion) highestversion = version.version;
+                }
+            }
+            else {
+                for(JReverseVersion version : JReversePubList) {
+                    if(version.version > highestversion) highestversion = version.version;
+                }
+            }
+            if(GetDownloadedVersion() == highestversion) isDownloadedLatest = true;
         } catch (IOException e) {
             System.out.println("Error Getting Versions!");
         }
@@ -141,6 +156,8 @@ public class VersionManager {
                 JReverseVersion version = new JReverseVersion(verobj.getString("name"), Float.parseFloat(verobj.getString("version")), verobj.getString("date"), verobj.getInt("size"), verobj.getString("downloadlink"), false);
                 JReversePubList.add(version);
             }
+
+            //Check for latest version downloaded
         } catch (IOException e) {
             System.out.println("Error Getting Versions!");
         }

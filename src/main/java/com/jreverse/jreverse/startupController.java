@@ -4,6 +4,7 @@ package com.jreverse.jreverse;
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.PipeManager.PipeManager;
 import com.jreverse.jreverse.Utils.JReverseUtils;
+import com.jreverse.jreverse.Utils.VersionManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,6 +60,10 @@ public class startupController {
 
             }
         });
+        Thread newThread = new Thread(() -> {
+            StartupRulesController.versionManager = new VersionManager();
+        });
+        newThread.start();
     }
     @FXML
     private void OpenStartupRules() throws IOException {
@@ -114,6 +119,11 @@ public class startupController {
 
         //Use this for relative DLL when going to publish
         final String usePath = System.getProperty("user.dir");
+
+        if(StartupRulesController.versionManager.GetDownloadedVersion() == -2F || StartupRulesController.versionManager.GetDownloadedVersion() == -3F) {
+            StartupRulesController.versionManager.Download();
+        }
+
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
         StartupSettings settings = StartupSettingsHelper.CheckAndLoadFile();
         if(Objects.isNull(settings)) {System.out.println("Startup Settings NULL"); return;}
@@ -128,6 +138,9 @@ public class startupController {
         System.out.println("Wrote Startup: "+resf);
         PipeManager.InitAPI();
         System.out.println("Injecting!");
+
+
+        //Add dev mode to continute debugging from this path in comparison to public where the version manager handles it
         injectionreturn = JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
         File style = new File(usePath+"/stylesheets/style.css");

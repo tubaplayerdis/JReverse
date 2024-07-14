@@ -49,7 +49,7 @@ public class StartupRulesController {
     public static List<StartupRule> rulesList = new ArrayList<>();
 
     //Version System
-    public static VersionManager versionManager;
+    public static VersionManager versionManager = null;
 
     public static StartupRule[] getRules(){
         StartupRule[] returnlist = rulesList.toArray(new StartupRule[0]);
@@ -73,13 +73,14 @@ public class StartupRulesController {
             DevelopmentVersionsListView.setItems(loadingitem);
         });
         Thread newThread = new Thread(() -> {
-            VersionManager manager = new VersionManager();
+            if(Objects.isNull(versionManager)) {
+                versionManager = new VersionManager();
+            }
             Platform.runLater(() -> {
                 noInternetErrorLabel.setVisible(false);
-                if(!manager.hasInternetConnection) {
+                if(!versionManager.hasInternetConnection) {
                     noInternetErrorLabel.setVisible(true);
                 }
-                versionManager = manager;
                 ObservableList<String> pubitems = FXCollections.observableArrayList();
                 for(JReverseVersion version : versionManager.JReversePubList) {
                     pubitems.add(String.valueOf(version.version));
@@ -93,14 +94,16 @@ public class StartupRulesController {
                 DevelopmentVersionsListView.setItems(devitems);
 
                 //Version Stuff
-                float versiondw = manager.GetDownloadedVersion();
+                float versiondw = versionManager.GetDownloadedVersion();
                 String versionstr = Float.toString(versiondw);
-                if(versiondw == -1F) {
-                    versionstr = "Latest";
-                } else if (versiondw == -2F) {
+                if (versiondw == -2F) {
                     versionstr = "Error!";
                 } else if (versiondw == -3F) {
                     versionstr = "None";
+                }
+
+                if(versionManager.isDownloadedLatest) {
+                    versionstr = "Latest";
                 }
                 currentVersionLabel.setText("Downloaded Version: "+versionstr);
             });
@@ -333,6 +336,9 @@ public class StartupRulesController {
     @FXML
     private void refreshVersionManager() {
         Platform.runLater(() -> {
+            //Current Version Stuff
+            currentVersionLabel.setText("Downloaded Version: loading");
+
             ObservableList<String> loadingitem = FXCollections.observableArrayList();
             loadingitem.add("Loading...");
             PublicVersionsListView.setItems(loadingitem);
@@ -357,6 +363,20 @@ public class StartupRulesController {
                     devitems.add(String.valueOf(version.version));
                 }
                 DevelopmentVersionsListView.setItems(devitems);
+
+                //Version Stuff
+                float versiondw = versionManager.GetDownloadedVersion();
+                String versionstr = Float.toString(versiondw);
+                if (versiondw == -2F) {
+                    versionstr = "Error!";
+                } else if (versiondw == -3F) {
+                    versionstr = "None";
+                }
+
+                if(versionManager.isDownloadedLatest) {
+                    versionstr = "Latest";
+                }
+                currentVersionLabel.setText("Downloaded Version: "+versionstr);
             });
         });
         newThread.start();
@@ -381,6 +401,7 @@ public class StartupRulesController {
         items.add("File Name: "+version.name);
         items.add("File Size(bytes): "+version.size);
         items.add("Date Created: "+version.date);
+        items.add("Version Number: "+version.version);
         items.add("Is Development Version: "+Boolean.toString(version.isdev));
         items.add("Download URL: "+version.downloadLink);
         selectedVersionInfoListView.setItems(items);
@@ -388,7 +409,10 @@ public class StartupRulesController {
 
     @FXML
     private void SwitchVersion() {
-
+        ObservableList<String> items = selectedVersionInfoListView.getItems();
+        float versionnum = Float.parseFloat(items.get(3).substring(15, items.get(3).length()));
+        System.out.println("Switching to version: "+versionnum);
+        versionManager.SwitchVersion(versionnum);
     }
 
 
