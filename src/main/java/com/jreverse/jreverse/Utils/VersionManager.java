@@ -1,12 +1,11 @@
 package com.jreverse.jreverse.Utils;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
+import javafx.scene.control.ProgressBar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -20,7 +19,8 @@ public class VersionManager {
     public List<JReverseVersion> JReverseDevList = new ArrayList<>();
     public boolean hasInternetConnection = false;
     public boolean isDownloadedLatest = false;
-    public float currentVersion = -2F;//-2 is for none
+    public float currentVersion = -1F;//-2 is for none
+    public float latestVersion = 0F;
     public static final String CoreDLLPath = System.getProperty("user.dir")+"/JReverseCore.dll";
     public VersionManager() {
         try {
@@ -94,6 +94,7 @@ public class VersionManager {
                 }
             }
             if(GetDownloadedVersion() == highestversion) isDownloadedLatest = true;
+            latestVersion = highestversion;
         } catch (IOException e) {
             System.out.println("Error Getting Versions!");
         }
@@ -193,13 +194,93 @@ public class VersionManager {
         //Maybe implement Latest?
     }
 
+    public JReverseVersion GetLatestVersion() {
+        if(latestVersion == 0F) return new JReverseVersion("Initialize the Version Manager!", 0.0F, "Initialize the Version Manager!", 0, "null", false);
+        JReverseVersion retver = GetVersionInfoByNum(latestVersion, false);
+        if(retver.name.equals("Version Does Not Exist!")) {
+            return GetVersionInfoByNum(latestVersion, true);
+        } else {
+            return retver;
+        }
+    }
 
     public void SwitchVersion(float version) {
         currentVersion = version;
     }
 
-    public String Download() {
-        return "no";
+    public void Download(ProgressBar progressBar) {
+        String downloadLink = null;
+        if(currentVersion == -1F) {
+            downloadLink = GetLatestVersion().downloadLink;
+        }
+
+        String saveFilePath = CoreDLLPath;
+        String fileURL = downloadLink;
+        try {
+            URL url = new URL(fileURL);
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+            int responseCode = httpConn.getResponseCode();
+
+            // Check HTTP response code first
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                String fileName = "";
+                String disposition = httpConn.getHeaderField("Content-Disposition");
+                String contentType = httpConn.getContentType();
+                int contentLength = httpConn.getContentLength();
+
+                if (disposition != null) {
+                    // Extracts file name from header field
+                    int index = disposition.indexOf("filename=");
+                    if (index > 0) {
+                        fileName = disposition.substring(index + 10, disposition.length() - 1);
+                    }
+                } else {
+                    // Extracts file name from URL
+                    fileName = fileURL.substring(fileURL.lastIndexOf("/") + 1, fileURL.length());
+                }
+
+                System.out.println("Content-Type = " + contentType);
+                System.out.println("Content-Disposition = " + disposition);
+                System.out.println("Content-Length = " + contentLength);
+                System.out.println("fileName = " + fileName);
+
+                // Opens input stream from the HTTP connection
+                InputStream inputStream = httpConn.getInputStream();
+                String saveFilePathWithFileName = saveFilePath;
+
+                // Opens an output stream to save into file
+                FileOutputStream outputStream = new FileOutputStream(saveFilePathWithFileName);
+
+                int bytesRead = -1;
+                byte[] buffer = new byte[4096];
+                long totalBytesRead = 0;
+                int percentCompleted = 0;
+                long fileSize = contentLength;
+
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    totalBytesRead += bytesRead;
+                    outputStream.write(buffer, 0, bytesRead);
+
+                    int percentCompletedNew = (int) (totalBytesRead * 100 / fileSize);
+
+                    if (percentCompletedNew > percentCompleted) {
+                        percentCompleted = percentCompletedNew;
+                        System.out.print("Progress: " + percentCompleted + "%\r");
+                        progressBar.setProgress(percentCompleted);
+                    }
+                }
+
+                outputStream.close();
+                inputStream.close();
+
+                System.out.println("File downloaded");
+            } else {
+                System.out.println("No file to download. Server replied HTTP code: " + responseCode);
+            }
+            httpConn.disconnect();
+        } catch (IOException e) {
+            System.out.println("Error with downloading!");
+        }
     }
 
 }

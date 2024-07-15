@@ -1,5 +1,6 @@
 package com.jreverse.jreverse;
 
+import com.jreverse.jreverse.Utils.Developer;
 import com.jreverse.jreverse.Utils.JReverseVersion;
 import com.jreverse.jreverse.Utils.VersionManager;
 import javafx.application.Platform;
@@ -7,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -71,6 +73,9 @@ public class StartupRulesController {
             loadingitem.add("Loading...");
             PublicVersionsListView.setItems(loadingitem);
             DevelopmentVersionsListView.setItems(loadingitem);
+
+            //Developer Mode
+            if(Developer.isDeveloperBuild) developerModeToggleButton.setVisible(true);
         });
         Thread newThread = new Thread(() -> {
             if(Objects.isNull(versionManager)) {
@@ -416,4 +421,18 @@ public class StartupRulesController {
     }
 
 
+    @FXML
+    private Button developerModeToggleButton;
+    @FXML
+    private Pane toggleDeveloperMode;
+
+    @FXML
+    private void toggleDeveloperMode() {
+        Developer.isDeveloperBuild = !Developer.isDeveloperBuild;
+        if(Developer.isDeveloperBuild) {
+            developerModeToggleButton.setVisible(true);
+        } else {
+            developerModeToggleButton.setVisible(false);
+        }
+    }
 }

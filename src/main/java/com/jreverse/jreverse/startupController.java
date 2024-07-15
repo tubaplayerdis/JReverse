@@ -3,6 +3,7 @@ package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.PipeManager.PipeManager;
+import com.jreverse.jreverse.Utils.Developer;
 import com.jreverse.jreverse.Utils.JReverseUtils;
 import com.jreverse.jreverse.Utils.VersionManager;
 import javafx.application.Platform;
@@ -11,11 +12,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -37,6 +36,12 @@ public class startupController {
 
     @FXML
     private TextArea targetField;
+
+    @FXML
+    private ProgressBar JReverseCoreDownloadProgressBar;
+
+    @FXML
+    private VBox progressvbox;
 
     ObservableList<String> procStringList = FXCollections.observableArrayList();
 
@@ -121,10 +126,18 @@ public class startupController {
         final String usePath = System.getProperty("user.dir");
 
         if(StartupRulesController.versionManager.GetDownloadedVersion() == -2F || StartupRulesController.versionManager.GetDownloadedVersion() == -3F) {
-            StartupRulesController.versionManager.Download();
+            System.out.println("Version Manager Detected no downloaded version. Downloading now.");
+            if(!Developer.isDeveloperBuild) {
+                progressvbox.setVisible(true);
+                StartupRulesController.versionManager.Download(JReverseCoreDownloadProgressBar);
+            }
+            else {
+                System.out.println("Developer mode is enabled. resolving developer absolute for dll path");
+            }
         }
 
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
+        //As in no backslash
         StartupSettings settings = StartupSettingsHelper.CheckAndLoadFile();
         if(Objects.isNull(settings)) {System.out.println("Startup Settings NULL"); return;}
         if(settings.IsAutoStart) {WaitAndInject(true); return;}
@@ -141,7 +154,9 @@ public class startupController {
 
 
         //Add dev mode to continute debugging from this path in comparison to public where the version manager handles it
-        injectionreturn = JReverseBridge.InjectDLL(currentPID, "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll");
+        String coredllpath = VersionManager.CoreDLLPath;
+        if(Developer.isDeveloperBuild) coredllpath = "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll";
+        injectionreturn = JReverseBridge.InjectDLL(currentPID, coredllpath);
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
         File style = new File(usePath+"/stylesheets/style.css");
         //scene.getStylesheets().add(style.toURI().toURL().toExternalForm());
@@ -381,7 +396,9 @@ public class startupController {
                 int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules(), settings);
                 PipeManager.InitAPI();
                 System.out.println("Wrote Startup Code: " + resf);
-                JReverseBridge.StartAndInjectDLL("C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll", procpath);
+                String coredllpath = VersionManager.CoreDLLPath;
+                if(Developer.isDeveloperBuild) coredllpath = "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll";
+                injectionreturn = JReverseBridge.InjectDLL(currentPID, coredllpath);
                 Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
                 File style = new File(usePath + "/stylesheets/style.css");
                 //scene.getStylesheets().add(style.toURI().toURL().toExternalForm());
