@@ -283,4 +283,81 @@ public class VersionManager {
         }
     }
 
+    public void Download() {
+        //Implement DownloadWindowView for progress
+
+
+
+        String downloadLink = null;
+        if (currentVersion == -1F) {
+            downloadLink = GetLatestVersion().downloadLink;
+        }
+
+        String saveFilePath = CoreDLLPath;
+        String fileURL = downloadLink;
+        try {
+            URL url = new URL(fileURL);
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+            int responseCode = httpConn.getResponseCode();
+
+            // Check HTTP response code first
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                String fileName = "";
+                String disposition = httpConn.getHeaderField("Content-Disposition");
+                String contentType = httpConn.getContentType();
+                int contentLength = httpConn.getContentLength();
+
+                if (disposition != null) {
+                    // Extracts file name from header field
+                    int index = disposition.indexOf("filename=");
+                    if (index > 0) {
+                        fileName = disposition.substring(index + 10, disposition.length() - 1);
+                    }
+                } else {
+                    // Extracts file name from URL
+                    fileName = fileURL.substring(fileURL.lastIndexOf("/") + 1, fileURL.length());
+                }
+
+                System.out.println("Content-Type = " + contentType);
+                System.out.println("Content-Disposition = " + disposition);
+                System.out.println("Content-Length = " + contentLength);
+                System.out.println("fileName = " + fileName);
+
+                // Opens input stream from the HTTP connection
+                InputStream inputStream = httpConn.getInputStream();
+                String saveFilePathWithFileName = saveFilePath;
+
+                // Opens an output stream to save into file
+                FileOutputStream outputStream = new FileOutputStream(saveFilePathWithFileName);
+
+                int bytesRead = -1;
+                byte[] buffer = new byte[4096];
+                long totalBytesRead = 0;
+                int percentCompleted = 0;
+                long fileSize = contentLength;
+
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    totalBytesRead += bytesRead;
+                    outputStream.write(buffer, 0, bytesRead);
+
+                    int percentCompletedNew = (int) (totalBytesRead * 100 / fileSize);
+
+                    if (percentCompletedNew > percentCompleted) {
+                        percentCompleted = percentCompletedNew;
+                        System.out.print("Progress: " + percentCompleted + "%\r");
+                    }
+                }
+
+                outputStream.close();
+                inputStream.close();
+
+                System.out.println("File downloaded");
+            } else {
+                System.out.println("No file to download. Server replied HTTP code: " + responseCode);
+            }
+            httpConn.disconnect();
+        } catch (IOException e) {
+            System.out.println("Error with downloading!");
+        }
+    }
 }

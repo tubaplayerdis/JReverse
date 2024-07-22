@@ -1,6 +1,7 @@
 package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Utils.Developer;
+import com.jreverse.jreverse.Utils.JReverseUtils;
 import com.jreverse.jreverse.Utils.JReverseVersion;
 import com.jreverse.jreverse.Utils.VersionManager;
 import javafx.application.Platform;
@@ -418,6 +419,7 @@ public class StartupRulesController {
         float versionnum = Float.parseFloat(items.get(3).substring(15, items.get(3).length()));
         System.out.println("Switching to version: "+versionnum);
         versionManager.SwitchVersion(versionnum);
+        versionManager.Download();
     }
 
 
@@ -434,5 +436,10 @@ public class StartupRulesController {
         } else {
             developerModeToggleButton.setVisible(false);
         }
+    }
+
+    @FXML
+    private void showFileNeededWarning() {
+        JReverseUtils.warningBox("Auto Start and Inject will not work correctly if a JReverseCore.dll file is not downloaded. You can do this in the version manager or manually put a JReverseCore.dll at the same path as the jar", "Auto Start and Inject on Startup Warning");
     }
 }

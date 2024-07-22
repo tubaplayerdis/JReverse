@@ -1,5 +1,7 @@
 Todo:
-1. Finish Version Manager
+1. Check for 32 bit application
+1. Finish Version Manager - what to do on auto inject and start inject
+1.5 Fix bugs with no download progress bar
 2. Source Code Dump option load exclusions and settings by file.
 3. Save runtime settings.
 4. Factor out abosolute paths and be able to resolve dependecies. Decompilers, Core DLL path, etc. Create domain and download system
