@@ -7,10 +7,8 @@ Todo:
 4. Factor out abosolute paths and be able to resolve dependecies. Decompilers, Core DLL path, etc. Create domain and download system
 5. Add other decompiler option IMPL
 6. Add ability to load jars/classes - Class Loader
-7. Implement Dynamic Resize of Pipelines or better checks for excessive memory use to avoid dual fatal crashes
-USE mega for file hosting and develop a static link
 
-Features to impl:
+MAKE SURE TO DISABLE IS DEVELOPER BUILD BOOL IN DEVELOPER CLASS!!!!. When shipping
 
 Notes:
 

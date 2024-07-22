@@ -420,6 +420,20 @@ public class StartupRulesController {
         System.out.println("Switching to version: "+versionnum);
         versionManager.SwitchVersion(versionnum);
         versionManager.Download();
+
+        //Version Stuff
+        float versiondw = versionManager.GetDownloadedVersion();
+        String versionstr = Float.toString(versiondw);
+        if (versiondw == -2F) {
+            versionstr = "Error!";
+        } else if (versiondw == -3F) {
+            versionstr = "None";
+        }
+
+        if(versionManager.isDownloadedLatest) {
+            versionstr = "Latest";
+        }
+        currentVersionLabel.setText("Downloaded Version: "+versionstr);
     }
 
 
@@ -440,6 +454,6 @@ public class StartupRulesController {
 
     @FXML
     private void showFileNeededWarning() {
-        JReverseUtils.warningBox("Auto Start and Inject will not work correctly if a JReverseCore.dll file is not downloaded. You can do this in the version manager or manually put a JReverseCore.dll at the same path as the jar", "Auto Start and Inject on Startup Warning");
+        JReverseUtils.warningBox("Auto Start and Inject on startup will not work correctly if a JReverseCore.dll file is not downloaded. You can do this in the version manager or manually put a JReverseCore.dll at the same path as the jar", "Auto Start and Inject on Startup Warning");
     }
 }

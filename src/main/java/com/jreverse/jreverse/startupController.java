@@ -129,7 +129,7 @@ public class startupController {
             System.out.println("Version Manager Detected no downloaded version. Downloading now.");
             if(!Developer.isDeveloperBuild) {
                 progressvbox.setVisible(true);
-                StartupRulesController.versionManager.Download(JReverseCoreDownloadProgressBar);
+                StartupRulesController.versionManager.Download();
             }
             else {
                 System.out.println("Developer mode is enabled. resolving developer absolute for dll path");

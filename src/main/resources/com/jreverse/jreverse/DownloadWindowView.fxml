@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="126.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.DownloadWindowViewController">
    <children>
       <VBox prefHeight="137.0" prefWidth="463.0" spacing="5.0">
@@ -22,6 +21,11 @@
             </Label>
             <ProgressBar fx:id="JReverseDownloadProgressBar" prefHeight="44.0" prefWidth="479.0" progress="0.0" />
             <Label fx:id="PercentageDownloadedLabel" text="Percentage Downloaded: ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="StatusLabel" layoutX="15.0" layoutY="101.0" text="Status: ">
                <font>
                   <Font size="14.0" />
                </font>

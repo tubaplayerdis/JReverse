@@ -6,9 +6,11 @@ import javafx.scene.control.ProgressBar;
 
 public class DownloadWindowViewController {
     @FXML
-    private Label JReverseVersionLabel;
+    public Label JReverseVersionLabel;
     @FXML
-    private ProgressBar JReverseDownloadProgressBar;
+    public ProgressBar JReverseDownloadProgressBar;
     @FXML
-    private Label PercentageDownloadedLabel;
+    public Label PercentageDownloadedLabel;
+    @FXML
+    public Label StatusLabel;
 }
