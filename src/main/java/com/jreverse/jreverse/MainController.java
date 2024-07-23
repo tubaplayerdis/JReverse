@@ -295,38 +295,12 @@ public class MainController {
         final String usePath = System.getProperty("user.dir");
         //looks like: C:\Users\aaron\IdeaProjects\jreverse
 
-        //Write the Data to temp.class;
-        System.out.println("Decompiling BYTECODES: "+ClassByteCodes[1].toUpperCase());
-        byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase());
-        writeByteArrayToTempClassFile(bytesofclass);
-
-        //Setup For Decomp
-        String classFilePath = "temp.class"; // Path to your .class file
-
         System.out.println("Current Path: "+System.getProperty("user.dir"));
 
-
-        String decompiledString = "Failed Decompilation!";
-
         //Cfr bs
-
-        ProcessBuilder builder = new ProcessBuilder("java", "-jar", usePath+"\\libs\\cfr-0.152.jar", usePath+"\\temp.class");
-        Process process = builder.start();
-
-        // Read the output of the command
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-
-        while ((line = reader.readLine()) != null) {
-            if(decompiledString == "Failed Decompilation!") decompiledString="";
-            decompiledString = decompiledString+line+"\n";
-        }
+        String decompiledString = JReverseDecompiler.DecompileBytecodes(ClassByteCodes[1].toUpperCase());
 
         MethodDecompArea.setText("Decomp of " + ClassByteCodes[0] + ":\n\n" + decompiledString);
-
-        //byte[] bytesofclass = HexFormat.of().parseHex(ClassByteCodes[1].toUpperCase().replace(" ",""));
-
-        //System.out.println(writeByteArrayToTempClassFile(bytesofclass));
     }
 
     @FXML

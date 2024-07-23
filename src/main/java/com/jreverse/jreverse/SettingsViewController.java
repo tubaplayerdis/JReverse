@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class SettingsViewController {
@@ -176,10 +177,11 @@ public class SettingsViewController {
     public void initialize() {
         ObservableList<String> InitOptionsList = FXCollections.observableArrayList();
         InitOptionsList.add("CFR");
-        InitOptionsList.add("JD_CORE");
         InitOptionsList.add("FERN_FLOWER");
-        InitOptionsList.add("PROCYON");
-        InitOptionsList.add("BYTECODE_VIEWER");
+        //When Implemented
+        //InitOptionsList.add("JD_CORE");
+        //InitOptionsList.add("PROCYON");
+        //InitOptionsList.add("BYTECODE_VIEWER");
         DecompilerChoiceBox.setItems(InitOptionsList);
 
         ObservableList<String> InitLevelList = FXCollections.observableArrayList();
@@ -270,8 +272,28 @@ public class SettingsViewController {
         saveSettingsFile();
     }
 
-    private void saveSettings() {
-
+    @FXML
+    private void saveDCFCSettings() {
+        ObservableList<String> ExclusionList = ExclusionsListView.getItems();
+        if(ExclusionList.get(0).equals("No Exclusions")) return;
+        File dcfcfile = new File("dcfcexclusions.txt");
+        try {
+            dcfcfile.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Failed to create dcfc file. aborting!");
+            return;
+        }
+        Member[] exclusionarray = new Member[ExclusionList.size()];
+        for(int i = 0; i<ExclusionList.size(); i++) {
+            String[] args = {ExclusionList.get(i)};
+            exclusionarray[i] = new Member(ExclusionList.get(i), JReverseBridge.CallCoreFunction("getExclusionInfo", args)[1]);
+        }
+        try {
+            Writer.WriteFile(dcfcfile, exclusionarray);
+        } catch (WriterException e) {
+            System.out.println("Something went wrong with writing dcfc settings!");
+        }
+        System.out.println("Saved Exclusions to"+dcfcfile.getAbsolutePath());
     }
 
     //DCFC exclusions

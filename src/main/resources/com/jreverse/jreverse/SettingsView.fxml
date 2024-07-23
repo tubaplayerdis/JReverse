@@ -12,6 +12,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -81,7 +82,12 @@
                                  </font>
                               </Label>
                               <ListView fx:id="ExclusionsListView" onMouseClicked="#selectExclusion" prefHeight="295.0" prefWidth="161.0" />
-                              <Button mnemonicParsing="false" onMouseClicked="#removeSelected" prefHeight="25.0" prefWidth="364.0" text="Remove Selected" />
+                              <HBox prefHeight="32.0" prefWidth="347.0" spacing="7.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#saveDCFCSettings" prefWidth="170.0" text="Save Exclusions" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#removeSelected" prefHeight="25.0" prefWidth="170.0" text="Remove Selected" />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                         <VBox layoutX="369.0" layoutY="8.0" prefHeight="169.0" prefWidth="221.0" spacing="5.0">

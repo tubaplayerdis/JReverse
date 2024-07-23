@@ -67,6 +67,7 @@ public class startupController {
         });
         Thread newThread = new Thread(() -> {
             StartupRulesController.versionManager = new VersionManager();
+            StartupRulesController.isVersionManagerInit = true;
         });
         newThread.start();
     }
@@ -91,41 +92,10 @@ public class startupController {
 
     @FXML
     private void injectClick() throws IOException {
-        //Check for manual dll hotkey pressed
-        /*
-        KeyEvent event = new KeyEvent(null, 0, 0, KeyEvent.KEY_PRESSED, KeyEvent.VK_F2);
-        int keyCode = event.getKeyCode();
-        String dllpath = "NONE";
-        if(keyCode == KeyEvent.VK_F2) {
-            //Manual DLL Selection
-            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            int returnValue = fileChooser.showDialog(null, "Select DLL manually");
-            // If the user selects a folder
-            String selectedFolderPath;
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                // Get the selected folder
-                selectedFolderPath = fileChooser.getSelectedFile().getPath();
-                System.out.println("Selected file: " + selectedFolderPath);
-                dllpath = selectedFolderPath;
-            } else {
-                System.out.println("No file selected. Assuming download");
-            }
-        }
-        else {
-            //Respect Download Server option
-
-            //Download latest version
-
-            //Make proper changes to path
-        }
-        */
-
-
         //Use this for relative DLL when going to publish
         final String usePath = System.getProperty("user.dir");
 
-        if(StartupRulesController.versionManager.GetDownloadedVersion() == -2F || StartupRulesController.versionManager.GetDownloadedVersion() == -3F) {
+        if(StartupRulesController.versionManager.GetDownloadedVersion() == -2F || StartupRulesController.versionManager.GetDownloadedVersion() == -3F && StartupRulesController.isVersionManagerInit) {
             System.out.println("Version Manager Detected no downloaded version. Downloading now.");
             if(!Developer.isDeveloperBuild) {
                 progressvbox.setVisible(true);

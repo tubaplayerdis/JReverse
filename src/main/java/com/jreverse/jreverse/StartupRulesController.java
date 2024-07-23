@@ -54,6 +54,8 @@ public class StartupRulesController {
     //Version System
     public static VersionManager versionManager = null;
 
+    public static boolean isVersionManagerInit = false;
+
     public static StartupRule[] getRules(){
         StartupRule[] returnlist = rulesList.toArray(new StartupRule[0]);
         return  returnlist;
@@ -81,6 +83,7 @@ public class StartupRulesController {
         Thread newThread = new Thread(() -> {
             if(Objects.isNull(versionManager)) {
                 versionManager = new VersionManager();
+                isVersionManagerInit = true;
             }
             Platform.runLater(() -> {
                 noInternetErrorLabel.setVisible(false);

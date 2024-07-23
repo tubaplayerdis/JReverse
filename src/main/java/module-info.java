@@ -11,7 +11,6 @@ module com.jreverse.jreverse {
     requires java.xml.bind;
     requires sstf;
     requires org.json;
-    requires static jd.core;
 
     opens com.jreverse.jreverse to javafx.fxml;
     exports com.jreverse.jreverse;
