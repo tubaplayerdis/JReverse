@@ -105,6 +105,14 @@ JNIEXPORT jfloat JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_GetVer
 
 /*
  * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
+ * Method:    ReloadPipes
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_jreverse_jreverse_Bridge_JReverseBridge_ReloadPipes
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_jreverse_jreverse_Bridge_JReverseBridge
  * Method:    GetCoreFileVersion
  * Signature: (Ljava/lang/String;)F
  */

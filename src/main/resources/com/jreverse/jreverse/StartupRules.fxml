@@ -138,11 +138,12 @@
                         </Slider>
                      </children>
                   </VBox>
-                  <Pane fx:id="developerModeTogglePane" layoutX="426.0" layoutY="311.0" onMouseClicked="#toggleDeveloperMode" prefHeight="26.0" prefWidth="139.0">
+                  <Pane fx:id="developerModeTogglePane" layoutX="443.0" layoutY="222.0" onMouseClicked="#toggleDeveloperMode" prefHeight="26.0" prefWidth="139.0">
                      <children>
                         <Button fx:id="developerModeToggleButton" mnemonicParsing="false" onMouseClicked="#toggleDeveloperMode" text="DeveloperModeToggle" />
                      </children>
                   </Pane>
+                  <Button layoutX="329.0" layoutY="329.0" mnemonicParsing="false" onMouseClicked="#ReloadPipes" prefHeight="25.0" prefWidth="257.0" text="Reload Pipes(if crash during injection)" />
                </children></AnchorPane>
         </content>
       </Tab>

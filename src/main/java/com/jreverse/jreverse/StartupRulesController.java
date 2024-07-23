@@ -1,5 +1,6 @@
 package com.jreverse.jreverse;
 
+import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Utils.Developer;
 import com.jreverse.jreverse.Utils.JReverseUtils;
 import com.jreverse.jreverse.Utils.JReverseVersion;
@@ -118,6 +119,11 @@ public class StartupRulesController {
             });
         });
         newThread.start();
+    }
+
+    @FXML
+    private void ReloadPipes() {
+        JReverseBridge.ReloadPipes();
     }
 
     @FXML
