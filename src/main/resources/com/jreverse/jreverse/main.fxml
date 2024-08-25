@@ -77,7 +77,7 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#OpenScripterScene" text="Scripting" />
                   <MenuItem mnemonicParsing="false" onAction="#OpenClassEditor" text="Class Editor" />
-                  <MenuItem mnemonicParsing="false" text="Class Loader" />
+                  <MenuItem mnemonicParsing="false" onAction="#OpenClassLoader" text="Class Loader" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Utils">

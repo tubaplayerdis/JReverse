@@ -589,4 +589,22 @@ public class MainController {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    private void OpenClassLoader() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("ClassLoaderView.fxml"));
+        /*
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+         */
+        Scene scene = new Scene(fxmlLoader.load(), 393, 352);
+        Stage stage = new Stage();
+        Image image = new Image(usePath+"/icon/JReverseIcon.png");
+        stage.setResizable(false);
+        stage.getIcons().add(image);
+        stage.setTitle("JReverse Class Loader");
+        stage.setScene(scene);
+        stage.show();
+    }
 }

@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.jreverse.jreverse.ClassLoaderViewController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="352.0" prefWidth="393.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jreverse.jreverse.ClassLoaderViewController">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <Pane layoutX="14.0" layoutY="14.0" onMouseClicked="#ChooseAndUploadFile" prefHeight="166.0" prefWidth="361.0" style="-fx-border-color: black;">
+         <children>
+            <VBox alignment="CENTER" prefHeight="166.0" prefWidth="361.0">
+               <children>
+                  <HBox fx:id="DragAndDropChoosePane" alignment="CENTER" onDragDropped="#DropEvent" onDragOver="#DragOverEvent" onMouseClicked="#ChooseAndUploadFile" prefHeight="168.0" prefWidth="361.0">
+                     <children>
+                        <Label text="Drag and Drop files or choose them by clicking">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <ListView fx:id="FileListListView" layoutX="14.0" layoutY="187.0" prefHeight="121.0" prefWidth="242.0" />
+      <Button fx:id="LoadFilesButton" layoutX="262.0" layoutY="187.0" mnemonicParsing="false" onMouseClicked="#LoadFilesOnApp" prefHeight="121.0" prefWidth="113.0" text="Load FIles on App" />
+      <Button layoutX="14.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#DeleteSelectedEntry" prefHeight="25.0" prefWidth="242.0" text="Delete Selected Entry" />
+      <Button layoutX="262.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#ToggleHelpPane" prefHeight="25.0" prefWidth="113.0" text="?" />
+      <Pane fx:id="HelpPane" layoutX="35.0" layoutY="50.0" prefHeight="223.0" prefWidth="321.0" style="-fx-background-color: lightgray;" visible="false">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Help">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextArea layoutX="16.0" layoutY="35.0" prefHeight="173.0" prefWidth="290.0" text=" - Accepted File Formats: class, jar&#10; - Files that dont exist wont be uploaded(check valididity)&#10; - Check Console/Class Tree For Result&#10; - Consult Docs if unsure" />
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>
