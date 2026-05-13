@@ -4,10 +4,7 @@ import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Bridge.JReverseLogger;
 import com.jreverse.jreverse.Debug.DebugConsoleViewController;
 import com.jreverse.jreverse.Utils.JReverseUtils;
-import com.tbdis.sstf.Member;
-import com.tbdis.sstf.Parser;
-import com.tbdis.sstf.ParserException;
-import com.tbdis.sstf.WriterException;
+import com.jreverse.jreverse.sstf.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -193,7 +190,7 @@ public class MainController {
     @FXML
     private void refreshClasses() {
         loadedClasTree.setRoot(emptyitem);
-        TreeItem<String> rootItem = new TreeItem<String>(startupController.procName);
+        TreeItem<String> rootItem = new TreeItem<String>(StartupController.procName);
         String[] loadedclasses = JReverseBridge.CallCoreFunction("getLoadedClasses", JReverseBridge.NoneArg);
         FastclassList = loadedclasses;
         Arrays.sort(loadedclasses);
@@ -211,7 +208,7 @@ public class MainController {
     @FXML
     private void FilterClasses() {
         loadedClasTree.setRoot(emptyitem);
-        TreeItem<String> rootItem = new TreeItem<String>(startupController.procName);
+        TreeItem<String> rootItem = new TreeItem<String>(StartupController.procName);
         String[] loadedclasses = FastclassList;
         Arrays.sort(loadedclasses);
         for (String str : loadedclasses) {
@@ -229,7 +226,7 @@ public class MainController {
         StringBuilder classpath = new StringBuilder();
         TreeItem<String> selected = loadedClasTree.getSelectionModel().getSelectedItem();
         while (selected != null) {
-            if (selected.getValue() == startupController.procName) break;
+            if (selected.getValue() == StartupController.procName) break;
             classpath.insert(0, selected.getValue() + "/");
             selected = selected.getParent();
         }

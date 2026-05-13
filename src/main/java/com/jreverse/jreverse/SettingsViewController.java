@@ -2,7 +2,8 @@ package com.jreverse.jreverse;
 
 import com.jreverse.jreverse.Bridge.JReverseBridge;
 import com.jreverse.jreverse.Bridge.JReverseLogger;
-import com.tbdis.sstf.*;
+import com.jreverse.jreverse.*;
+import com.jreverse.jreverse.sstf.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

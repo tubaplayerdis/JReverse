@@ -25,8 +25,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.jreverse.jreverse.StartupRulesController.settings;
 
-public class startupController {
+
+public class StartupController
+{
 
     @FXML
     private ListView procList ;
@@ -49,6 +52,7 @@ public class startupController {
 
     String filterte = "";
 
+    //second half of the jps command
     public static String procName = "";
     public static String procpath = "";
 
@@ -110,12 +114,8 @@ public class startupController {
         //As in no backslash
         StartupSettings settings = StartupSettingsHelper.CheckAndLoadFile();
         if(Objects.isNull(settings)) {System.out.println("Startup Settings NULL"); return;}
-        if(settings.IsAutoStart) {WaitAndInject(true); return;}
+        if(settings.IsInjectOnStartup && !App.isOnStartup) {WaitAndInject(settings.IsAutoStart); return;}
 
-        currentPID = GetPid(procName);
-        if(currentPID == -1){
-            return;
-        }
         JReverseBridge.testMethod();
         int resf = JReverseBridge.WriteStartupPipe(StartupRulesController.getRules(), settings);
         System.out.println("Wrote Startup: "+resf);
@@ -125,7 +125,7 @@ public class startupController {
 
         //Add dev mode to continute debugging from this path in comparison to public where the version manager handles it
         String coredllpath = VersionManager.CoreDLLPath;
-        if(Developer.isDeveloperBuild) coredllpath = "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll";
+        //if(Developer.isDeveloperBuild) coredllpath = "C:\\Users\\aaron\\source\\repos\\JReverseCore\\x64\\Debug\\JReverseCore.dll";
         injectionreturn = JReverseBridge.InjectDLL(currentPID, coredllpath);
         Scene scene = new Scene(App.loadFXML("main"), 1280, 720);
         File style = new File(usePath+"/stylesheets/style.css");
@@ -142,36 +142,18 @@ public class startupController {
         //System.out.println(JReverseBridge.GetStringPipe());
     }
 
-    private int GetPid(String processName){
+    private int GetPid(String jvmName){
         try {
-            // Execute 'tasklist' command
-            ProcessBuilder builder = new ProcessBuilder("tasklist", "/fo", "csv");
-            Process process = builder.start();
-
+            ProcessBuilder lipbuilder = new ProcessBuilder("jps");
+            Process process = lipbuilder.start();
             // Read the output of the command
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-
-            // Skip the header line
-            reader.readLine();
-
-            // Search for the process by name and print its PID
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                String processNameFromTasklist = parts[0].replaceAll("\"", ""); // Remove quotes
-                if (processNameFromTasklist.equalsIgnoreCase(processName)) {
-                    String pid = parts[1].replaceAll("\"", ""); // Remove quotes
-                    return Integer.parseInt(pid);
-                }
+            BufferedReader reada = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String lina;
+            while ((lina = reada.readLine()) != null) {
+                if(lina.substring(lina.indexOf(" ")).equals(jvmName)) return Integer.parseInt(lina.substring(0, lina.indexOf(" ")));
             }
 
-            // Close the reader
-            reader.close();
-
-            // Wait for the process to finish
-            process.waitFor();
-
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return -1;
@@ -179,7 +161,8 @@ public class startupController {
     @FXML
     private void selectTarget(){
         System.out.println(procList.getSelectionModel().getSelectedItem().toString());
-        int PID = GetPid(procList.getSelectionModel().getSelectedItem().toString());
+        String selString = procList.getSelectionModel().getSelectedItem().toString();
+        int PID = Integer.parseInt(selString.substring(0, selString.indexOf(" ")));
         System.out.println(PID);
         Optional<ProcessHandle> prochan = ProcessHandle.of(PID);
         if(prochan.isEmpty()){
@@ -195,13 +178,10 @@ public class startupController {
         currentPID = PID;
         if(!procinfo.command().get().isEmpty()){
             String raw = procinfo.command().get();
-            String name = "";
-            if(raw.lastIndexOf("\\") != -1){
-                name = raw.substring(raw.lastIndexOf("\\")+1);
-            }
+            String name = selString.substring(selString.indexOf(" "));
             targetField.setText("NAME: "+name+"\nPATH: "+procinfo.command().get()+"\nUSER: "+procinfo.user().get()+"\nPID: "+currentPID);
-            startupController.procName = name;
-            startupController.procpath = procinfo.command().get();
+            StartupController.procName = selString.substring(selString.indexOf(" "));
+            StartupController.procpath = procinfo.command().get();
             System.out.println(procinfo.command().get());
         }
     }
@@ -224,58 +204,10 @@ public class startupController {
             // Read the output of the command
             BufferedReader reada = new BufferedReader(new InputStreamReader(procesr.getInputStream()));
             String lina;
-            ArrayList<String> PIDList = new ArrayList<>();
             while ((lina = reada.readLine()) != null) {
-                PIDList.add(lina.substring(0, lina.indexOf(" ")));
-            }
-            for(String pid : PIDList) {
-                Optional<ProcessHandle> prochan = ProcessHandle.of(Integer.parseInt(pid));
-                if(prochan.isEmpty()){
-                    continue;
-                }
-                ProcessHandle processHandle = prochan.get();
-                ProcessHandle.Info procinfo = processHandle.info();
-                String name = procinfo.command().get().substring(procinfo.command().get().lastIndexOf("\\")+1);
-                if(name.contains(filterte)) {
-                 procStringList.add(name);
-                }
+                procStringList.add(lina);
             }
             return;
-        }
-
-        ProcessBuilder builder = new ProcessBuilder("tasklist", "/fo", "csv");
-        Process process = builder.start();
-
-        // Read the output of the command
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-
-        // Skip the first three lines of the output (header)
-        reader.readLine();
-        reader.readLine();
-        reader.readLine();
-
-        // Print the running processes
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(",");
-            String processName = parts[0].replaceAll("\"", ""); // Remove quotes
-            if (processName.toLowerCase().endsWith(".exe")) {
-                if(line.contains(filterte)) {
-                    String add = line.substring(0,line.indexOf(","));
-                    procStringList.add(add.substring(1, add.length()-1));
-                }
-            }
-
-        }
-
-        // Close the reader
-        reader.close();
-
-        // Wait for the process to finish
-        try {
-            process.waitFor();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
         RefreshList();
     }
@@ -295,11 +227,11 @@ public class startupController {
     @FXML
     private void WaitAndInject(boolean isAutoStart) {
 
-        if(startupController.procName.isEmpty()){
+        if(StartupController.procName.isEmpty()){
             System.out.println("procname is empty!");
             return;
         }
-        if(startupController.procpath.isEmpty()){
+        if(StartupController.procpath.isEmpty()){
             System.out.println("procpath is empty!");
             return;
         }
@@ -307,7 +239,7 @@ public class startupController {
         System.out.println("Killing: "+procName);
         //Kill The program
         try {
-            ProcessBuilder killer = new ProcessBuilder("taskkill", "/f", "/im", procName); // Modify this to match the name of your program
+            ProcessBuilder killer = new ProcessBuilder("taskkill", "/f", "/t", "/pid", String.valueOf(currentPID)); // Modify this to match the name of your program
             Process killerProcess = killer.start();
             killerProcess.waitFor();
 
